@@ -9,7 +9,7 @@ RUN set -eux && \
   mkdir -p ${CATALINA_BASE}/logs && \
   mkdir -p ${CATALINA_BASE}/work && \
   ln -s ${CATALINA_BASE}/log ${CATALINA_BASE}/logs && \
-  mkdir -p ${CATALINA_BASE}/tmp && \
+  mkdir -p ${CATALINA_BASE}/temp && \
   chgrp -R 0 ${CATALINA_BASE}/logs && \
   chmod -R g=u ${CATALINA_BASE}/logs && \
   chgrp -R 0 ${CATALINA_BASE}/work && \
