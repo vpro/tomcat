@@ -3,8 +3,7 @@
 Generic tomcat base image that:
 
 1. Separates CATALINA_BASE
-2. Prepares for proxy that arranges https
-
+2. Prepares for a  proxy server that arranges https, and more customized tomcat configuration.
 
 Use e.g. like so
 ```
