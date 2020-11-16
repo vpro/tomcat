@@ -18,3 +18,5 @@ RUN set -eux && \
   chmod -R g=u ${CATALINA_BASE}/temp
 
 ADD catalina_base ${CATALINA_BASE}/
+WORKDIR $CATALINA_BASE
+
