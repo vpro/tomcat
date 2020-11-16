@@ -8,7 +8,7 @@ RUN set -eux && \
   mkdir -p ${CATALINA_BASE}/webapps && \
   mkdir -p ${CATALINA_BASE}/logs && \
   mkdir -p ${CATALINA_BASE}/work && \
-  ln -s ${CATALINA_BASE}/log ${CATALINA_BASE}/logs && \
+  ln -s ${CATALINA_BASE}/logs ${CATALINA_BASE}/log && \
   mkdir -p ${CATALINA_BASE}/temp && \
   chgrp -R 0 ${CATALINA_BASE}/logs && \
   chmod -R g=u ${CATALINA_BASE}/logs && \
