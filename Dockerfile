@@ -17,6 +17,7 @@ media-server*.jar,\
 meeuw*.jar,\
 extjs-*.jar"
 
+ADD catalina_base ${CATALINA_BASE}/
 
 RUN set -eux && \
   apt-get update && \
@@ -28,11 +29,7 @@ RUN set -eux && \
   for directory in 'logs' 'work' 'temp'; do \
        chgrp -R 0 ${CATALINA_BASE}/$directory && \
        chmod -R g=u ${CATALINA_BASE}/$directory; \
-  done
-
-ADD catalina_base ${CATALINA_BASE}/
-
-RUN set -eux && \
+  done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties
 
 
