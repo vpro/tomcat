@@ -41,7 +41,7 @@ release:
 .build_setup: &build_setup |
   [[ "$TRACE" ]] && set -x
 
-  export IMAGE_TAG=$REGISTRY/openshift-helm:$IMAGE_VERSION
+  export IMAGE_TAG=$REGISTRY/npo-tomcat:$IMAGE_VERSION
 
   function setup_kaniko() {
     mkdir -p /kaniko/.docker
