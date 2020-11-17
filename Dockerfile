@@ -2,7 +2,7 @@ FROM tomcat:9.0-jdk8-adoptopenjdk-hotspot
 
 ENV CATALINA_BASE=/usr/local/catalina-base
 
-ENV JARS_TO_SCAN="log4j-taglib*.jar,\
+ARG JARS_TO_SCAN="log4j-taglib*.jar,\
 log4j-web*.jar,\
 log4javascript*.jar,\
 slf4j-taglib*.jar,\
