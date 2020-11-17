@@ -25,6 +25,8 @@ RUN set -eux && \
   for directory in 'webapps' 'logs' 'work' 'temp'; do \
       mkdir -p ${CATALINA_BASE}/$directory; \
   done && \
+  chmod -R o-w ${CATALINA_BASE} && \
+  chmod -R g=o ${CATALINA_BASE} && \
   ln -s ${CATALINA_BASE}/logs ${CATALINA_BASE}/log && \
   for directory in 'logs' 'work' 'temp'; do \
        chgrp -R 0 ${CATALINA_BASE}/$directory && \

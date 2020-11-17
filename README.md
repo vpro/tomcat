@@ -18,3 +18,8 @@ RUN (cd ${CATALINA_BASE}/webapps; mkdir ${CONTEXT} ; cd ${CONTEXT}; jar xf ${TMP
 
 ```
 
+You can build this locally like so:
+```
+docker build -t npo-tomcat .
+```
+
