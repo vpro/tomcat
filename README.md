@@ -7,7 +7,7 @@ Generic tomcat base image that:
 
 Use e.g. like so
 ```
-FROM vpro-tomcat:latest
+FROM npo-tomcat:1.0
 ARG PROJECT_VERSION=placeholder
 
 ARG CONTEXT=v1
