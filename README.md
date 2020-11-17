@@ -1,4 +1,4 @@
-# vpro-tomcat
+# npo-tomcat
 
 Generic tomcat base image that:
 
@@ -7,7 +7,7 @@ Generic tomcat base image that:
 
 Use e.g. like so
 ```
-FROM npo-tomcat:1.0
+FROM docker.vpro.nl/npo-tomcat:1.0
 ARG PROJECT_VERSION=placeholder
 
 ARG CONTEXT=v1
