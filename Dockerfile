@@ -2,6 +2,22 @@ FROM tomcat:9.0-jdk8-adoptopenjdk-hotspot
 
 ENV CATALINA_BASE=/usr/local/catalina-base
 
+ENV JARS_TO_SCAN="log4j-taglib*.jar,\
+log4j-web*.jar,\
+log4javascript*.jar,\
+slf4j-taglib*.jar,\
+vpro-shared-swagger*.jar,\
+swagger-ui*,\
+jstl*.jar,\
+svg*.jar,\
+poms-thesaurus*.jar,\
+flag-icon*.jar,\
+media-domain*.jar,\
+media-server*.jar,\
+meeuw*.jar,\
+extjs-*.jar"
+
+
 RUN set -eux && \
   apt-get update && \
   apt-get -y install less && \
@@ -15,5 +31,10 @@ RUN set -eux && \
   done
 
 ADD catalina_base ${CATALINA_BASE}/
+
+RUN set -eux && \
+  sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties
+
+
 WORKDIR $CATALINA_BASE
 
