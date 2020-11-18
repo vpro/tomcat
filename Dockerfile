@@ -58,11 +58,10 @@ ONBUILD RUN (\
      rm ${TMP_WAR} \
      )
 
-ONBUILD ARG PROJECT_VERSION
-ONBUILD ARG NAME
-ONBUILD ARG CONTEXT
-ONBUILD ARG TMP_WAR=/tmp/app.war
+ONBUILD LABEL version="${PROJECT_VERSION}"
+ONBUILD LABEL name="${NAME}"
 
-ONBUILD ADD target/${NAME}-${PROJECT_VERSION}.war ${TMP_WAR}
-ONBUILD RUN (cd ${CATALINA_BASE}/webapps && mkdir ${CONTEXT} && cd ${CONTEXT} && jar xf ${TMP_WAR} && rm ${TMP_WAR})
+LABEL maintainer=digitaal-techniek@vpro.nl
+ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
+VOLUME ["/data", "/conf"]
 
