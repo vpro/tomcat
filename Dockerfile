@@ -46,7 +46,7 @@ ONBUILD ARG NAME
 ONBUILD ARG CONTEXT
 ONBUILD ARG TMP_WAR=/tmp/app.war
 
-ONBUILD ADD target/${NAME}-${PROJECT_VERSION}.war ${TMP_WAR}
+ONBUILD ADD target/${NAME}*.war ${TMP_WAR}
 ONBUILD RUN (\
      if [ -z "$CONTEXT" ] ; then \
         CONTEXT=ROOT; \
