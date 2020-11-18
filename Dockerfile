@@ -23,8 +23,12 @@ RUN set -eux && \
   apt-get update && \
   apt-get -y install less && \
   for directory in 'webapps' 'logs' 'work' 'temp'; do \
-      mkdir -p ${CATALINA_BASE}/$directory; \
+      mkdir -p ${CATALINA_BASE}/$directory && \
+      rm -rf ${CATALINA_HOME}/$directory; \
   done && \
+  rm -rf ${CATALINA_HOME}/webapps.dist && \
+  chmod -R o-w ${CATALINA_HOME} && \
+  chmod -R g=o ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_BASE} && \
   (cd ${CATALINA_BASE} && ln -s logs log) && \
@@ -35,6 +39,24 @@ RUN set -eux && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties
 
 WORKDIR $CATALINA_BASE
+ENV HOME /
+
+ONBUILD ARG PROJECT_VERSION
+ONBUILD ARG NAME
+ONBUILD ARG CONTEXT
+ONBUILD ARG TMP_WAR=/tmp/app.war
+
+ONBUILD ADD target/${NAME}-${PROJECT_VERSION}.war ${TMP_WAR}
+ONBUILD RUN (\
+     if [ -z "$CONTEXT" ] ; then \
+        CONTEXT=ROOT; \
+     fi && \
+     cd ${CATALINA_BASE}/webapps && \
+     mkdir ${CONTEXT} && \
+     cd ${CONTEXT} && \
+     jar xf ${TMP_WAR} && \
+     rm ${TMP_WAR} \
+     )
 
 ONBUILD ARG PROJECT_VERSION
 ONBUILD ARG NAME
