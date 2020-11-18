@@ -22,3 +22,10 @@ You can build this locally like so:
 docker build -t npo-tomcat .
 ```
 
+And use it like so:
+```bash
+
+$ cd ~/npo/media/trunk
+~/npo/media/trunk$ (VERSION=$(mvn -q  -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive  exec:exec) ; docker build -t media:$VERSION --build-arg PROJECT_VERSION=$VERSION media-server)
+```
+
