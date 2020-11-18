@@ -19,7 +19,7 @@ RUN apt-get -y install openssh-client sshpass
 
 You can build this locally like so:
 ```
-docker build -t npo-tomcat .
+docker build -t npo-tomcat:dev .
 ```
 
 And use it like so:
