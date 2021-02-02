@@ -59,6 +59,9 @@ RUN set -eux && \
 
 VOLUME "/data" "/conf"
 
+
+CMD ["catalina.sh", "jdpa start"]
+
 # The onbuild commands to install the application when this image is overlaid
 
 ONBUILD ARG PROJECT_VERSION
