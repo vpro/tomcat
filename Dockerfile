@@ -36,7 +36,7 @@ WORKDIR $CATALINA_BASE
 # - make the mount points and fill with example content which can be used when docker image is ran locally
 RUN set -eux && \
   apt-get update && \
-  apt-get -y install less && \
+  apt-get -y install less procps && \
   for directory in 'webapps' 'logs' 'work' 'temp'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
       rm -rf ${CATALINA_HOME}/$directory; \

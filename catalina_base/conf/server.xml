@@ -12,6 +12,7 @@
       maxThreads="400"
       scheme="https"
       proxyPort="443"
+      proxyName="${proxy.name}"
       relaxedQueryChars="[]|{}^&#x5c;&#x60;&quot;&lt;&gt;"
     />
 

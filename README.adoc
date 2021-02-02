@@ -1,0 +1,30 @@
+= npo-tomcat
+
+Generic tomcat base image that:
+
+. Separates CATALINA_BASE
+. Prepares for a proxy server that arranges https, and more customized tomcat configuration.
+
+You can build this locally like so:
+
+----
+docker build -t npo-tomcat:dev .
+----
+
+Use e.g. with a Dockerfile liek this"
+
+----
+ARG NAME=media-server
+
+FROM npo-tomcat:dev
+
+RUN apt-get -y install openssh-client sshpass
+
+----
+
+which then can be build this way:
+
+[source,bash]
+----
+~/npo/media/trunk$ docker build -t media-server media-server
+----
