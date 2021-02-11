@@ -11,7 +11,7 @@ You can build this locally like so:
 docker build -t npo-tomcat:dev .
 ----
 
-Use e.g. with a Dockerfile liek this"
+Use e.g. with a Dockerfile like this"
 
 ----
 ARG NAME=media-server
