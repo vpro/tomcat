@@ -54,6 +54,7 @@ RUN set -eux && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir /conf && \
   mkdir /data && \
+  mkdir ${CATALINA_BASE}/lib && \
   (cd ${CATALINA_BASE}/lib ; curl -O   'https://repo1.maven.org/maven2/net/logstash/log4j/jsonevent-layout/1.7/jsonevent-layout-1.7-javadoc.jar') && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties
 
