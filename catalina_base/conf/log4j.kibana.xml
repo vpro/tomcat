@@ -6,12 +6,15 @@
      <param name="target" value="System.out"/>
      <param name="immediateFlush" value="true"/>
      <param name="encoding" value="UTF-8"/>
-     <layout class="net.logstash.log4j.JSONEventLayoutV1" />
+     <layout class="net.logstash.log4j.JSONEventLayoutV1">
+       <param name="locationInfo" value="false"/>
+     </layout>
    </appender>
 
   <root>
     <level value="INFO"/>
     <appender-ref ref="console"/>
   </root>
+
 
 </log4j:configuration>
