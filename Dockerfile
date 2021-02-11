@@ -55,7 +55,7 @@ RUN set -eux && \
   mkdir /conf && \
   mkdir /data && \
   mkdir ${CATALINA_BASE}/lib && \
-  (cd ${CATALINA_BASE}/lib ; curl -O   'https://repo1.maven.org/maven2/net/logstash/log4j/jsonevent-layout/1.7/jsonevent-layout-1.7-javadoc.jar') && \
+  (cd ${CATALINA_BASE}/lib ; curl -O   'https://bintray.com/devatherock/jul-jsonformatter/download_file?file_path=io%2Fgithub%2Fdevatherock%2Fjul-jsonformatter%2F1.1.0%2Fjul-jsonformatter-1.1.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties
 
 
