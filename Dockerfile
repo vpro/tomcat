@@ -46,7 +46,7 @@ RUN set -eux && \
   chmod -R g=o ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_BASE} && \
-  (cd ${CATALINA_BASE} && ln -s logs log) && \
+  #(cd ${CATALINA_BASE} && ln -s logs log) && \
   for directory in 'logs' 'work' 'temp'; do \
        chgrp -R 0 ${CATALINA_BASE}/$directory && \
        chmod -R g=u ${CATALINA_BASE}/$directory; \
@@ -62,7 +62,8 @@ RUN set -eux && \
 VOLUME "/data" "/conf"
 
 
-CMD ["catalina.sh", "jdpa start"]
+#CMD ["catalina.sh", "run"]
+CMD ["catalina.sh", "jpda", "run"]
 
 # The onbuild commands to install the application when this image is overlaid
 
