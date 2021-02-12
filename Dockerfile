@@ -46,7 +46,7 @@ RUN set -eux && \
   chmod -R g=o ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_BASE} && \
-  #(cd ${CATALINA_BASE} && ln -s logs log) && \
+  (cd ${CATALINA_BASE} && ln -s logs log) && \
   for directory in 'logs' 'work' 'temp'; do \
        chgrp -R 0 ${CATALINA_BASE}/$directory && \
        chmod -R g=u ${CATALINA_BASE}/$directory; \
