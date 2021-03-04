@@ -23,6 +23,8 @@ extjs-*.jar"
 # We want to split off catalina base, default it's catalina_home
 ADD catalina_base ${CATALINA_BASE}/
 
+COPY rds-ca-2019-root.der $JAVA_HOME/jre/lib/security
+
 # This makes ${USER.HOME} /
 ENV HOME /
 
@@ -37,6 +39,7 @@ WORKDIR $CATALINA_BASE
 RUN set -eux && \
   apt-get update && \
   apt-get -y install less procps curl && \
+  keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
   for directory in 'webapps' 'logs' 'work' 'temp'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
       rm -rf ${CATALINA_HOME}/$directory; \
@@ -58,6 +61,7 @@ RUN set -eux && \
   (cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.1.0/jul-jsonformatter-1.1.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties
 
+COPY rds-ca-2019-root.pem /conf
 
 VOLUME "/data" "/conf"
 
