@@ -10,6 +10,7 @@
       protocol="HTTP/1.1"
       connectionTimeout="20000"
       maxThreads="400"
+      scheme="https"
       relaxedQueryChars="[]|{}^&#x5c;&#x60;&quot;&lt;&gt;"
     />
 
