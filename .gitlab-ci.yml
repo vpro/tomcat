@@ -1,7 +1,3 @@
-stages:
-  - develop
-  - release
-
 include:
   - project: 'npo/gitlab-templates'
     ref: master
