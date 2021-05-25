@@ -1,4 +1,4 @@
 include:
-  - project: 'npo/gitlab-templates'
+  - project: 'shared/gitlab/gitlab-templates'
     ref: master
     file: 'docker_build.yml'
