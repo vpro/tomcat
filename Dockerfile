@@ -78,11 +78,6 @@ ENV HOME /
 
 # Handy, on a new shell you'll be in the directory of interest
 WORKDIR $CATALINA_BASE
-# And have a workable shell
-SHELL ["/bin/bash", "-c"]
-# With bearable key bindings:
-COPY inputrc /etc
-
 
 # - Create the necessary dirs in catalina_base, with the needed permissions
 # - Create a symlink  logs -> log (if no deployment needed to app cluster we'll simply let it log to logs directly)
@@ -115,6 +110,12 @@ RUN set -eux && \
 
 COPY rds-ca-2019-root.pem /conf
 
+
+# Have a workable shell
+SHELL ["/bin/bash", "-c"]
+RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash ; exit 0
+# With bearable key bindings:
+COPY inputrc /etc
 
 VOLUME "/data" "/conf"
 
