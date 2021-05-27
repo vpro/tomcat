@@ -76,8 +76,12 @@ COPY rds-ca-2019-root.der $JAVA_HOME/jre/lib/security
 # This makes ${USER.HOME} /
 ENV HOME /
 
-# Handy, on a new shell you'll be in the direcctory of interest
+# Handy, on a new shell you'll be in the directory of interest
 WORKDIR $CATALINA_BASE
+# And have a workable shell
+SHELL ["/bin/bash", "-c"]
+# With bearable key bindings:
+COPY inputrc /etc
 
 
 # - Create the necessary dirs in catalina_base, with the needed permissions
@@ -110,6 +114,7 @@ RUN set -eux && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties
 
 COPY rds-ca-2019-root.pem /conf
+
 
 VOLUME "/data" "/conf"
 
