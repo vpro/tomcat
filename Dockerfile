@@ -113,7 +113,11 @@ COPY rds-ca-2019-root.pem /conf
 
 # Have a workable shell
 SHELL ["/bin/bash", "-c"]
-RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash ; exit 0
+
+ENV TZ=Europe/Amsterdam
+RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash ; exit 0 && \
+  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+  dpkg-reconfigure --frontend noninteractive tzdata
 # With bearable key bindings:
 COPY inputrc /etc
 
