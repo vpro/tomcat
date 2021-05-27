@@ -25,7 +25,8 @@
           className="org.apache.catalina.valves.AccessLogValve"
           directory="logs"
           prefix="tomcat_access" suffix=".log"
-          pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+          rotatable="true"
+          pattern="%{X-Forwarded-For}i %h %l %u %t &quot;%r&quot; %s %b" />
 
       </Host>
     </Engine>
