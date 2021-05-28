@@ -20,6 +20,8 @@ if [[ "$POD_NAMESPACE" == *test ]]; then
 	JMX_PORT=$((JMX_PORT + 200))
 fi
 
+# If multiple pods, every one has it's own jmx port
+JMX_PORT=$((JMX_PORT + "${POD_NAME##*-}"))
 
 export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost"
 
