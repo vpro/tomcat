@@ -85,7 +85,7 @@ WORKDIR $CATALINA_BASE
 # - make the mount points and fill with example content which can be used when docker image is ran locally
 RUN set -eux && \
   apt-get update && \
-  apt-get -y install less procps curl && \
+  apt-get -y install less procps curl rsync && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
   for directory in 'webapps' 'logs' 'work' 'temp'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
