@@ -83,9 +83,15 @@ WORKDIR $CATALINA_BASE
 # - Create a symlink  logs -> log (if no deployment needed to app cluster we'll simply let it log to logs directly)
 # - set the jars to scan in catalian.properties
 # - make the mount points and fill with example content which can be used when docker image is ran locally
+# - install some useful tools
+# -   rsync: avoid warnings for oc rsync
+# -   curl: I forgot when this is needed
+# -   dnsutils: for debugging it's usefull to have tools like 'host' available.
+# -   less: just for debugging
+# -   procps: just for debugging. 'ps'.
 RUN set -eux && \
   apt-get update && \
-  apt-get -y install less procps curl rsync && \
+  apt-get -y install less procps curl rsync dnsutils && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
   for directory in 'webapps' 'logs' 'work' 'temp'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
