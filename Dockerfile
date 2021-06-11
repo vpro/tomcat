@@ -93,7 +93,9 @@ RUN set -eux && \
   apt-get update && \
   apt-get -y install less procps curl rsync dnsutils && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
-  for directory in 'webapps' 'logs' 'work' 'temp'; do \
+  mkdir -p /data/logs  && \
+  mkdir /conf && \
+  for directory in 'webapps' 'work' 'temp'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
       rm -rf ${CATALINA_HOME}/$directory; \
   done && \
@@ -102,14 +104,12 @@ RUN set -eux && \
   chmod -R g=o ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_BASE} && \
-  (cd ${CATALINA_BASE} && ln -s logs log) && \
+  (cd ${CATALINA_BASE} && ln -s logs log && ln -s /data/logs logs) && \
   for directory in 'logs' 'work' 'temp'; do \
        chgrp -R 0 ${CATALINA_BASE}/$directory && \
        chmod -R g=u ${CATALINA_BASE}/$directory; \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
-  mkdir /conf && \
-  mkdir /data && \
   mkdir ${CATALINA_BASE}/lib && \
   (cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.1.0/jul-jsonformatter-1.1.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties
