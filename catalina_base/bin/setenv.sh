@@ -6,7 +6,7 @@ export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configuration=log4j.kibana.xml"
 if [[ -z "$LOG4J2" ]]; then
   export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configurationFile=file://${CATALINA_BASE}/conf/log4j2.kibana.xml"
 else
-	export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configurationFile=${LOG4J2})"
+	export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configurationFile=${LOG4J2}"
 fi
 export CATALINA_OPTS="$CATALINA_OPTS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
 
