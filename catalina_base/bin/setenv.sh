@@ -10,6 +10,7 @@ else
 fi
 export CATALINA_OPTS="$CATALINA_OPTS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
 
+mkdir -p /data/logs
 
 # JMX
 if [[ -z "$JMX_PORT" ]]; then
