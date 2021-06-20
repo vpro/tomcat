@@ -137,16 +137,18 @@ CMD ["catalina.sh", "jpda", "run"]
 
 ONBUILD ARG PROJECT_VERSION
 ONBUILD ARG NAME
-ONBUILD ARG ARTIFACT=${NAME}*
-ONBUILD ARG CONTEXT
+ONBUILD ARG LABEL
 ONBUILD ARG TMP_WAR=/tmp/app.war
-ONBUILD ARG LABEL=${NAME}
 
-ONBUILD ADD target/${ARTIFACT}.war ${TMP_WAR}
+ONBUILD ADD target/${NAME}*.war ${TMP_WAR}
 ONBUILD RUN (\
      if [ -z "$CONTEXT" ] ; then \
         CONTEXT=ROOT; \
      fi && \
+     if [ -z "$LABEL" ] ; then \
+        LABEL=${NAME}; \
+     fi && \
+
      cd ${CATALINA_BASE}/webapps && \
      mkdir ${CONTEXT} && \
      cd ${CONTEXT} && \
