@@ -123,7 +123,8 @@ SHELL ["/bin/bash", "-c"]
 ENV TZ=Europe/Amsterdam
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash ; exit 0 && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-  dpkg-reconfigure --frontend noninteractive tzdata
+  dpkg-reconfigure --frontend noninteractive tzdata && \
+  touch /.bash_history && chmod g+rw /.bash_history
 # With bearable key bindings:
 COPY inputrc /etc
 
@@ -138,22 +139,19 @@ CMD ["catalina.sh", "jpda", "run"]
 ONBUILD ARG PROJECT_VERSION
 ONBUILD ARG NAME
 ONBUILD ARG LABEL
-ONBUILD ARG TMP_WAR=/tmp/app.war
 
-ONBUILD ADD target/${NAME}*.war ${TMP_WAR}
+
+ONBUILD ADD target/${NAME}*.war /tmp/app.war
 ONBUILD RUN (\
      if [ -z "$CONTEXT" ] ; then \
         CONTEXT=ROOT; \
-     fi && \
-     if [ -z "$LABEL" ] ; then \
-        LABEL=${NAME}; \
      fi && \
 
      cd ${CATALINA_BASE}/webapps && \
      mkdir ${CONTEXT} && \
      cd ${CONTEXT} && \
-     jar xf ${TMP_WAR} && \
-     rm ${TMP_WAR} \
+     jar xf /tmp/app.war && \
+     rm /tmp/app.war \
      )
 
 ONBUILD LABEL version="${PROJECT_VERSION}"
