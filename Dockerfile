@@ -89,9 +89,10 @@ WORKDIR $CATALINA_BASE
 # -   dnsutils: for debugging it's usefull to have tools like 'host' available.
 # -   less: just for debugging
 # -   procps: just for debugging. 'ps'.
+# -   netcat: just for debugging. 'nc'.
 RUN set -eux && \
   apt-get update && \
-  apt-get -y install less procps curl rsync dnsutils && \
+  apt-get -y install less procps curl rsync dnsutils  netcat && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
   mkdir -p /data/logs  && \
   mkdir /conf && \
