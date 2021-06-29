@@ -90,9 +90,10 @@ WORKDIR $CATALINA_BASE
 # -   less: just for debugging
 # -   procps: just for debugging. 'ps'.
 # -   netcat: just for debugging. 'nc'.
+# -   apache2-utils: we use rotatelogs to rotate catalina.out
 RUN set -eux && \
   apt-get update && \
-  apt-get -y install less procps curl rsync dnsutils  netcat && \
+  apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
   mkdir -p /data/logs  && \
   mkdir /conf && \
