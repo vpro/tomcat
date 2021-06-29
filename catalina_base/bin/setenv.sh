@@ -13,7 +13,7 @@ export CATALINA_OPTS="$CATALINA_OPTS -XX:+UnlockExperimentalVMOptions -XX:+UseCG
 
 mkdir -p /data/logs
 
-export CATALINA_OUT_CMD="/usr/bin/rotatelogs -f $CATALINA_BASE/logs/catalina.out.%Y-%m-%d.log 86400"
+export CATALINA_OUT_CMD="/usr/bin/rotatelogs -L $CATALINA_BASE/logs/catalina.out -f $CATALINA_BASE/logs/catalina.out.%Y-%m-%d.log 86400"
 
 
 # JMX
@@ -21,6 +21,8 @@ export CATALINA_OUT_CMD="/usr/bin/rotatelogs -f $CATALINA_BASE/logs/catalina.out
 JMX_PORT=$($dir/jmx.sh)
 
 export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost"
+
+export CATALINA_OPTS="$CATALINA_OPTS -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=5M -Xloggc:${CATALINA_BASE}/logs/gc.log"
 
 # JPDA
 export JPDA_ADDRESS=8000
