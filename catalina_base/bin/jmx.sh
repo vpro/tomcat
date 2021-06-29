@@ -1,4 +1,6 @@
 # a script to output the jmx port for the current server
+# used in 'setenv.sh'
+# but it can also be used by administrators (using oc rsh) to easily find out the needed port.
 
 # JMX
 if [[ -z "$JMX_PORT" ]]; then

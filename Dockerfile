@@ -127,10 +127,6 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTE
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
   dpkg-reconfigure --frontend noninteractive tzdata
 
-# would like this, but it doesn't work. Later then.
-#  touch /.bash_history && chmod g+rw /.bash_history
-# may be we could create user to run with an actual home dir (https://docs.openshift.com/container-platform/3.3/creating_images/guidelines.html)?
-
 # With bearable key bindings:
 COPY inputrc /etc
 
