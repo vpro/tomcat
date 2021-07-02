@@ -13,9 +13,6 @@ export CATALINA_OPTS="$CATALINA_OPTS -XX:+UnlockExperimentalVMOptions -XX:+UseCG
 
 mkdir -p /data/logs
 
-export CATALINA_OUT_CMD="/usr/bin/rotatelogs -L $CATALINA_BASE/logs/catalina.out -f $CATALINA_BASE/logs/catalina.out.%Y-%m-%d.log 86400"
-
-
 # JMX
 
 JMX_PORT=$($dir/jmx.sh)
