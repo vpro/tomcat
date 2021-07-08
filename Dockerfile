@@ -131,6 +131,8 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTE
 
 # With bearable key bindings:
 COPY inputrc /etc
+# And a nicer bash prompt
+COPY bashrc /.bashrc
 
 VOLUME "/data" "/conf"
 
