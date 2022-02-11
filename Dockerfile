@@ -166,4 +166,4 @@ ONBUILD LABEL name="${LABEL}"
 ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 
 # We need regular security patches. E.g. on every build of the application
-ONBUILD RUN apt-get -y upgrade
+ONBUILD RUN apt-get update && apt-get -y upgrade
