@@ -32,7 +32,7 @@
           directory="logs"
           prefix="tomcat_access" suffix=".log"
           rotatable="true"
-          pattern="%{X-Forwarded-For}i&#009;%{Content-Type}i&#009;%{User-Agent}i&#009;%h&#009;%l&#009;%u&#009;%{yyyy-MM-dd'T'HH:mm:ss.SSSZ}t&#009;&quot;%r&quot;&#009;%s&#009;%b" />
+          pattern="%{yyyy-MM-dd'T'HH:mm:ss.SSSZ}i&#009;t%{X-Forwarded-For}i&#009;%{Content-Type}i&#009;%{User-Agent}i&#009;%h&#009;%l&#009;%u&#009;&quot;%r&quot;&#009;%s&#009;%b" />
 
         <Valve className="org.apache.catalina.valves.RemoteIpValve"
           hostHeader="X-Forwarded-Host"
