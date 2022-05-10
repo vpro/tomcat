@@ -11,6 +11,9 @@ ARG IM_VERSION=7.0.11-2
 ARG LIB_HEIF_VERSION=1.11.0
 ARG LIB_AOM_VERSION=2.0.2
 
+
+# TODO I think the way to do this would be rather be a  multi-stage build: https://docs.docker.com/develop/develop-images/multistage-build/
+# There is no need for cleaning up then, and it's easier to keep the layer small.
 RUN apt-get -y update && \
     apt-get -y upgrade && \
     apt-get install -y git make gcc pkg-config autoconf curl g++ \
