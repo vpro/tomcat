@@ -146,7 +146,6 @@ CMD ["catalina.sh", "jpda", "run"]
 
 # We run always with a user named 'application' with uid '1001'
 RUN adduser --system --uid 1001 application --gid 0 --disabled-password --no-create-home --home /
-USER 1001
 
 # The onbuild commands to install the application when this image is overlaid
 
@@ -174,3 +173,5 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade
+
+ONBUILD USER 1001
