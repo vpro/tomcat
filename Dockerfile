@@ -144,6 +144,10 @@ VOLUME "/data" "/conf"
 CMD ["catalina.sh", "jpda", "run"]
 #CMD ["catalina.sh", "run"]
 
+# We run always with a user named 'application' with uid '1001'
+RUN adduser --system --uid 1001 application --gid 0 --disabled-password --no-create-home --home /
+USER 1001
+
 # The onbuild commands to install the application when this image is overlaid
 
 ONBUILD ARG PROJECT_VERSION
