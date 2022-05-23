@@ -88,6 +88,7 @@ extjs-*.jar"
 # We want to split off catalina base, default it's catalina_home
 ADD catalina_base ${CATALINA_BASE}/
 
+# // TLS gebruiken voor DB, MQ en ES services van Amazon (MSE-5059). Is this still needed?
 COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 
 # This makes ${USER.HOME} /
