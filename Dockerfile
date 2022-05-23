@@ -158,7 +158,9 @@ CMD ["catalina.sh", "jpda", "run"]
 #CMD ["catalina.sh", "run"]
 
 # We run always with a user named 'application' with uid '1001'
-RUN adduser --system --uid 1001 application --gid 0 --disabled-password --no-create-home --home /
+RUN addgroup  --system --gid 1001 application && \
+    adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home --home / && \
+    adduser application root
 
 # The onbuild commands to install the application when this image is overlaid
 
