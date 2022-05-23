@@ -88,7 +88,7 @@ extjs-*.jar"
 # We want to split off catalina base, default it's catalina_home
 ADD catalina_base ${CATALINA_BASE}/
 
-COPY rds-ca-2019-root.der $JAVA_HOME/jre/lib/security
+COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 
 # This makes ${USER.HOME} /
 ENV HOME /
@@ -108,10 +108,12 @@ WORKDIR $CATALINA_BASE
 # -   procps: just for debugging. 'ps'.
 # -   netcat: just for debugging. 'nc'.
 # -   apache2-utils: we use rotatelogs to rotate catalina.out
+
+# keytool: Why do we do this? Shouldn't we just drop that?
 RUN set -eux && \
   apt-get update && \
   apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils  vim-tiny && \
-  keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
+  keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
   mkdir -p /data/logs  && \
   mkdir /conf && \
   for directory in 'webapps' 'work' 'temp'; do \
@@ -130,7 +132,7 @@ RUN set -eux && \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
-  (cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.2.0/jul-jsonformatter-1.2.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
+  (cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.1.0/jul-jsonformatter-1.1.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties
 
 COPY rds-ca-2019-root.pem /conf
