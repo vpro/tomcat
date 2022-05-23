@@ -5,12 +5,14 @@ LABEL maintainer=digitaal-techniek@vpro.nl
 ##############################################################
 
 # Build ImageMagick v7
+
+# not available in debian yet?
+
 # Borrowed from: https://github.com/dooman87/imagemagick-docker
-
-ARG IM_VERSION=7.0.11-2
-ARG LIB_HEIF_VERSION=1.11.0
-ARG LIB_AOM_VERSION=2.0.2
-
+ARG IM_VERSION=7.1.0-29
+ARG LIB_HEIF_VERSION=1.12.0
+ARG LIB_AOM_VERSION=3.3.0
+ARG LIB_WEBP_VERSION=1.2.2
 
 # TODO I think the way to do this would be rather be a  multi-stage build: https://docs.docker.com/develop/develop-images/multistage-build/
 # There is no need for cleaning up then, and it's easier to keep the layer small.
@@ -20,9 +22,20 @@ RUN apt-get -y update && \
     # libaom
     yasm cmake \
     # libheif
-    libde265-0 libde265-dev libjpeg62-turbo libjpeg62-turbo-dev x265 libx265-dev libtool \
+    libde265-0 libde265-dev libjpeg-turbo8 libjpeg-turbo8-dev x265 libx265-dev libtool \
+    # libwebp
+    libsdl1.2-dev libgif-dev \
     # IM
-    libpng16-16 libpng-dev libjpeg62-turbo libjpeg62-turbo-dev libwebp6 libwebp-dev libgomp1 libwebpmux3 libwebpdemux2 ghostscript libxml2-dev libxml2-utils && \
+    libpng16-16 libpng-dev libjpeg-turbo8 libjpeg-turbo8-dev libgomp1 ghostscript libxml2-dev libxml2-utils libtiff-dev libfontconfig1-dev libfreetype6-dev fonts-dejavu liblcms2-2 liblcms2-dev \
+    # Install manually to prevent deleting with -dev packages
+    libxext6 && \
+    # Building libwebp
+    git clone https://chromium.googlesource.com/webm/libwebp && \
+    cd libwebp && git checkout v${LIB_WEBP_VERSION} && \
+    ./autogen.sh && ./configure --enable-shared --enable-libwebpdecoder --enable-libwebpdemux --enable-libwebpmux --enable-static=no && \
+    make && make install && \
+    ldconfig /usr/local/lib && \
+    cd ../ && rm -rf libwebp && \
     # Building libaom
     git clone https://aomedia.googlesource.com/aom && \
     cd aom && git checkout v${LIB_AOM_VERSION} && cd .. && \
@@ -41,10 +54,10 @@ RUN apt-get -y update && \
     # Building ImageMagick
     git clone https://github.com/ImageMagick/ImageMagick.git && \
     cd ImageMagick && git checkout ${IM_VERSION} && \
-    ./configure --without-magick-plus-plus --disable-docs --disable-static && \
+    ./configure --without-magick-plus-plus --disable-docs --disable-static --with-tiff && \
     make && make install && \
     ldconfig /usr/local/lib && \
-    apt-get remove --autoremove --purge -y gcc make cmake curl g++ yasm git autoconf pkg-config libpng-dev libjpeg62-turbo-dev libwebp-dev libde265-dev libx265-dev libxml2-dev && \
+    apt-get remove --autoremove --purge -y gcc make cmake curl g++ yasm git autoconf pkg-config libpng-dev libjpeg-turbo8-dev libde265-dev libx265-dev libxml2-dev libtiff-dev libfontconfig1-dev libfreetype6-dev liblcms2-dev libsdl1.2-dev libgif-dev && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /ImageMagick
 
