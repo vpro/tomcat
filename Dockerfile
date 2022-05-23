@@ -1,4 +1,4 @@
-FROM tomcat:9-jdk8-openjdk-slim
+FROM tomcat:9-jdk11-temurin
 
 LABEL maintainer=digitaal-techniek@vpro.nl
 
@@ -13,6 +13,7 @@ ARG IM_VERSION=7.1.0-29
 ARG LIB_HEIF_VERSION=1.12.0
 ARG LIB_AOM_VERSION=3.3.0
 ARG LIB_WEBP_VERSION=1.2.2
+
 
 # TODO I think the way to do this would be rather be a  multi-stage build: https://docs.docker.com/develop/develop-images/multistage-build/
 # There is no need for cleaning up then, and it's easier to keep the layer small.
@@ -129,7 +130,7 @@ RUN set -eux && \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
-  (cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.1.0/jul-jsonformatter-1.1.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
+  (cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.2.0/jul-jsonformatter-1.2.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties
 
 COPY rds-ca-2019-root.pem /conf
