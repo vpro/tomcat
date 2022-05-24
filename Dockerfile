@@ -100,7 +100,8 @@ CMD ["catalina.sh", "jpda", "run"]
 # We run always with a user named 'application' with uid '1001'
 RUN addgroup  --system --gid 1001 application && \
     adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home --home / && \
-    adduser application root
+    adduser application root && \
+    date > /npo-tomcat.build
 
 # The onbuild commands to install the application when this image is overlaid
 
@@ -127,6 +128,8 @@ ONBUILD LABEL name="${LABEL}"
 ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 
 # We need regular security patches. E.g. on every build of the application
-ONBUILD RUN apt-get update && apt-get -y upgrade
+ONBUILD RUN apt-get update && apt-get -y upgrade && \
+   date > /${LABEL}.${PROJECT_VERSION}.build
+
 
 #ONBUILD USER 1001
