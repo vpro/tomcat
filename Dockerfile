@@ -101,6 +101,7 @@ RUN set -eux && \
   apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils  vim-tiny && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
   mkdir -p /data/logs  && \
+  ls /conf 2>/dev/null ; \
   mkdir -p /conf && \
   for directory in 'webapps' 'work' 'temp'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
