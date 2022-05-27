@@ -129,7 +129,7 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
-   date > /${LABEL}.${PROJECT_VERSION}.build
+   date > /${NAME}.${PROJECT_VERSION}.build
 
 
 #ONBUILD USER 1001
