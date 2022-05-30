@@ -14,6 +14,7 @@ slf4j-taglib*.jar,\
 vpro-shared-swagger*.jar,\
 swagger-ui*,\
 jstl*.jar,\
+jakarta.servlet.jsp.jstl*.jar,\
 svg*.jar,\
 poms-thesaurus*.jar,\
 flag-icon*.jar,\
