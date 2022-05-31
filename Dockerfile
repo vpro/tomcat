@@ -2,8 +2,6 @@ FROM tomcat:9-jdk8-openjdk-slim
 
 LABEL maintainer=digitaal-techniek@vpro.nl
 
-
-
 ENV CATALINA_BASE=/usr/local/catalina-base
 
 # Jars containing web resources and TLD's, which we use here and there.
@@ -82,7 +80,6 @@ ENV TZ=Europe/Amsterdam
 ENV HISTFILE=/data/.bash_history
 ENV PSQL_HISTORY=/data/.pg_history
 
-
 # - Setting up timezone and stuff
 # - We run always with a user named 'application' with uid '1001'
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
@@ -103,7 +100,6 @@ VOLUME "/data" "/conf"
 # note that this is unused in helm, it then uses container.command
 CMD ["catalina.sh", "jpda", "run"]
 #CMD ["catalina.sh", "run"]
-
 
 # The onbuild commands to install the application when this image is overlaid
 
@@ -132,6 +128,3 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
    (echo -n ${NAME}.${PROJECT_VERSION}= ; date -Iseconds) >> /DOCKER.BUILD
-
-
-#ONBUILD USER 1001
