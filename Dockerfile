@@ -75,7 +75,6 @@ RUN set -eux && \
 
 COPY rds-ca-2019-root.pem /conf
 
-
 # Have a workable shell
 SHELL ["/bin/bash", "-c"]
 
@@ -85,7 +84,12 @@ ENV PSQL_HISTORY=/data/.pg_history
 
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash ; exit 0 && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-  dpkg-reconfigure --frontend noninteractive tzdata
+  dpkg-reconfigure --frontend noninteractive tzdata && \
+  # We run always with a user named 'application' with uid '1001'
+  addgroup  --system --gid 1001 application && \
+  adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home --home / && \
+  adduser application root && \
+  (echo -n npo-tomcat= ; date -Iseconds) > /DOCKER.BUILD
 
 # With bearable key bindings:
 COPY inputrc /etc
@@ -98,11 +102,6 @@ VOLUME "/data" "/conf"
 CMD ["catalina.sh", "jpda", "run"]
 #CMD ["catalina.sh", "run"]
 
-# We run always with a user named 'application' with uid '1001'
-RUN addgroup  --system --gid 1001 application && \
-    adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home --home / && \
-    adduser application root && \
-    (echo -n npo-tomcat= ; date -Iseconds) > /DOCKER.BUILD
 
 # The onbuild commands to install the application when this image is overlaid
 
