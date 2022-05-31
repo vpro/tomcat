@@ -82,10 +82,12 @@ ENV TZ=Europe/Amsterdam
 ENV HISTFILE=/data/.bash_history
 ENV PSQL_HISTORY=/data/.pg_history
 
+
+# - Setting up timezone and stuff
+# - We run always with a user named 'application' with uid '1001'
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash ; exit 0 && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
   dpkg-reconfigure --frontend noninteractive tzdata && \
-  # We run always with a user named 'application' with uid '1001'
   addgroup  --system --gid 1001 application && \
   adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home --home / && \
   adduser application root && \
