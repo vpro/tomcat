@@ -86,7 +86,7 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTE
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
   dpkg-reconfigure --frontend noninteractive tzdata && \
   addgroup  --system --gid 1001 application && \
-  adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home --home / && \
+  adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home --shell /bin/bash --home / && \
   adduser application root && \
   (echo -n npo-tomcat= ; date -Iseconds) > /DOCKER.BUILD
 
