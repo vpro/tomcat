@@ -62,7 +62,7 @@ RUN set -eux && \
   chmod -R o-w ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_BASE} && \
   (cd ${CATALINA_BASE} && ln -s logs log && ln -s /data/logs logs) && \
-  for directory in 'logs' 'work' 'temp'; do \
+  for directory in 'work' 'temp'; do \
        chgrp -R 0 ${CATALINA_BASE}/$directory && \
        chmod -R g=u ${CATALINA_BASE}/$directory; \
   done && \
@@ -108,7 +108,7 @@ ONBUILD ARG NAME
 ONBUILD ARG LABEL
 ONBUILD ARG CONTEXT
 
-ONBUILD ADD target/${NAME}*.war /tmp/app.war
+ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
 ONBUILD RUN (\
      if [ -z "$CONTEXT" ] ; then \
         CONTEXT=ROOT; \
