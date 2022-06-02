@@ -88,7 +88,7 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTE
   addgroup  --system --gid 1001 application && \
   adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
   adduser application root && \
-  (echo -n npo-tomcat= ; date -Iseconds) > /DOCKER.BUILD
+  (echo -n vpro/tomcat= ; date -Iseconds) > /DOCKER.BUILD
 
 # With bearable key bindings:
 COPY inputrc /etc
