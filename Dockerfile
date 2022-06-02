@@ -105,7 +105,6 @@ CMD ["catalina.sh", "jpda", "run"]
 
 ONBUILD ARG PROJECT_VERSION
 ONBUILD ARG NAME
-ONBUILD ARG LABEL
 ONBUILD ARG CONTEXT
 
 ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
@@ -122,7 +121,6 @@ ONBUILD RUN (\
      )
 
 ONBUILD LABEL version="${PROJECT_VERSION}"
-ONBUILD LABEL name="${LABEL}"
 ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 
 # We need regular security patches. E.g. on every build of the application
