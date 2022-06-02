@@ -1,4 +1,5 @@
 
 
 docker:
-	docker build -t npo-tomcat:dev .
+	docker build -t vpro/tomcat:latest .
+
