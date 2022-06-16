@@ -5,5 +5,5 @@ variables:
 
 include:
   - project: 'shared/gitlab/gitlab-templates'
-    ref: 'master'
+    ref: 'tags/4.15'
     file: 'docker_build.yml'
