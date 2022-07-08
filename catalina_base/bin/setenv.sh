@@ -1,8 +1,14 @@
 #! /bin/bash
 
 dir=$( dirname "${BASH_SOURCE[0]}")
+
+# We used to default to log4j
+
+# If applications are adapted this can be simplified.
 # log4j 1
 export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configuration=log4j.kibana.xml"
+
+# So there _must_ be a log4j2.kibana.xml for now.
 # log4j 2
 if [[ -z "$LOG4J2" ]]; then
   export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configurationFile=file://${CATALINA_BASE}/conf/log4j2.kibana.xml"
@@ -10,6 +16,11 @@ else
 	export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configurationFile=${LOG4J2}"
 fi
 export CATALINA_OPTS="$CATALINA_OPTS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+
+
+# system property kibana can used in log4j2.xml SystemPropertyArbiter to switch to logging more specific to kibana
+export CATALINA_OPTS="$CATALINA_OPTS -Dkibana=true"
+
 
 mkdir -p /data/logs
 
