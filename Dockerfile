@@ -63,8 +63,9 @@ RUN set -eux && \
   chmod -R g=o ${CATALINA_BASE} && \
   (cd ${CATALINA_BASE} && ln -s logs log && ln -s /data/logs logs) && \
   for directory in 'work' 'temp' 'conf/localhost'; do \
-       chgrp -R 0 ${CATALINA_BASE}/$directory && \
-       chmod -R g=u ${CATALINA_BASE}/$directory; \
+    mkdir -p ${CATALINA_BASE}/$directory && \
+    chgrp -R 0 ${CATALINA_BASE}/$directory && \
+    chmod -R g=u ${CATALINA_BASE}/$directory; \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
