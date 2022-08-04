@@ -61,8 +61,9 @@ RUN set -eux && \
   chmod -R g=o ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_BASE} && \
+  mkdir -p  ${CATALINA_BASE}/conf/Catalina/localhost && \ && # Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
   (cd ${CATALINA_BASE} && ln -s logs log && ln -s /data/logs logs) && \
-  for directory in 'work' 'temp' 'conf/Catalina/localhost'; do \
+  for directory in 'work' 'temp'; do \
     mkdir -p ${CATALINA_BASE}/$directory && \
     chgrp -R 0 ${CATALINA_BASE}/$directory && \
     chmod -R g=u ${CATALINA_BASE}/$directory; \
