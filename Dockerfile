@@ -45,6 +45,8 @@ WORKDIR $CATALINA_BASE
 # -   procps: just for debugging. 'ps'.
 # -   netcat: just for debugging. 'nc'.
 # -   apache2-utils: we use rotatelogs to rotate catalina.out
+
+# conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 RUN set -eux && \
   apt-get update && \
   apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils  vim-tiny && \
@@ -61,7 +63,7 @@ RUN set -eux && \
   chmod -R g=o ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_BASE} && \
-  mkdir -p  ${CATALINA_BASE}/conf/Catalina/localhost && \ # Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
+  mkdir -p  ${CATALINA_BASE}/conf/Catalina/localhost && \
   (cd ${CATALINA_BASE} && ln -s logs log && ln -s /data/logs logs) && \
   for directory in 'work' 'temp'; do \
     mkdir -p ${CATALINA_BASE}/$directory && \
