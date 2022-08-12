@@ -3,9 +3,6 @@
 dir=$( dirname "${BASH_SOURCE[0]}")
 
 if [[ -z "$LOG4J2" ]]; then
-  # If applications are adapted this can be simplified.
-  # log4j 1
-  export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configuration=log4j.kibana.xml"
   export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configurationFile=file://${CATALINA_BASE}/conf/log4j2.kibana.xml"
 else
   # explicit configured for log4j2
