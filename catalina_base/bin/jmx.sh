@@ -13,4 +13,7 @@ fi
 if [[ "$POD_NAMESPACE" == *test ]]; then
   JMX_PORT=$((JMX_PORT + 200))
 fi
+
+POD_NUMBER=${POD_NAME#*-}
+JMX_PORT=$((JMX_PORT + POD_NUMBER))
 echo $JMX_PORT
