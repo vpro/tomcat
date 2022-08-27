@@ -1,4 +1,4 @@
-FROM tomcat:9-jdk8-openjdk-slim
+FROM tomcat:9.0.65-jdk8-openjdk-slim
 
 LABEL maintainer=digitaal-techniek@vpro.nl
 
