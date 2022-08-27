@@ -118,7 +118,7 @@ ONBUILD RUN (\
      fi && \
 
      cd ${CATALINA_BASE}/webapps && \
-     mkdir ${CONTEXT} && \
+     mkdir -p ${CONTEXT} && \
      cd ${CONTEXT} && \
      jar xf /tmp/app.war && \
      rm /tmp/app.war \
