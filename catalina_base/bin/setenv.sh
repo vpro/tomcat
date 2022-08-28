@@ -29,3 +29,6 @@ export CATALINA_OPTS="$CATALINA_OPTS -verbose:gc -XX:+PrintGCDateStamps -XX:+Pri
 # JPDA
 export JPDA_ADDRESS=8000
 export JPDA_TRANSPORT=dt_socket
+
+export CATALINA_PID=${CATALINA_BASE}/temp/tomcat.pid
+
