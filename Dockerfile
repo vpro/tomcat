@@ -102,7 +102,7 @@ COPY bashrc /.bashrc
 VOLUME "/data" "/conf"
 
 # note that this is unused in helm, it then uses container.command
-CMD ["catalina.sh", "jpda", "run"]
+CMD ["/usr/local/catalina-base/bin/start.sh"]
 #CMD ["catalina.sh", "run"]
 
 # The onbuild commands to install the application when this image is overlaid

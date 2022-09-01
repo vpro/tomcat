@@ -33,3 +33,4 @@ export JPDA_TRANSPORT=dt_socket
 # note that this doesn't do anything when using catalina.sh run
 export CATALINA_PID=${CATALINA_BASE}/temp/tomcat.pid
 
+
