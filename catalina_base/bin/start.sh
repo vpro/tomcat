@@ -3,6 +3,7 @@
 export CATALINA_PID=${CATALINA_BASE}/temp/tomcat.pid
 export APPLICATION_OUT=${CATALINA_BASE}/logs/application.out
 trap stop SIGTERM
+
 var tailpid
 
 function start() {
@@ -17,7 +18,7 @@ function start() {
 
 stop(){
    catalinaPid=$(cat ${CATALINA_PID})
-   echo "$(date -Iseconds) SIGTERM Killing catalina $catalinaPid" | tee -a "${APPLICATION_OUT}"
+   echo "$(date -Iseconds) SIGTERM Killing catalina $catalinaPid" >> "${APPLICATION_OUT}"
    kill -SIGTERM $catalinaPid
    # Waiting for it to end
    tail -f /dev/null --pid $catalinaPid
