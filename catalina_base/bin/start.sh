@@ -10,12 +10,12 @@ function start() {
 
    (catalina.sh $([ "$CATALINA_ARGS" == "" ] && echo "jpda run" || echo "$CATALINA_ARGS") & echo $! > "${CATALINA_PID}") | /usr/bin/rotatelogs -L ${APPLICATION_OUT} -f  ${APPLICATION_OUT}.%Y-%m-%d 86400 &
 
-   tail -f ${APPLICATION_OUT} & wait $!
+   tail -F ${APPLICATION_OUT} & wait $!
 }
 
 stop(){
    catalinaPid=$(cat ${CATALINA_PID})
-   echo "$(date +'%F %T,%3N') killing $catalinaPid" | tee -a "${APPLICATION_OUT}"
+   echo "$(date -Iseconds) SIGTERM Killing catalina $catalinaPid" | tee -a "${APPLICATION_OUT}"
    kill -SIGTERM $catalinaPid
    exit
 }
