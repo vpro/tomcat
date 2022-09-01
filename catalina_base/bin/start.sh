@@ -4,8 +4,6 @@ export CATALINA_PID=${CATALINA_BASE}/temp/tomcat.pid
 export APPLICATION_OUT=${CATALINA_BASE}/logs/application.out
 trap stop SIGTERM
 
-var tailpid
-
 function start() {
   # Call catalina.sh whith arguments, and pipes output to a file
   # (analogous to catalina.out, we call it 'application.out' to indicate that it is not arranged by catalina.sh itself)
@@ -28,8 +26,8 @@ stop(){
    # Waiting for it to end
    tail -f /dev/null --pid $catalinaPid
    # killing tail too
-   echo "$(date -Iseconds) Process $catalinaPid has disappeared" >> "${APPLICATION_OUT}"
-   kill -9 $tailpid
+   echo "$(date -Iseconds) Process $catalinaPid has disappeared" | tee -a "${APPLICATION_OUT}"
+
    echo "$(date -Iseconds) Ready"
    exit
 }
