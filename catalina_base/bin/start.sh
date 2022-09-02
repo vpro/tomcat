@@ -35,11 +35,11 @@ function stop() {
    kill -SIGTERM $catalinaPid
    # Waiting for it to end, tail provides handy feature to do that.
    tail -f /dev/null --pid $catalinaPid
-
    echo "$(gdate) Process $catalinaPid has disappeared" >> "${APPLICATION_OUT}"
-   echo "$(gdate) Ready"
+
    kill $tailPid
    ps ax
+   echo "$(gdate) Ready"
    exit 0
 }
 
