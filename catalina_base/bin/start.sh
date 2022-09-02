@@ -39,6 +39,7 @@ function stop() {
    echo "$(gdate) Process $catalinaPid has disappeared" >> "${APPLICATION_OUT}"
    echo "$(gdate) Ready"
    kill $tailPid
+   ps ax
    exit 0
 }
 
