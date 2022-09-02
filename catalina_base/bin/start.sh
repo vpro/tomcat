@@ -34,8 +34,7 @@ function stop() {
 
    echo "$(date -Iseconds) Process $catalinaPid has disappeared" >> "${APPLICATION_OUT}"
    echo "$(date -Iseconds) Ready"
-
-   ps aux
+   kill $tailPid
    exit 0
 }
 
