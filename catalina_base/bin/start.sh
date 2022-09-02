@@ -18,8 +18,8 @@ function start() {
   (catalina.sh ${ARGS} & echo $! > "${CATALINA_PID}") | /usr/bin/rotatelogs -L ${APPLICATION_OUT} -f  ${APPLICATION_OUT}.%Y-%m-%d 86400 &
 
   # Tail everything to stdout, so it will be picked up by kibana
-   tail -F "${APPLICATION_OUT}" 2>/dev/null & tailPid=$!
-   wait tailPid
+   tail -F "${APPLICATION_OUT}" --pid $$  2>/dev/null & tailPid=$!
+   wait $tailPid
 }
 
 function stop() {
@@ -35,7 +35,6 @@ function stop() {
    echo "$(date -Iseconds) Process $catalinaPid has disappeared" >> "${APPLICATION_OUT}"
    echo "$(date -Iseconds) Ready"
 
-   kill -9 $tailPid
    ps aux
    exit 0
 }
