@@ -38,8 +38,9 @@ function stop() {
    echo "$(gdate) Process $catalinaPid has disappeared" >> "${APPLICATION_OUT}"
 
    kill $tailPid
-   ps ax
+   ps x | awk '{print $1}' | grep -v $$ | xargs kill
    echo "$(gdate) Ready"
+
    exit 0
 }
 
