@@ -1,5 +1,5 @@
 #!/bin/bash
-# Wrapper the call catalina.sh in docker environment
+# Wrapper to  call catalina.sh in docker environment
 # @author Michiel Meeuwissen
 # 2022-09-02
 
@@ -14,7 +14,7 @@ function start() {
 
   # TODO this is only tested with 'run', not with 'start'. If that would be a use case?
   ARGS=$([ "$CATALINA_ARGS" == "" ] && echo "jpda run" || echo "$CATALINA_ARGS")
-  echo "$(date -Iseconds) Effective catalina arguments: '${ARGS}'" | tee - ${APPLICATION_OUT}
+  echo "$(date -Iseconds) Effective catalina arguments: '${ARGS}'" >> ${APPLICATION_OUT}
   (catalina.sh ${ARGS} & echo $! > "${CATALINA_PID}") | /usr/bin/rotatelogs -L ${APPLICATION_OUT} -f  ${APPLICATION_OUT}.%Y-%m-%d 86400 &
 
   # Tail everything to stdout, so it will be picked up by kibana
@@ -32,8 +32,10 @@ stop(){
    # Waiting for it to end, tail provides handy feature to do that.
    tail -f /dev/null --pid $catalinaPid
 
-   echo "$(date -Iseconds) Process $catalinaPid has disappeared" | tee -a "${APPLICATION_OUT}"
+   echo "$(date -Iseconds) Process $catalinaPid has disappeared" >> "${APPLICATION_OUT}"
    echo "$(date -Iseconds) Ready"
+
+   # tail is left running(?), but is a child of this script, so I think it doesn't matter.
    exit
 }
 
