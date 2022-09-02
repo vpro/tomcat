@@ -22,7 +22,7 @@ function start() {
    wait $tailpid
 }
 
-stop(){
+function stop() {
    # Trapped and received SIGTERM on pid 1.
    # Send one to the java process too, so that it will be shut down gracefully
    local catalinaPid
