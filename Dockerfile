@@ -22,16 +22,12 @@ meeuw*.jar,\
 extjs-*.jar"
 
 
-# We want to split off catalina base, default it's catalina_home
-ADD catalina_base ${CATALINA_BASE}/
-
-COPY rds-ca-2019-root.der $JAVA_HOME/jre/lib/security
-
 # This makes ${USER.HOME} /
 ENV HOME /
-
 # Handy, on a new shell you'll be in the directory of interest
 WORKDIR $CATALINA_BASE
+
+COPY rds-ca-2019-root.der $JAVA_HOME/jre/lib/security
 
 # - Create the necessary dirs in catalina_base, with the needed permissions
 # - Create a symlink  logs -> log (if no deployment needed to app cluster we'll simply let it log to logs directly)
@@ -51,9 +47,41 @@ RUN set -eux && \
   apt-get update && \
   apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils  vim-tiny && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
-  mkdir -p /data/logs  && \
+  mkdir -p /conf
+
+
+COPY rds-ca-2019-root.pem /conf
+
+# Have a workable shell
+SHELL ["/bin/bash", "-c"]
+
+ENV TZ=Europe/Amsterdam
+ENV HISTFILE=/data/.bash_history
+ENV PSQL_HISTORY=/data/.pg_history
+
+# - Setting up timezone and stuff
+# - We run always with a user named 'application' with uid '1001'
+RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
+  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+  dpkg-reconfigure --frontend noninteractive tzdata
+
+
+# With bearable key bindings:
+COPY inputrc /etc
+# And a nicer bash prompt
+COPY bashrc /.bashrc
+
+VOLUME "/data" "/conf"
+
+# note that this is unused in helm, it then uses container.command
+CMD ["/usr/local/catalina-base/bin/start.sh"]
+#CMD ["catalina.sh", "run"]
+
+# We want to split off catalina base, default it's catalina_home
+ADD catalina_base ${CATALINA_BASE}/
+
+RUN  mkdir -p /data/logs  && \
   echo Catalina base: ${CATALINA_BASE} && \
-  mkdir -p /conf && \
   for directory in 'webapps' 'work' 'temp'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
       rm -rf ${CATALINA_HOME}/$directory; \
@@ -73,37 +101,12 @@ RUN set -eux && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
   (cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.1.0/jul-jsonformatter-1.1.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
-  echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties
-
-COPY rds-ca-2019-root.pem /conf
-
-# Have a workable shell
-SHELL ["/bin/bash", "-c"]
-
-ENV TZ=Europe/Amsterdam
-ENV HISTFILE=/data/.bash_history
-ENV PSQL_HISTORY=/data/.pg_history
-
-# - Setting up timezone and stuff
-# - We run always with a user named 'application' with uid '1001'
-RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
-  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-  dpkg-reconfigure --frontend noninteractive tzdata && \
+  echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
   addgroup  --system --gid 1001 application && \
   adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
   adduser application root && \
   (echo -n vpro/tomcat= ; date -Iseconds) > /DOCKER.BUILD
 
-# With bearable key bindings:
-COPY inputrc /etc
-# And a nicer bash prompt
-COPY bashrc /.bashrc
-
-VOLUME "/data" "/conf"
-
-# note that this is unused in helm, it then uses container.command
-CMD ["/usr/local/catalina-base/bin/start.sh"]
-#CMD ["catalina.sh", "run"]
 
 # The onbuild commands to install the application when this image is overlaid
 
