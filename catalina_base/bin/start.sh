@@ -31,16 +31,16 @@ function stop() {
    # Send one to the java process too, so that it will be shut down gracefully
    local catalinaPid
    catalinaPid=$(cat ${CATALINA_PID})
+   (echo "$(gdate) to kill"; ps x -o pid,command)  >> "${APPLICATION_OUT}"
+
    echo "$(gdate) SIGTERM Killing catalina $catalinaPid" >> "${APPLICATION_OUT}"
    kill -SIGTERM $catalinaPid
    echo "$(gdate) Waiting for it." >> "${APPLICATION_OUT}"
    # Waiting for it to end, tail provides handy feature to do that.
-   tail -f /dev/null --pid "$catalinaPid"
-   echo "$(gdate) Process $catalinaPid has disappeared" >> "${APPLICATION_OUT}"
+   tail -f /dev/null --pid "$catalinaPid" 2>/dev/null
+   echo "$(gdate) Process $catalinaPid has disappeared. Killing all other processes too"
 
-   kill $tailPid
-   # kill all other process
-   ps x -o pid,command
+   # kill all other processes (except pid 1, which is us, and we simply can gracefully exit)
    ps -o pid= x |  grep  -v "^\s*$$$" | xargs kill 2> /dev/null
    echo "$(gdate) Ready"
 
