@@ -19,9 +19,9 @@ function start() {
   # TODO this is only tested with 'run', not with 'start'. If that would be a use case?
   ARGS=$([ "$CATALINA_ARGS" == "" ] && echo "jpda run" || echo "$CATALINA_ARGS")
   echo "$(gdate) Effective catalina arguments: '${ARGS}'" >> ${APPLICATION_OUT}
-  (catalina.sh ${ARGS} & echo $! > "${CATALINA_PID}") | /usr/bin/rotatelogs -L ${APPLICATION_OUT} -f  ${APPLICATION_OUT}.%Y-%m-%d 86400 &
+  catalina.sh ${ARGS} | (echo $! > ${CATALINA_PID}; /usr/bin/rotatelogs -L ${APPLICATION_OUT} -f  ${APPLICATION_OUT}.%Y-%m-%d 86400) &
 
-  # Tail everything to stdout, so it will be picked up by kibana
+   # Tail everything to stdout, so it will be picked up by kibana
    tail -F "${APPLICATION_OUT}" --pid $$  2>/dev/null & tailPid=$!
    wait $tailPid
 }
@@ -33,12 +33,15 @@ function stop() {
    catalinaPid=$(cat ${CATALINA_PID})
    echo "$(gdate) SIGTERM Killing catalina $catalinaPid" >> "${APPLICATION_OUT}"
    kill -SIGTERM $catalinaPid
+   echo "$(gdate) Waiting for it." >> "${APPLICATION_OUT}"
    # Waiting for it to end, tail provides handy feature to do that.
-   tail -f /dev/null --pid $catalinaPid
+   tail -f /dev/null --pid "$catalinaPid"
    echo "$(gdate) Process $catalinaPid has disappeared" >> "${APPLICATION_OUT}"
 
    kill $tailPid
-   ps x | awk '{print $1}' | grep -v $$ | xargs kill
+   # kill all other process
+   ps x -o pid,command
+   ps -o pid= x |  grep  -v "^\s*$$$" | xargs kill 2> /dev/null
    echo "$(gdate) Ready"
 
    exit 0
