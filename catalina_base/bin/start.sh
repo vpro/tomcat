@@ -8,11 +8,11 @@ export CATALINA_PID=${CATALINA_BASE}/temp/tomcat.pid
 export APPLICATION_OUT=${CATALINA_BASE}/logs/application.out
 trap stop SIGTERM
 
-function gdate() {
+gdate() {
   date +%Y-%m-%dT%H:%M:%S.%3N
 }
 
-function start() {
+start() {
   # Call catalina.sh with arguments, and pipes output to a (rotated) file
   # (analogous to catalina.out, we call it 'application.out' to indicate that it is not arranged by catalina.sh itself)
 
@@ -26,7 +26,7 @@ function start() {
    wait $tailPid
 }
 
-function stop() {
+stop() {
    # Trapped and received SIGTERM on pid 1.
    # Send one to the java process too, so that it will be shut down gracefully
    local catalinaPid
