@@ -34,7 +34,7 @@ stop() {
    # Send one to the java process too, so that it will be shut down gracefully
    local catalinaPid
    catalinaPid=$(cat ${CATALINA_PID})
-   (echo "$(gdate) to kill"; ps x -o pid,command)  >> "${APPLICATION_OUT}"
+   (echo "$(gdate) to kill"; pstree -C age -p -G -h  -t -a)  >> "${APPLICATION_OUT}"
 
    echo "$(gdate) SIGTERM Killing catalina $catalinaPid" >> "${APPLICATION_OUT}"
    kill -SIGTERM $catalinaPid
