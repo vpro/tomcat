@@ -3,14 +3,17 @@
 # @author Michiel Meeuwissen
 # 2022-09-02
 
-
 export CATALINA_PID=${CATALINA_BASE}/temp/tomcat.pid
 export APPLICATION_OUT=${CATALINA_BASE}/logs/application.out
-trap stop SIGTERM
+
 
 gdate() {
   date +%Y-%m-%dT%H:%M:%S.%3N
 }
+
+echo "$(gdate) Starting $0" >> ${APPLICATION_OUT}
+trap stop SIGTERM
+
 
 start() {
   # Call catalina.sh with arguments, and pipes output to a (rotated) file
