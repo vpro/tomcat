@@ -18,7 +18,7 @@ export CATALINA_OPTS="$CATALINA_OPTS -XX:+UnlockExperimentalVMOptions -XX:+UseCG
 # system property kibana can used in log4j2.xml SystemPropertyArbiter to switch to logging more specific to kibana
 export CATALINA_OPTS="$CATALINA_OPTS -Dkibana=true"
 
-# if libraries use java preferences api, avoid warnings in the log
+# if libraries use java preferences api and sync those, avoid warnings in the log
 export CATALINA_OPTS="$CATALINA_OPTS -Djava.util.prefs.userRoot=/data/prefs "
 
 # This is unused, it is arranged in helm chart.
