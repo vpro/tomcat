@@ -58,6 +58,7 @@ SHELL ["/bin/bash", "-c"]
 ENV TZ=Europe/Amsterdam
 ENV HISTFILE=/data/.bash_history
 ENV PSQL_HISTORY=/data/.pg_history
+ENV LESSHISTFILE=/data/.lesshst
 
 # - Setting up timezone and stuff
 # - We run always with a user named 'application' with uid '1001'
