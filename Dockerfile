@@ -1,5 +1,4 @@
-FROM tomcat:9.0.65-jdk8-openjdk-slim
-
+FROM tomcat:9.0.65-jdk17-temurin-jammy
 LABEL maintainer=digitaal-techniek@vpro.nl
 
 ENV CATALINA_BASE=/usr/local/catalina-base
@@ -27,7 +26,7 @@ ENV HOME /
 # Handy, on a new shell you'll be in the directory of interest
 WORKDIR $CATALINA_BASE
 
-COPY rds-ca-2019-root.der $JAVA_HOME/jre/lib/security
+COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 
 # - Create the necessary dirs in catalina_base, with the needed permissions
 # - Create a symlink  logs -> log (if no deployment needed to app cluster we'll simply let it log to logs directly)
@@ -39,14 +38,16 @@ COPY rds-ca-2019-root.der $JAVA_HOME/jre/lib/security
 # -   dnsutils: for debugging it's usefull to have tools like 'host' available.
 # -   less: just for debugging
 # -   procps: just for debugging. 'ps'.
+# -   psmisc: just for debugging. 'pstree'
 # -   netcat: just for debugging. 'nc'.
 # -   apache2-utils: we use rotatelogs to rotate catalina.out
+
 
 # conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 RUN set -eux && \
   apt-get update && \
-  apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils  vim-tiny && \
-  keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/jre/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/jre/lib/security/rds-ca-2019-root.der && \
+  apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc && \
+  keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
   mkdir -p /conf
 
 
@@ -71,6 +72,7 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTE
 COPY inputrc /etc
 # And a nicer bash prompt
 COPY bashrc /.bashrc
+
 
 VOLUME "/data" "/conf"
 
@@ -133,4 +135,6 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
-   (echo -n ${NAME}.${PROJECT_VERSION}= ; date -Iseconds) >> /DOCKER.BUILD
+   (echo -n ${NAME}.${PROJECT_VERSION}= ; date -Iseconds) >> /DOCKER.BUILD && \
+   ln -sf /bin/bash /bin/sh
+
