@@ -1,4 +1,6 @@
-PS1="\[\033[4;1;36m\]\h|${POD_NAMESPACE##*-}:\[\033[0;1;34m\]\w\033[00m\]\$ "
+
+# \[..\]: instruct bash that this does not take up any space (they are ANSI control characters)
+PS1="\[\033[4;1;36m\]\h|${POD_NAMESPACE##*-}:\[\033[0;1;34m\]\w\[\033[00m\]\$ "
 alias cl="cd /data/logs"
 alias cc="cd /usr/local/catalina-base"
 export LS_OPTIONS='--color=auto'
@@ -31,7 +33,7 @@ function ts() {
     fi
 }
 
-# Show the uptime of the application
+# Show the uptime of the java application
 function aptime() {
     pid=$(ps x | grep java | grep -v 'grep' | awk '{print $1}')
     echo "pid:       $pid"
