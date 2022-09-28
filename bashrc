@@ -34,7 +34,8 @@ function ts() {
 # Show the uptime of the application
 function aptime() {
     pid=$(ps x | grep java | grep -v 'grep' | awk '{print $1}')
-    echo "pid: $pid"
-    echo "uptime: $(ps -p $pid -o etime -h)"
+    echo "pid:       $pid"
+    echo "starttime: $(ps -p $pid -o etimes -h | awk 'BEGIN{now=systime()} {print strftime("%Y-%m-%d %H:%M:%S", now-$1);}')"
+    echo "uptime:    $(ps -p $pid -o etime -h | xargs echo)"
 }
 
