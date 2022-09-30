@@ -43,7 +43,7 @@ JMX_PORT=$($dir/jmx.sh)
 export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost"
 
 # gc logging
-export CATALINA_OPTS="$CATALINA_OPTS -Xlog:gc*=debug:${CATALINA_LOGS}/gc.log"
+export CATALINA_OPTS="$CATALINA_OPTS -XX:NativeMemoryTracking=summary -Xlog:gc*=debug:file=${CATALINA_LOGS}/gclogs/%t-gc.log:time,uptime,tags,level:filecount=10,filesize=10M"
 
 # crash logging
 export CATALINA_OPTS="$CATALINA_OPTS -XX:ErrorFile=${CATALINA_LOGS}/hs_err_pid%p.log"
