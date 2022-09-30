@@ -50,11 +50,13 @@ export CATALINA_OPTS="$CATALINA_OPTS -XX:ErrorFile=${CATALINA_LOGS}/hs_err_pid%p
 export JPDA_ADDRESS=8000
 export JPDA_TRANSPORT=dt_socket
 
-# note that this doesn't do anything when using catalina.sh run
-export CATALINA_PID=${CATALINA_BASE}/temp/tomcat.pid
-
 
 # The complete container is dedicated to tomcat, so let's also use its tmp dir
 export CATALINA_TMPDIR=/tmp
+
+# note that this doesn't do anything when using catalina.sh run
+export CATALINA_PID=${CATALINA_TMPDIR}/tomcat.pid
+
+
 
 
