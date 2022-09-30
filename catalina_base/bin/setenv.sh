@@ -18,7 +18,7 @@ if [[ -z "$MaxRAMPercentage" ]] ; then
   MaxRAMPercentage=90.0
 fi
 
-export CATALINA_OPTS="$CATALINA_OPTS -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm"
+export CATALINA_OPTS="$CATALINA_OPTS -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport"
 
 # system property kibana can used in log4j2.xml SystemPropertyArbiter to switch to logging more specific to kibana
 export CATALINA_OPTS="$CATALINA_OPTS -Dkibana=true"
@@ -52,5 +52,9 @@ export JPDA_TRANSPORT=dt_socket
 
 # note that this doesn't do anything when using catalina.sh run
 export CATALINA_PID=${CATALINA_BASE}/temp/tomcat.pid
+
+
+# The complete container is dedicated to tomcat, so let's also use its tmp dir
+export CATALINA_TMPDIR=/tmp
 
 

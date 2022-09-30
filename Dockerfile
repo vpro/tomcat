@@ -85,7 +85,7 @@ ADD catalina_base ${CATALINA_BASE}/
 
 RUN  mkdir -p /data/logs  && \
   echo Catalina base: ${CATALINA_BASE} && \
-  for directory in 'webapps' 'work' 'temp'; do \
+  for directory in 'webapps' 'work'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
       rm -rf ${CATALINA_HOME}/$directory; \
   done && \
@@ -96,7 +96,7 @@ RUN  mkdir -p /data/logs  && \
   chmod -R g=o ${CATALINA_BASE} && \
   mkdir -p  ${CATALINA_BASE}/conf/Catalina/localhost && \
   (cd ${CATALINA_BASE} && ln -s logs log && ln -s /data/logs logs) && \
-  for directory in 'work' 'temp'; do \
+  for directory in 'work'; do \
     mkdir -p ${CATALINA_BASE}/$directory && \
     chgrp -R 0 ${CATALINA_BASE}/$directory && \
     chmod -R g=u ${CATALINA_BASE}/$directory; \
