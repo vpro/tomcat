@@ -18,6 +18,9 @@ if [[ -z "$MaxRAMPercentage" ]] ; then
   MaxRAMPercentage=90.0
 fi
 
+# memory options
+# -XX:MaxRAMPercentage=${MaxRAMPercentage}
+# -XX:+UseContainerSupport                      Default, but lets be explicit, we target running in a container.
 export CATALINA_OPTS="$CATALINA_OPTS -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport"
 
 # system property kibana can used in log4j2.xml SystemPropertyArbiter to switch to logging more specific to kibana
@@ -51,7 +54,7 @@ export JPDA_ADDRESS=8000
 export JPDA_TRANSPORT=dt_socket
 
 
-# The complete container is dedicated to tomcat, so let's also use its tmp dir
+# The complete container is dedicated to tomcat, so lets also use its tmp dir
 export CATALINA_TMPDIR=/tmp
 
 # note that this doesn't do anything when using catalina.sh run
