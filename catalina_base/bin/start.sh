@@ -3,7 +3,7 @@
 # @author Michiel Meeuwissen
 # 2022-09-02
 
-export CATALINA_PID=${CATALINA_BASE}/temp/tomcat.pid
+export CATALINA_PID=/tmp/tomcat.pid
 export APPLICATION_OUT=${CATALINA_BASE}/logs/application.out
 
 
