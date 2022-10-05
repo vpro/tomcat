@@ -1,4 +1,4 @@
-FROM tomcat:9.0.65-jdk17-temurin-jammy
+FROM tomcat:9.0.67-jdk17-temurin-jammy
 LABEL maintainer=digitaal-techniek@vpro.nl
 
 ENV CATALINA_BASE=/usr/local/catalina-base
@@ -45,7 +45,7 @@ COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 # conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
-  apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc && \
+  apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
   mkdir -p /conf
 
@@ -102,6 +102,7 @@ RUN  mkdir -p /data/logs  && \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
+  # I think we were not using this/it was not working
   #(cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.2.0/jul-jsonformatter-1.2.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
   addgroup  --system --gid 1001 application && \

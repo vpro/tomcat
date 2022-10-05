@@ -4,7 +4,8 @@
 # 2022-09-02
 
 export CATALINA_PID=/tmp/tomcat.pid
-export APPLICATION_OUT=${CATALINA_BASE}/logs/application.out
+export CATALINA_LOGS=${CATALINA_BASE}/logs
+export APPLICATION_OUT=${CATALINA_LOGS}/application.out
 
 
 gdate() {
@@ -26,6 +27,18 @@ start() {
 
    # Tail everything to stdout, so it will be picked up by kibana
    tail -F "${APPLICATION_OUT}" --pid $$  2>/dev/null & tailPid=$!
+
+   # These log files of tomcats are rotated ending in log.yyyy-MM-dd
+   # We want to most recent one to be linked to simply .log (that's handy with grep *log)
+   # setup inotifywait in the background to arrange that.
+   (
+   while true
+   do
+     inotifywait -q -e create ${CATALINA_LOGS}/
+     ln -f $(ls -rt $CATALINA_LOGS/catalina.log.* | tail  -n1) $CATALINA_LOGS/catalina.log
+     ln -f $(ls -rt $CATALINA_LOGS/localhost.log.* | tail  -n1) $CATALINA_LOGS/localhost.log
+   done
+   ) &
    wait $tailPid
 }
 
