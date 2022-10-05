@@ -35,9 +35,13 @@ function ts() {
 
 # Show the uptime of the java application
 function aptime() {
+    col="\033[50D\033[30C"
     pid=$(ps x | grep java | grep -v 'grep' | awk '{print $1}')
-    echo "pid:       $pid"
-    echo "starttime: $(ps -p $pid -o etimes -h | awk 'BEGIN{now=systime()} {print strftime("%Y-%m-%d %H:%M:%S", now-$1);}')"
-    echo "uptime:    $(ps -p $pid -o etime -h | xargs echo)"
+    echo -e "pid:$col$pid"
+    starttime=$(ps -p $pid -o etimes -h | awk 'BEGIN{now=systime()} {print strftime("%Y-%m-%d %H:%M:%S", now-$1);}')
+    echo -e "starttime:$col$starttime"
+    uptime=$(ps -p $pid -o etime -h | xargs echo)
+    echo -e "uptime:$col$uptime"
+    cat /DOCKER.BUILD | awk -F= "{print \$1\":$col\"\$2}"
 }
 
