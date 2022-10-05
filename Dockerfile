@@ -95,7 +95,7 @@ RUN  mkdir -p /data/logs  && \
   chmod -R o-w ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_BASE} && \
   mkdir -p  ${CATALINA_BASE}/conf/Catalina/localhost && \
-  (cd ${CATALINA_BASE} && ln -s logs log && ln -s /data/logs logs) && \
+  (cd ${CATALINA_BASE} && ln -s /data/logs logs) && \
   for directory in 'work'; do \
     mkdir -p ${CATALINA_BASE}/$directory && \
     chgrp -R 0 ${CATALINA_BASE}/$directory && \
