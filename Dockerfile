@@ -29,12 +29,11 @@ WORKDIR $CATALINA_BASE
 COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 
 # - Create the necessary dirs in catalina_base, with the needed permissions
-# - Create a symlink  logs -> log (if no deployment needed to app cluster we'll simply let it log to logs directly)
 # - set the jars to scan in catalian.properties
 # - make the mount points and fill with example content which can be used when docker image is ran locally
 # - install some useful tools
 # -   rsync: avoid warnings for oc rsync
-# -   curl: I forgot when this is needed
+# -   curl: I forgot when this is needed, usefull for debugging. curl http://localhost:8080
 # -   dnsutils: for debugging it's usefull to have tools like 'host' available.
 # -   less: just for debugging
 # -   procps: just for debugging. 'ps'.
@@ -103,7 +102,7 @@ RUN  mkdir -p /data/logs  && \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
-  (cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.1.0/jul-jsonformatter-1.1.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
+  #(cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.2.0/jul-jsonformatter-1.2.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
   addgroup  --system --gid 1001 application && \
   adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
