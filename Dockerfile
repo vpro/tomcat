@@ -44,7 +44,7 @@ COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 
 # conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 RUN set -eux && \
-  apt-get update && \
+  apt-get update && apt-get -y upgrade && \
   apt-get -y install less procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
   mkdir -p /conf
