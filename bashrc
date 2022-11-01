@@ -43,5 +43,7 @@ function aptime() {
     uptime=$(ps -p $pid -o etime -h | xargs echo)
     echo -e "uptime:$col$uptime"
     cat /DOCKER.BUILD | awk -F= "{print \$1\":$col\"\$2}"
+    echo -e "tomcat version:$col${TOMCAT_VERSION}"
+    echo -e "java version:$col${JAVA_VERSION}"
 }
 
