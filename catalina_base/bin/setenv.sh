@@ -61,6 +61,12 @@ export CATALINA_TMPDIR=/tmp
 # note that this doesn't do anything when using catalina.sh run
 export CATALINA_PID=${CATALINA_TMPDIR}/tomcat.pid
 
-
+if [ -z ${TOMCAT_RELAXED_QUERY_CHARS+x} ]; then  # +x: trick to check if variable is set.
+  #export TOMCAT_RELAXED_QUERY_CHARS='[]|{}^&#x5c;&#x60;&quot;&lt;&gt;'
+  export TOMCAT_RELAXED_QUERY_CHARS=''
+fi
+if [ -z ${TOMCAT_RELAXED_PATH_CHARS+x} ]; then
+  export TOMCAT_RELAXED_PATH_CHARS=$RELAXED_QUERY_CHARS
+fi
 
 

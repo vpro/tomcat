@@ -13,8 +13,8 @@
       xpoweredBy="false"
       server="Tomcat ${TOMCAT_MAJOR} ${HOSTNAME}"
       scheme="https"
-      relaxedQueryChars="[]|{}^&#x5c;&#x60;&quot;&lt;&gt;"
-      relaxedPathChars="[]|{}^&#x5c;&#x60;&quot;&lt;&gt;"
+      relaxedQueryChars="${TOMCAT_RELAXED_QUERY_CHARS}"
+      relaxedPathChars="${TOMCAT_RELAXED_PATH_CHARS}"
     />
 
     <Engine name="Catalina" defaultHost="localhost">
