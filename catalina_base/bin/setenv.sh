@@ -66,7 +66,7 @@ if [ -z ${TOMCAT_RELAXED_CHARS+x} ]; then  # +x: trick to check if variable is s
   export TOMCAT_RELAXED_CHARS=''
 fi
 
-if [ -z ${TOMCAT_RELAXED_QUERY_CHARS+x} ]; then  # +x: trick to check if variable is set.
+if [ -z ${TOMCAT_RELAXED_QUERY_CHARS+x} ]; then
   #export TOMCAT_RELAXED_QUERY_CHARS='[]|{}^&#x5c;&#x60;&quot;&lt;&gt;'
   export TOMCAT_RELAXED_QUERY_CHARS="$TOMCAT_RELAXED_CHARS"
 fi
