@@ -15,7 +15,7 @@ fi
 #heapsize=$((limit - 1500000000))
 
 if [[ -z "$MaxRAMPercentage" ]] ; then
-  MaxRAMPercentage=90.0
+  MaxRAMPercentage=75.0
 fi
 
 # memory options
