@@ -2,12 +2,12 @@
 
 dir=$( dirname "${BASH_SOURCE[0]}")
 
+
 if [[ -z "$LOG4J2" ]]; then
-  export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configurationFile=file://${CATALINA_BASE}/conf/log4j2.kibana.xml"
-else
-  # explicit configured for log4j2
-  export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configurationFile=${LOG4J2}"
+  export LOG4J2="log4j2.xml"
 fi
+export CATALINA_OPTS="$CATALINA_OPTS -Dlog4j.configurationFile=${LOG4J2}"
+
 
 # find out limit of current pod:
 #limit=`cat /sys/fs/cgroup/memory/memory.limit_in_bytes`
