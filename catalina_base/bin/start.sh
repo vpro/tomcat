@@ -35,8 +35,12 @@ start() {
    while true
    do
      inotifywait -q -e create ${CATALINA_LOGS}/
-     ln -f $(ls -rt $CATALINA_LOGS/catalina.log.* | tail  -n1) $CATALINA_LOGS/catalina.log
-     ln -f $(ls -rt $CATALINA_LOGS/localhost.log.* | tail  -n1) $CATALINA_LOGS/localhost.log
+     if compgen -G "$CATALINA_LOGS/catalina.log.*" > /dev/null; then
+         ln -f $(ls -rt $CATALINA_LOGS/catalina.log.* | tail  -n1) $CATALINA_LOGS/catalina.log
+     fi
+     if compgen -G "$CATALINA_LOGS/localhost.log.*" > /dev/null; then
+       ln -f $(ls -rt $CATALINA_LOGS/localhost.log.* | tail  -n1) $CATALINA_LOGS/localhost.log
+     fi
    done
    ) &
    wait $tailPid
