@@ -21,7 +21,7 @@ fi
 # memory options
 # -XX:MaxRAMPercentage=${MaxRAMPercentage}
 # -XX:+UseContainerSupport                      Default, but lets be explicit, we target running in a container.
-export CATALINA_OPTS="$CATALINA_OPTS -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport"
+export CATALINA_OPTS="$CATALINA_OPTS -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport  -XX:HeapDumpPath=/data/ -XX:+HeapDumpOnOutOfMemoryError"
 
 # system property kibana can used in log4j2.xml SystemPropertyArbiter to switch to logging more specific to kibana
 export CATALINA_OPTS="$CATALINA_OPTS -Dkibana=true"
