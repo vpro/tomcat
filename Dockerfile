@@ -122,7 +122,6 @@ ONBUILD RUN (\
      if [ -z "$CONTEXT" ] ; then \
         CONTEXT=ROOT; \
      fi && \
-
      cd ${CATALINA_BASE}/webapps && \
      mkdir -p ${CONTEXT} && \
      cd ${CONTEXT} && \

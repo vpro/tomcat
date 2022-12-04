@@ -49,6 +49,11 @@ export CATALINA_OPTS="$CATALINA_OPTS -XX:NativeMemoryTracking=summary -Xlog:gc*=
 # crash logging
 export CATALINA_OPTS="$CATALINA_OPTS -XX:ErrorFile=${CATALINA_LOGS}/hs_err_pid%p.log"
 
+# enabled assertions on test.
+if [ "$ENV" == "test" ] ; then
+  CATALINA_OPTS="$CATALINA_OPTS -ea"
+fi
+
 
 # JPDA debugger  is arranged in catalina.sh
 export JPDA_ADDRESS=8000
@@ -72,6 +77,10 @@ if [ -z ${TOMCAT_RELAXED_QUERY_CHARS+x} ]; then
 fi
 if [ -z ${TOMCAT_RELAXED_PATH_CHARS+x} ]; then
   export TOMCAT_RELAXED_PATH_CHARS="$TOMCAT_RELAXED_CHARS"
+fi
+
+if [ -z ${TOMCAT_ACCESS_LOG_FILE_DATE_FORMAT+x} ]; then
+  export TOMCAT_ACCESS_LOG_FILE_DATE_FORMAT='yyyy-MM-dd'
 fi
 
 
