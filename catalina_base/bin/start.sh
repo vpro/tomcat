@@ -29,17 +29,17 @@ start() {
    tail -F "${APPLICATION_OUT}" --pid $$  2>/dev/null & tailPid=$!
 
    # These log files of tomcats are rotated ending in log.yyyy-MM-dd
-   # We want to most recent one to be linked to simply .log (that's handy with grep *log)
+   # We want the most recent one to be linked to simply .log (that's handy with grep *log)
    # setup inotifywait in the background to arrange that.
    (
    while true
    do
-     inotifywait -q -e create ${CATALINA_LOGS}/
+     inotifywait -q -e create "${CATALINA_LOGS}"/
      if compgen -G "$CATALINA_LOGS/catalina.log.*" > /dev/null; then
-         ln -f $(ls -rt $CATALINA_LOGS/catalina.log.* | tail  -n1) $CATALINA_LOGS/catalina.log
+         ln -f $(ls -rt "$CATALINA_LOGS"/catalina.log.* | tail  -n1) $CATALINA_LOGS/catalina.log
      fi
      if compgen -G "$CATALINA_LOGS/localhost.log.*" > /dev/null; then
-       ln -f $(ls -rt $CATALINA_LOGS/localhost.log.* | tail  -n1) $CATALINA_LOGS/localhost.log
+       ln -f $(ls -rt "$CATALINA_LOGS"/localhost.log.* | tail  -n1) $CATALINA_LOGS/localhost.log
      fi
    done
    ) &
