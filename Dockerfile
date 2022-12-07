@@ -60,6 +60,9 @@ ENV HISTFILE=/data/.bash_history
 ENV PSQL_HISTORY=/data/.pg_history
 ENV LESSHISTFILE=/data/.lesshst
 
+# 'When invoked as an interactive shell with the name sh, Bash looks for the variable ENV, expands its value if it is defined, and uses the expanded value as the name of a file to read and execute'
+ENV ENV=/.profile
+
 # - Setting up timezone and stuff
 # - We run always with a user named 'application' with uid '1001'
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
@@ -71,6 +74,8 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTE
 COPY inputrc /etc
 # And a nicer bash prompt
 COPY bashrc /.bashrc
+
+COPY profile /.profile
 
 
 VOLUME "/data" "/conf"
