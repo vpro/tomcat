@@ -50,7 +50,7 @@ export CATALINA_OPTS="$CATALINA_OPTS -XX:NativeMemoryTracking=summary -Xlog:gc*=
 export CATALINA_OPTS="$CATALINA_OPTS -XX:ErrorFile=${CATALINA_LOGS}/hs_err_pid%p.log"
 
 # enabled assertions on test.
-if [ "$ENV" == "test" ] ; then
+if [ "$ENVIRONMENT" == "test" ] ; then
   CATALINA_OPTS="$CATALINA_OPTS -ea"
 fi
 
