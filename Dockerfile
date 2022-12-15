@@ -61,8 +61,8 @@ ENV PSQL_HISTORY=/data/.pg_history
 ENV LESSHISTFILE=/data/.lesshst
 
 # 'When invoked as an interactive shell with the name sh, Bash looks for the variable ENV, expands its value if it is defined, and uses the expanded value as the name of a file to read and execute'
-ENV ENV=/.profile
-COPY profile /.profile
+ENV ENV=/.binbash
+COPY binbash /.binbash
 
 # - Setting up timezone and stuff
 # - We run always with a user named 'application' with uid '1001'
