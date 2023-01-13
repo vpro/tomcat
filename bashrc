@@ -7,7 +7,6 @@ export LS_OPTIONS='--color=auto'
 alias ls='ls $LS_OPTIONS'
 alias ll='ls -alF'
 alias rm='rm -i'
-alias escurl="curl -u elasticsearch:${ELASTICSEARCH_PASSWORD}  `awk -F= '$1=="elasticSearch.unicastHosts" {print $2}' /conf/application.properties`"
 
 # See https://askubuntu.com/questions/67283/is-it-possible-to-make-writing-to-bash-history-immediate
 shopt -s histappend
