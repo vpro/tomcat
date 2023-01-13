@@ -109,8 +109,6 @@ RUN  mkdir -p /data/logs  && \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
-  # I think we were not using this/it was not working
-  #(cd ${CATALINA_BASE}/lib ; curl -O 'https://repo1.maven.org/maven2/io/github/devatherock/jul-jsonformatter/1.2.0/jul-jsonformatter-1.2.0.jar' ; curl -O 'https://repo1.maven.org/maven2/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar') && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
   addgroup  --system --gid 1001 application && \
   adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
