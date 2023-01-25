@@ -17,6 +17,7 @@ poms-thesaurus*.jar,\
 flag-icon*.jar,\
 media-domain*.jar,\
 media-server*.jar,\
+image-domain*.jar, \
 meeuw*.jar,\
 extjs-*.jar"
 
