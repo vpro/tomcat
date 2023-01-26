@@ -8,6 +8,7 @@ ARG JARS_TO_SCAN="log4j-taglib*.jar,\
 log4j-web*.jar,\
 log4javascript*.jar,\
 slf4j-taglib*.jar,\
+log4j-taglib*.jar,\
 vpro-shared-swagger*.jar,\
 swagger-ui*,\
 jstl*.jar,\
