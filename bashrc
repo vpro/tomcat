@@ -18,11 +18,12 @@ export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 # handy since our json contains millis since epoch
 function ts() {
     input=$1
-    re='^[0-9]+$'
+    re='^[0-9]+L?$' # optionally postfixed with L (as a java constant)
     if [[ $input == "" ]] ; then
         nanoseconds=$(date  +%s%N)
         echo $((nanoseconds / 1000000))
     elif [[ $input =~ $re ]] ; then
+        input=${input//L/}
         if (( $input > 9999999999 )) ; then
             input=$((input / 1000))
         fi

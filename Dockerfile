@@ -19,6 +19,7 @@ flag-icon*.jar,\
 media-domain*.jar,\
 media-server*.jar,\
 image-domain*.jar, \
+poms-shared*.jar,\
 meeuw*.jar,\
 extjs-*.jar"
 
