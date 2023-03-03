@@ -63,6 +63,7 @@ ENV HISTFILE=/data/.bash_history
 ENV PSQL_HISTORY=/data/.pg_history
 ENV PSQL_EDITOR=/usr/bin/vi
 ENV LESSHISTFILE=/data/.lesshst
+ENV DOCLINK=https://wiki.vpro.nl/display/poms/Documentatie+POMS
 
 # 'When invoked as an interactive shell with the name sh, Bash looks for the variable ENV, expands its value if it is defined, and uses the expanded value as the name of a file to read and execute'
 ENV ENV=/.binbash
@@ -143,4 +144,6 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
    (echo -n ${NAME}.${PROJECT_VERSION}= ; date -Iseconds) >> /DOCKER.BUILD
+
+ONBUILD RUN sed -i "s|DOCLINK|${DOCLINK}|g" ${CATALINA_BASE}/errorpages/404.html
 
