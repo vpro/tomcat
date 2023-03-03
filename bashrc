@@ -39,7 +39,7 @@ function aptime() {
     col="\033[50D\033[30C"
     pid=$(ps x | grep java | grep -v 'grep' | awk '{print $1}')
     echo -e "pid:$col$pid"
-    starttime=$(ps -p $pid -o etimes -h | awk 'BEGIN{now=systime()} {print strftime("%Y-%m-%dT%H:%M:%S%z", now - $1);}')
+    starttime=$(ps -p $pid -o etimes -h 2> /dev/null | awk 'BEGIN{now=systime()} {print strftime("%Y-%m-%dT%H:%M:%S%z", now - $1);}')
     echo -e "starttime:$col$starttime"
     uptime=$(ps -p $pid -o etime -h | xargs echo)
     echo -e "uptime:$col$uptime"
