@@ -132,7 +132,8 @@ ONBUILD ARG NAME
 ONBUILD ARG CONTEXT
 ONBUILD ARG DOCLINK
 ONBUILD ARG JARS_TO_SCAN
-
+ONBUILD ARG CI_COMMIT_REF_NAME
+ONBUILD ARG CI_COMMIT_SHA
 ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
 ONBUILD RUN (\
      if [ -z "$CONTEXT" ] ; then \
@@ -152,5 +153,7 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK}'|g" ${CATALINA_BASE}/errorpages/404.html && \
-  (echo -n ${NAME}.${PROJECT_VERSION}= ; date -Iseconds) >> /DOCKER.BUILD
+  (echo -n ${NAME} version=${PROJECT_VERSION}) >> /DOCKER.BUILD &&\
+  (echo -n ${NAME} git version=${CI_COMMIT_SHA}@${CI_COMMIT_REF_NAME}) >> /DOCKER.BUILD &&\
+  (echo -n ${NAME} build time= ; date -Iseconds) >> /DOCKER.BUILD
 
