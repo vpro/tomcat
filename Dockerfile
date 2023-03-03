@@ -151,7 +151,7 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK}'|g" ${CATALINA_BASE}/errorpages/404.html && \
-  (echo ${NAME} version=${PROJECT_VERSION}) >> /DOCKER.BUILD &&\
-  (echo ${NAME} git version=${CI_COMMIT_SHA}@${CI_COMMIT_REF_NAME}) >> /DOCKER.BUILD &&\
-  (echo -n ${NAME} build time= ; date -Iseconds) >> /DOCKER.BUILD
+  (echo "${NAME} version=${PROJECT_VERSION}") >> /DOCKER.BUILD && \
+  (echo "${NAME} git version=${CI_COMMIT_SHA}@${CI_COMMIT_REF_NAME}") >> /DOCKER.BUILD && \
+  (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
