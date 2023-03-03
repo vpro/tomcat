@@ -23,6 +23,9 @@ poms-shared*.jar,\
 meeuw*.jar,\
 extjs-*.jar"
 
+# Link to use in 404 page of tomcat
+ARG DOCLINK=https://wiki.vpro.nl/display/poms/Documentatie+POMS
+
 
 # This makes ${USER.HOME} /
 ENV HOME /
@@ -64,8 +67,7 @@ ENV PSQL_HISTORY=/data/.pg_history
 ENV PSQL_EDITOR=/usr/bin/vi
 ENV LESSHISTFILE=/data/.lesshst
 
-# Link to use in 404 page of tomcat
-ENV DOCLINK=https://wiki.vpro.nl/display/poms/Documentatie+POMS
+
 
 # 'When invoked as an interactive shell with the name sh, Bash looks for the variable ENV, expands its value if it is defined, and uses the expanded value as the name of a file to read and execute'
 ENV ENV=/.binbash
@@ -114,6 +116,7 @@ RUN  mkdir -p /data/logs  && \
     chmod -R g=u ${CATALINA_BASE}/$directory; \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
+  sed -E -i "s|DOCLINK|${DOCLINK}|g" ${CATALINA_BASE}/errorpages/404.html && \
   mkdir ${CATALINA_BASE}/lib && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
   addgroup  --system --gid 1001 application && \
@@ -146,6 +149,4 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
    (echo -n ${NAME}.${PROJECT_VERSION}= ; date -Iseconds) >> /DOCKER.BUILD
-
-ONBUILD RUN sed -i "s|DOCLINK|${DOCLINK}|g" ${CATALINA_BASE}/errorpages/404.html
 
