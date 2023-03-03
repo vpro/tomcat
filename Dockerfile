@@ -63,6 +63,8 @@ ENV HISTFILE=/data/.bash_history
 ENV PSQL_HISTORY=/data/.pg_history
 ENV PSQL_EDITOR=/usr/bin/vi
 ENV LESSHISTFILE=/data/.lesshst
+
+# Link to use in 404 page of tomcat
 ENV DOCLINK=https://wiki.vpro.nl/display/poms/Documentatie+POMS
 
 # 'When invoked as an interactive shell with the name sh, Bash looks for the variable ENV, expands its value if it is defined, and uses the expanded value as the name of a file to read and execute'
