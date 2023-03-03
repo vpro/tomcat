@@ -116,7 +116,7 @@ RUN  mkdir -p /data/logs  && \
     chmod -R g=u ${CATALINA_BASE}/$directory; \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
-  sed -E -i "s|DOCLINK|${DOCLINK}|g" ${CATALINA_BASE}/errorpages/404.html && \
+  sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK}'|g" ${CATALINA_BASE}/errorpages/404.html && \
   mkdir ${CATALINA_BASE}/lib && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
   addgroup  --system --gid 1001 application && \
@@ -130,6 +130,8 @@ RUN  mkdir -p /data/logs  && \
 ONBUILD ARG PROJECT_VERSION
 ONBUILD ARG NAME
 ONBUILD ARG CONTEXT
+ONBUILD ARG DOCLINK
+ONBUILD ARG JARS_TO_SCAN
 
 ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
 ONBUILD RUN (\
@@ -148,5 +150,8 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
+  sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
+  sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK}'|g" ${CATALINA_BASE}/errorpages/404.html && \
+  mkdir ${CATALINA_BASE}/lib && \
    (echo -n ${NAME}.${PROJECT_VERSION}= ; date -Iseconds) >> /DOCKER.BUILD
 
