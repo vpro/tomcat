@@ -25,6 +25,8 @@ extjs-*.jar"
 
 # Link to use in 404 page of tomcat
 ARG DOCLINK=https://wiki.vpro.nl/display/poms/Documentatie+POMS
+ARG CI_COMMIT_SHA
+ARG CI_COMMIT_REF_NAME
 
 
 # This makes ${USER.HOME} /
@@ -120,7 +122,8 @@ RUN  mkdir -p /data/logs  && \
   addgroup  --system --gid 1001 application && \
   adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
   adduser application root && \
-  (echo -n vpro/tomcat= ; date -Iseconds) > /DOCKER.BUILD
+  (echo "vpro/tomcat git version=${CI_COMMIT_SHA}@${CI_COMMIT_REF_NAME}") > /DOCKER.BUILD && \
+  (echo -n "vpro/tomcat build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
 
 # The onbuild commands to install the application when this image is overlaid
