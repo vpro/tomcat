@@ -67,8 +67,6 @@ ENV PSQL_HISTORY=/data/.pg_history
 ENV PSQL_EDITOR=/usr/bin/vi
 ENV LESSHISTFILE=/data/.lesshst
 
-
-
 # 'When invoked as an interactive shell with the name sh, Bash looks for the variable ENV, expands its value if it is defined, and uses the expanded value as the name of a file to read and execute'
 ENV ENV=/.binbash
 COPY binbash /.binbash
@@ -153,7 +151,7 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK}'|g" ${CATALINA_BASE}/errorpages/404.html && \
-  (echo -n ${NAME} version=${PROJECT_VERSION}) >> /DOCKER.BUILD &&\
-  (echo -n ${NAME} git version=${CI_COMMIT_SHA}@${CI_COMMIT_REF_NAME}) >> /DOCKER.BUILD &&\
+  (echo ${NAME} version=${PROJECT_VERSION}) >> /DOCKER.BUILD &&\
+  (echo ${NAME} git version=${CI_COMMIT_SHA}@${CI_COMMIT_REF_NAME}) >> /DOCKER.BUILD &&\
   (echo -n ${NAME} build time= ; date -Iseconds) >> /DOCKER.BUILD
 
