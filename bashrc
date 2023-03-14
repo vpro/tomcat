@@ -36,7 +36,8 @@ function ts() {
 
 # Show the uptime of the java application
 function aptime() {
-    col="\033[50D\033[30C"
+    # moving the cursor at the beginning of line and then move it forward by 40 columns
+    col="\033[50D\033[40C"
     pid=$(ps x | grep java | grep -v 'grep' | awk '{print $1}')
     echo -e "pid:$col$pid"
     starttime=$(ps -p $pid -o etimes -h 2> /dev/null | awk 'BEGIN{now=systime()} {print strftime("%Y-%m-%dT%H:%M:%S%z", now - $1);}')
