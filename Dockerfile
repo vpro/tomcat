@@ -138,6 +138,9 @@ ONBUILD ARG CLUSTERING
 ONBUILD ARG CI_COMMIT_REF_NAME
 ONBUILD ARG CI_COMMIT_SHA
 ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
+
+
+# if clustering, it also makes some sense to have a peristent work dir (to write sessions in)
 ONBUILD RUN (\
      if [ -z "$CONTEXT" ] ; then \
         CONTEXT=ROOT; \
@@ -148,6 +151,7 @@ ONBUILD RUN (\
      jar xf /tmp/app.war && \
      rm /tmp/app.war &&\
      if [ "$CLUSTERING" == "true" ] ; then  \
+         (cd ${CATALINA_BASE} && ln -s /data/work work) && \
          sed -E -i -f /tmp/add-cluster.sed  ${CATALINA_BASE}/conf/server.xml;  \
      fi &&  \
      rm /tmp/add-cluster.sed  \
