@@ -86,8 +86,10 @@ COPY inputrc /etc
 COPY bashrc /.bashrc
 # ' Failed to source defaults.vim' (even an empty vi config file like that avoid it)
 COPY exrc /.exrc
-COPY add-cluster.sed /tmp
-COPY context-clustering.xml /tmp
+
+# some files which might be needed during build
+COPY clustering/add-cluster.sed /tmp
+COPY clustering/context.xml /tmp/context-clustering.xml
 
 
 
