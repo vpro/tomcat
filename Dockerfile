@@ -87,6 +87,7 @@ COPY bashrc /.bashrc
 # ' Failed to source defaults.vim' (even an empty vi config file like that avoid it)
 COPY exrc /.exrc
 COPY add-cluster.sed /tmp
+COPY context-clustering.xml /tmp
 
 
 
@@ -152,9 +153,10 @@ ONBUILD RUN (\
      rm /tmp/app.war &&\
      if [ "$CLUSTERING" == "true" ] ; then  \
          (cd ${CATALINA_BASE} && rm -r work && ln -s /data/work work) && \
-         sed -E -i -f /tmp/add-cluster.sed  ${CATALINA_BASE}/conf/server.xml;  \
-     fi &&  \
-     rm /tmp/add-cluster.sed  \
+         cp -f /tmp/context-clustering.xml ${CATALINA_BASE}/conf/context.xml && \
+         sed -E -i -f /tmp/add-cluster.sed  ${CATALINA_BASE}/conf/server.xml ; \
+     fi && \
+     rm -rf /tmp/* \
      )
 
 ONBUILD LABEL version="${PROJECT_VERSION}"
