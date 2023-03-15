@@ -151,7 +151,7 @@ ONBUILD RUN (\
      jar xf /tmp/app.war && \
      rm /tmp/app.war &&\
      if [ "$CLUSTERING" == "true" ] ; then  \
-         (cd ${CATALINA_BASE} && ln -s /data/work work) && \
+         (cd ${CATALINA_BASE} && rm -r work && ln -s /data/work work) && \
          sed -E -i -f /tmp/add-cluster.sed  ${CATALINA_BASE}/conf/server.xml;  \
      fi &&  \
      rm /tmp/add-cluster.sed  \
