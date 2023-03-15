@@ -86,6 +86,8 @@ COPY inputrc /etc
 COPY bashrc /.bashrc
 # ' Failed to source defaults.vim' (even an empty vi config file like that avoid it)
 COPY exrc /.exrc
+COPY add-cluster.sed /tmp
+
 
 
 VOLUME "/data" "/conf"
@@ -125,7 +127,6 @@ RUN  mkdir -p /data/logs  && \
   (echo -e "vpro/tomcat git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}") > /DOCKER.BUILD && \
   (echo -n "vpro/tomcat build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
-
 # The onbuild commands to install the application when this image is overlaid
 
 ONBUILD ARG PROJECT_VERSION
@@ -133,6 +134,7 @@ ONBUILD ARG NAME
 ONBUILD ARG CONTEXT
 ONBUILD ARG DOCLINK
 ONBUILD ARG JARS_TO_SCAN
+ONBUILD ARG CLUSTERING
 ONBUILD ARG CI_COMMIT_REF_NAME
 ONBUILD ARG CI_COMMIT_SHA
 ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
@@ -144,7 +146,11 @@ ONBUILD RUN (\
      mkdir -p ${CONTEXT} && \
      cd ${CONTEXT} && \
      jar xf /tmp/app.war && \
-     rm /tmp/app.war \
+     rm /tmp/app.war &&\
+     if [ "$CLUSTERING" == "true" ] ; then  \
+         sed -E -i -f /tmp/add-cluster.sed  ${CATALINA_BASE}/conf/server.xml;  \
+     fi &&  \
+     rm /tmp/add-cluster.sed  \
      )
 
 ONBUILD LABEL version="${PROJECT_VERSION}"

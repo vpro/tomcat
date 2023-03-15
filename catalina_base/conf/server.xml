@@ -18,6 +18,9 @@
     />
 
     <Engine name="Catalina" defaultHost="localhost">
+      <!--CLUSTERING-->
+
+
       <Host
         name="localhost"
         appBase="webapps"
