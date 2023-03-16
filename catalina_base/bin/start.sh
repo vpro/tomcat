@@ -19,7 +19,12 @@ trap stop SIGTERM
 start() {
   # Call catalina.sh with arguments, and pipes output to a (rotated) file
   # (analogous to catalina.out, we call it 'application.out' to indicate that it is not arranged by catalina.sh itself)
-
+  link=$(readlink "${CATALINA_BASE}/work")
+  if [ "$link" != "" ] && [ ! -e "$link" ] ;   then
+    echo "Echo work dir is pointing to non existing directory $link. Making it now"
+    mkdir -p "$link"
+    chmod 700 "$link"
+  fi
   # TODO this is only tested with 'run', not with 'start'. If that would be a use case?
   ARGS=$([ "$CATALINA_ARGS" == "" ] && echo "jpda run" || echo "$CATALINA_ARGS")
   echo "$(gdate) Effective catalina arguments: '${ARGS}'" >> ${APPLICATION_OUT}
