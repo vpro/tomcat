@@ -21,7 +21,7 @@ start() {
   # (analogous to catalina.out, we call it 'application.out' to indicate that it is not arranged by catalina.sh itself)
   link=$(readlink "${CATALINA_BASE}/work")
   if [ "$link" != "" ] && [ ! -e "$link" ] ;   then
-    echo "Echo work dir is pointing to non existing directory $link. Making it now"
+    echo "Work dir is pointing to non existing directory $link. Making it now"
     mkdir -p "$link"
     chmod 700 "$link"
   fi
