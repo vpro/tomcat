@@ -1,0 +1,35 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" xmlns="http://www.w3.org/1999/xhtml" version="2.0">
+  <jsp:directive.page import="java.time.Instant" session="true" contentType="text/html"/>
+  <jsp:directive.page import="java.time.ZoneId"/>
+  <jsp:directive.page session="true" />
+  <html>
+    <head><title>Test clustering</title></head>
+    <body>
+
+      <jsp:scriptlet>
+        Object testAttribute = session.getAttribute("testattribute");
+        session.setMaxInactiveInterval(3600);
+        if (testAttribute == null) {
+          testAttribute = Instant.now().atZone(ZoneId.of("Europe/Amsterdam"));
+        }
+        session.setAttribute("testattribute", testAttribute);
+      </jsp:scriptlet>
+      <h1>Your session</h1>
+      <dl>
+
+        <dt>server</dt>
+        <dd><jsp:expression>System.getenv("HOSTNAME")</jsp:expression></dd>
+
+        <dt>session id</dt>
+        <dd><jsp:expression>session.getId()</jsp:expression></dd>
+
+        <dt>session creation time</dt>
+        <dd><jsp:expression>Instant.ofEpochMilli(session.getCreationTime()).atZone(ZoneId.of("Europe/Amsterdam"))</jsp:expression></dd>
+
+        <dt>testattribute</dt>
+        <dd>${sessionScope.testattribute}</dd>
+      </dl>
+
+    </body>
+  </html>
+</jsp:root>
