@@ -3,6 +3,10 @@ LABEL maintainer=digitaal-techniek@vpro.nl
 
 ENV CATALINA_BASE=/usr/local/catalina-base
 
+# used in add-cluster.sed
+# od  -vN "32" -An -tx1             /dev/urandom | tr -d " \n"
+ENV SECURE_ENCRYPTION_KEY="caec93ecb662c5b49c04723b3e8b0f33da64eaefeb3f426b22fe512687dc1a2a"
+
 # Jars containing web resources and TLD's, which we use here and there.
 ARG JARS_TO_SCAN="log4j-taglib*.jar,\
 log4j-web*.jar,\
@@ -88,10 +92,7 @@ COPY bashrc /.bashrc
 COPY exrc /.exrc
 
 # some files which might be needed during build
-COPY clustering/add-cluster.sed /tmp
-COPY clustering/context.xml /tmp/context-clustering.xml
-
-
+ADD clustering /tmp/clustering
 
 VOLUME "/data" "/conf"
 
@@ -138,6 +139,7 @@ ONBUILD ARG CONTEXT
 ONBUILD ARG DOCLINK
 ONBUILD ARG JARS_TO_SCAN=UNSET
 ONBUILD ARG CLUSTERING
+ONBUILD ARG COPY_TESTS
 ONBUILD ARG CI_COMMIT_REF_NAME
 ONBUILD ARG CI_COMMIT_SHA
 ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
@@ -155,8 +157,9 @@ ONBUILD RUN (\
      rm /tmp/app.war &&\
      if [ "$CLUSTERING" == "true" ] ; then  \
          (cd ${CATALINA_BASE} && rm -r work && mkdir /data/work && ln -s /data/work work) && \
-         cp -f /tmp/context-clustering.xml ${CATALINA_BASE}/conf/context.xml && \
-         sed -E -i -f /tmp/add-cluster.sed  ${CATALINA_BASE}/conf/server.xml ; \
+         cp -f /tmp/clustering/context.xml ${CATALINA_BASE}/conf/context.xml && \
+         sed -E -i -f /tmp/clustering/add-cluster.sed  ${CATALINA_BASE}/conf/server.xml && \
+         if [ "$COPY_TESTS" == "true" ] ; then cp /tmp/clustering/test-clustering.jspx .; fi ; \
      fi && \
      rm -rf /tmp/* \
      )
