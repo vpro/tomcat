@@ -21,7 +21,15 @@ fi
 # memory options
 # -XX:MaxRAMPercentage=${MaxRAMPercentage}
 # -XX:+UseContainerSupport                      Default, but lets be explicit, we target running in a container.
-export CATALINA_OPTS="$CATALINA_OPTS -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport  -XX:HeapDumpPath=/data/ -XX:+HeapDumpOnOutOfMemoryError"
+export CATALINA_OPTS="$CATALINA_OPTS -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport"
+
+
+
+# Heap dumps may be quite large, if you need to create them on out of memory, start the pod with environment variable HeapDumpPath=/data (or so)
+if [[ ! -z "$HeapDumpPath" ]] ; then
+  mkdir -p "${HeapDumpPath}"
+  export CATALINA_OPTS="$CATALINA_OPTS -XX:HeapDumpPath=${HeapDumpPath} -XX:+HeapDumpOnOutOfMemoryError"
+fi
 
 # system property kibana can used in log4j2.xml SystemPropertyArbiter to switch to logging more specific to kibana
 export CATALINA_OPTS="$CATALINA_OPTS -Dkibana=true"
