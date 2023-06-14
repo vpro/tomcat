@@ -31,6 +31,8 @@ extjs-*.jar"
 ARG DOCLINK=https://wiki.vpro.nl/display/poms/Documentatie+POMS
 ARG CI_COMMIT_SHA
 ARG CI_COMMIT_REF_NAME
+ARG CI_COMMIT_MESSAGE
+
 
 
 # This makes ${USER.HOME} /
@@ -173,6 +175,6 @@ ONBUILD RUN apt-get update && apt-get -y upgrade && \
   sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK}'|g" ${CATALINA_BASE}/errorpages/404.html && \
   ( if [ "$CONTEXT" != 'ROOT' ] ; then sed -E -i "s|class='home' href='(.*?)'|class='home' href='/${CONTEXT}'|g" ${CATALINA_BASE}/errorpages/404.html ; fi ) && \
   (echo "${NAME} version=${PROJECT_VERSION}") >> /DOCKER.BUILD && \
-  (echo -e "${NAME} git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}") >> /DOCKER.BUILD && \
+  (echo -e "${NAME} git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_MESSAGE}") >> /DOCKER.BUILD && \
   (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
