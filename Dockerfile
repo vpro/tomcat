@@ -131,7 +131,7 @@ RUN  mkdir -p /data/logs  && \
   addgroup  --system --gid 1001 application && \
   adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
   adduser application root && \
-  (echo -e "vpro/tomcat git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}") > /DOCKER.BUILD && \
+  (echo -e "vpro/tomcat git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") > /DOCKER.BUILD && \
   (echo -n "vpro/tomcat build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
 # The onbuild commands to install the application when this image is overlaid
@@ -178,6 +178,6 @@ ONBUILD RUN apt-get update && apt-get -y upgrade && \
   sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK}'|g" ${CATALINA_BASE}/errorpages/404.html && \
   ( if [ "$CONTEXT" != 'ROOT' ] ; then sed -E -i "s|class='home' href='(.*?)'|class='home' href='/${CONTEXT}'|g" ${CATALINA_BASE}/errorpages/404.html ; fi ) && \
   (echo "${NAME} version=${PROJECT_VERSION}") >> /DOCKER.BUILD && \
-  (echo -e "${NAME} git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}") >> /DOCKER.BUILD && \
+  (echo -e "${NAME} git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") >> /DOCKER.BUILD && \
   (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
