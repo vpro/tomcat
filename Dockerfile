@@ -31,7 +31,8 @@ extjs-*.jar"
 ARG DOCLINK=https://wiki.vpro.nl/display/poms/Documentatie+POMS
 ARG CI_COMMIT_SHA
 ARG CI_COMMIT_REF_NAME
-ARG CI_COMMIT_MESSAGE
+ARG CI_COMMIT_TITLE
+ARG CI_COMMIT_TIMESTAMP
 
 
 
