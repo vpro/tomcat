@@ -1534,8 +1534,9 @@
     <mime-type>video/jpm</mime-type>
   </mime-mapping>
   <mime-mapping>
+    <!-- this deviates from default, tomcat gives application/javascript-->
     <extension>js</extension>
-    <mime-type>application/javascript</mime-type>
+    <mime-type>text/javascript;charset=utf-8</mime-type>
   </mime-mapping>
   <mime-mapping>
     <extension>jsf</extension>
