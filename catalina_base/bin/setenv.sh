@@ -101,5 +101,10 @@ if [ -z ${TOMCAT_MAX_THREADS+x} ]; then
   export TOMCAT_MAX_THREADS=400
 fi
 
+if [ -z ${TOMCAT_ASYNC_TIMEOUT+x} ]; then
+  export TOMCAT_ASYNC_TIMEOUT=30000
+fi
+
+
 
 
