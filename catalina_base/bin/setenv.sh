@@ -93,4 +93,13 @@ if [ -z ${TOMCAT_ACCESS_LOG_FILE_DATE_FORMAT+x} ]; then
   export TOMCAT_ACCESS_LOG_FILE_DATE_FORMAT='yyyy-MM-dd'
 fi
 
+if [ -z ${TOMCAT_CONNECTION_TIMEOUT+x} ]; then
+  export TOMCAT_CONNECTION_TIMEOUT=20000
+fi
+
+if [ -z ${TOMCAT_MAX_THREADS+x} ]; then
+  export TOMCAT_MAX_THREADS=400
+fi
+
+
 
