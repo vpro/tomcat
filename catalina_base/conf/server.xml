@@ -14,6 +14,7 @@
       xpoweredBy="false"
       server="Tomcat ${TOMCAT_MAJOR} ${HOSTNAME}"
       scheme="https"
+      disableUploadTimeout="true"
       relaxedQueryChars="${TOMCAT_RELAXED_QUERY_CHARS}"
       relaxedPathChars="${TOMCAT_RELAXED_PATH_CHARS}"
     />
