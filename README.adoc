@@ -1,4 +1,4 @@
-= npo-tomcat
+= vpro-tomcat
 :toc:
 
 Generic tomcat base image that:
