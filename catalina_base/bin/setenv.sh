@@ -21,7 +21,8 @@ fi
 # memory options
 # -XX:MaxRAMPercentage=${MaxRAMPercentage}
 # -XX:+UseContainerSupport                      Default, but lets be explicit, we target running in a container.
-export CATALINA_OPTS="$CATALINA_OPTS -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport"
+# -XX:+UseZGC
+export CATALINA_OPTS="$CATALINA_OPTS -XX:+UseZGC -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport"
 
 
 
@@ -46,8 +47,6 @@ mkdir -p /data/logs
 
 # JMX
 JMX_PORT=$($dir/jmx.sh)
-
-
 
 # jmx settings
 export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.local.only=false -Djava.rmi.server.hostname=localhost -Duser.country=NL -Duser.timezone=Europe/Amsterdam -Ddata.dir=/data"
@@ -104,7 +103,3 @@ fi
 if [ -z ${TOMCAT_ASYNC_TIMEOUT+x} ]; then
   export TOMCAT_ASYNC_TIMEOUT=30000
 fi
-
-
-
-
