@@ -35,3 +35,14 @@ which then can be build this way:
 ----
 ~/npo/api/trunk$ docker build --build-arg PROJECT_VERSION=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout` -t api-server api-server
 ----
+
+== Versions
+
+|===
+|version | tomcat | java | remarks
+| 4.x | >= 9.0.81 | 21  |
+| 3.x | 9.x | 17 | 
+| 2.x | 9.x | 17 | vpro/tomcat
+| 1.x | 9.x | 8 |
+|===
+
