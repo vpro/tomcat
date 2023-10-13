@@ -23,7 +23,7 @@ Use e.g. with a Dockerfile like this"
 ----
 ARG NAME=media-server
 
-FROM vpro/tomcat:latest
+FROM vpro/tomcat:4.0
 
 RUN apt-get -y install openssh-client sshpass
 
