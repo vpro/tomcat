@@ -40,6 +40,7 @@ which then can be build this way:
 
 |===
 |version | tomcat | java | remarks
+| 5.x | 10.x | 21 | javax -> jakarta migrations (TODO)
 | 4.x | >= 9.0.81 | 21  |
 | 3.x | 9.x | 17 | 
 | 2.x | 9.x | 17 | vpro/tomcat
