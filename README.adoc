@@ -1,10 +1,16 @@
-= npo-tomcat
+= vpro-tomcat
 :toc:
 
 Generic tomcat base image that:
 
 . Separates CATALINA_BASE
 . Prepares for a proxy server that arranges https, and more customized tomcat configuration.
+. contains some custom scripts
+    - 'aptime': command line utility to show what's running
+    - /usr/local/catalina-base/bin/start.sh custom start up script. Arranging gracefull shutdown. 
+    - /usr/local/catalina-base/bin/setenv.sh  picked up by tomcat
+    - /usr/local/catalina-base/bin/jmx.sh included by setenv.sh, but can also be used remotely for easy figuring out that relevant ports to forward are
+
 
 You can build this locally like so:
 
@@ -17,7 +23,7 @@ Use e.g. with a Dockerfile like this"
 ----
 ARG NAME=media-server
 
-FROM vpro/tomcat:latest
+FROM vpro/tomcat:4.0
 
 RUN apt-get -y install openssh-client sshpass
 
