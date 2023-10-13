@@ -1,4 +1,5 @@
 = npo-tomcat
+:toc:
 
 Generic tomcat base image that:
 
