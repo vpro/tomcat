@@ -22,7 +22,13 @@ fi
 # -XX:MaxRAMPercentage=${MaxRAMPercentage}
 # -XX:+UseContainerSupport                      Default, but lets be explicit, we target running in a container.
 # -XX:+UseZGC
-export CATALINA_OPTS="$CATALINA_OPTS -XX:+UseZGC -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport"
+
+if [[ -z "$GarbageCollectionOption" ]] ; then
+  GarbageCollectionOption=-XX:+UseG1GC
+  # GarbageCollectionOption=-XX:+UseZGC
+fi
+
+export CATALINA_OPTS="$CATALINA_OPTS ${GarbageCollectionOption} -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport"
 
 
 
