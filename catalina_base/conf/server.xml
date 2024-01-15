@@ -32,6 +32,7 @@
         <Valve className="org.apache.catalina.valves.ErrorReportValve"
                errorCode.404="errorpages/404.html"
                errorCode.401="errorpages/401.html"
+               errorCode.400="errorpages/400.html"
                showServerInfo="false"
         />
 
