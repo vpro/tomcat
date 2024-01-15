@@ -2,9 +2,8 @@
 <html lang="nl">
   <head>
     <meta charset="utf-8" />
-    <title>404 &#129300; Niets gevonden :(</title>
+    <title>🫤Fout</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <style>
         * { line-height: 1.2; margin: 0; }
         html { height: 100%; width: 100%; background-color: #a03030; color: #fff; font-family: Helvetica, Arial, sans-serif; font-weight: 700; }
@@ -14,10 +13,16 @@
         h1 span { font-weight: normal; }
         h1 { font-size: 5em; }
         a { color: #fff}
+
     </style>
+    <script type="text/javascript">
+      const responseStatus = window.performance.getEntriesByType('navigation')[0].responseStatus;
+      console.log('responseStatus', responseStatus);
+    </script>
   </head>
   <body>
-    <h1>404&nbsp;<span>&#129300;</span> Niets te vinden hier</h1>
+    <h1><span>🫤</span>Fout</h1>
+    <p>Een fout</p>
     <p><a class='doclink' href='https://wiki.vpro.nl/'>Documentatie</a></p>
     <p><a class='home' href='/'>Home</a></p>
   </body>
