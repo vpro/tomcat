@@ -8,9 +8,10 @@ alias ls='ls $LS_OPTIONS'
 alias ll='ls -alF'
 alias rm='rm -i'
 
+export PROMPT_COMMAND='printf "\033]0;%s:%s\007" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}" '
 # See https://askubuntu.com/questions/67283/is-it-possible-to-make-writing-to-bash-history-immediate
 shopt -s histappend
-export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 
 # converts iso datetime format to millis since epoch if input is not an integer
 # convert millis since epoch or seconds since epoch (for small numbers) to iso date time
