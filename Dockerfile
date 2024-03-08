@@ -70,6 +70,7 @@ COPY rds-ca-2019-root.pem /conf
 SHELL ["/bin/bash", "-c"]
 
 ENV TZ=Europe/Amsterdam
+ENV PGTZ=Europe/Amsterdam
 ENV HISTFILE=/data/.bash_history
 ENV PSQL_HISTORY=/data/.pg_history
 ENV PSQL_EDITOR=/usr/bin/vi
