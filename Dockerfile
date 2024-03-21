@@ -1,4 +1,4 @@
-FROM tomcat:9.0.86-jdk21-temurin-jammy
+FROM tomcat:9.0.87-jdk21-temurin-jammy
 LABEL maintainer=digitaal-techniek@vpro.nl
 
 ENV CATALINA_BASE=/usr/local/catalina-base
@@ -93,6 +93,9 @@ COPY inputrc /etc
 COPY bashrc /.bashrc
 # ' Failed to source defaults.vim' (even an empty vi config file like that avoid it)
 COPY exrc /.exrc
+
+# E.g. set the client time zone to europe/amsterdam
+COPY psqlrc /.psqlrc
 
 # some files which might be needed during build
 ADD clustering /tmp/clustering
