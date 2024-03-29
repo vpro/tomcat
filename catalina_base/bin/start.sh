@@ -6,6 +6,7 @@
 export CATALINA_PID=/tmp/tomcat.pid
 export CATALINA_LOGS=${CATALINA_BASE}/logs
 export APPLICATION_OUT=${CATALINA_LOGS}/application.out
+export CATALINA_WORK=${CATALINA_BASE}/work
 
 
 gdate() {
@@ -25,6 +26,20 @@ start() {
     mkdir -p "$link"
     chmod 700 "$link"
   fi
+  version_file=${CATALINA_WORK}/tomcat.version
+  if [  -e "$version_file" ] ; then
+    prev_version=$(<$version_file)
+  else
+    prev_version="unknown"
+  fi
+  if [ "$prev_version" != "$TOMCAT_VERSION" ] ; then
+    echo "Tomcat version has changed from $prev_version to $TOMCAT_VERSION. Cleaning work dir"
+    rm -rf "$CATALINA_WORK/*"
+  fi
+  echo ${TOMCAT_VERSION} > ${version_file}
+  echo version:
+  cat $version_file
+
   # TODO this is only tested with 'run', not with 'start'. If that would be a use case?
   ARGS=$([ "$CATALINA_ARGS" == "" ] && echo "jpda run" || echo "$CATALINA_ARGS")
   echo "$(gdate) Effective catalina arguments: '${ARGS}'" >> ${APPLICATION_OUT}
