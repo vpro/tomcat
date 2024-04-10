@@ -17,7 +17,7 @@
       relaxedQueryChars="${TOMCAT_RELAXED_QUERY_CHARS}"
       relaxedPathChars="${TOMCAT_RELAXED_PATH_CHARS}"
       encodedSolidusHandling="passthrough"
-      allowBackslash="true"
+      allowBackslash="false"
     />
 
     <Engine name="Catalina" defaultHost="localhost">
