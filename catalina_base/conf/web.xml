@@ -627,7 +627,7 @@
   </mime-mapping>
   <mime-mapping>
     <extension>css</extension>
-    <mime-type>text/css</mime-type>
+    <mime-type>text/css;charset=UTF-8</mime-type>
   </mime-mapping>
   <mime-mapping>
     <extension>cst</extension>
