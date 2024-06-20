@@ -1,4 +1,4 @@
-FROM tomcat:10.1.25-jdk21-temurin-jammy
+FROM tomcat:10.1.24-jdk21-temurin-jammy
 LABEL maintainer=digitaal-techniek@vpro.nl
 
 ENV CATALINA_BASE=/usr/local/catalina-base
