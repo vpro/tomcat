@@ -24,7 +24,7 @@ start() {
   if [ "$link" != "" ] && [ ! -e "$link" ] ;   then
     echo "Work dir is pointing to non existing directory $link. Making it now"
     mkdir -p "$link"
-    chmod 700 "$link"
+    chmod 770 "$link"
   fi
   version_file=${CATALINA_WORK}/tomcat.version
   if [  -e "$version_file" ] ; then
