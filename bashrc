@@ -45,6 +45,11 @@ function aptime() {
     echo -e "starttime:$col$starttime"
     uptime=$(ps -p $pid -o etime -h 2> /dev/null | xargs echo)
     echo -e "uptime:$col$uptime"
+
+    echo
+
+    OS_VERSION=$(cat /etc/os-release | grep PRETTY_NAME | awk -F= "{print \$2}" | tr -d '"')
+    echo -e "os version:$col${OS_VERSION}"
     echo -e "java version:$col${JAVA_VERSION}"
     echo -e "tomcat version:$col${TOMCAT_VERSION}"
 

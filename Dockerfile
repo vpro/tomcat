@@ -61,7 +61,8 @@ RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
   apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
-  mkdir -p /conf
+  mkdir -p /conf && \
+  chmod 775 /conf
 
 
 COPY rds-ca-2019-root.pem /conf
@@ -81,7 +82,6 @@ ENV ENV=/.binbash
 COPY binbash /.binbash
 
 # - Setting up timezone and stuff
-# - We run always with a user named 'application' with uid '1001'
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
   dpkg-reconfigure --frontend noninteractive tzdata
@@ -100,6 +100,9 @@ COPY psqlrc /.psqlrc
 # some files which might be needed during build
 ADD clustering /tmp/clustering
 
+RUN mkdir -p /data /data/logs && \
+  chmod 2775 /data /data/logs
+
 VOLUME "/data" "/conf"
 
 # note that this is unused in helm, it then uses container.command
@@ -109,30 +112,28 @@ CMD ["/usr/local/catalina-base/bin/start.sh"]
 # We want to split off catalina base, default it's catalina_home
 ADD catalina_base ${CATALINA_BASE}/
 
-RUN  mkdir -p /data/logs  && \
-  echo Catalina base: ${CATALINA_BASE} && \
+RUN echo Catalina base: ${CATALINA_BASE} && \
   for directory in 'webapps' 'work'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
+      chmod 775 ${CATALINA_BASE}/$directory && \
       rm -rf ${CATALINA_HOME}/$directory; \
   done && \
   rm -rf ${CATALINA_HOME}/webapps.dist && \
   chmod -R o-w ${CATALINA_HOME} && \
-  chmod -R g=o ${CATALINA_HOME} && \
+  chmod -R g=u ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
-  chmod -R g=o ${CATALINA_BASE} && \
+  chmod -R g=u ${CATALINA_BASE} && \
   mkdir -p  ${CATALINA_BASE}/conf/Catalina/localhost && \
+  chmod 775 ${CATALINA_BASE}/conf/Catalina/localhost && \
   (cd ${CATALINA_BASE} && ln -s /data/logs logs) && \
   for directory in 'work'; do \
     mkdir -p ${CATALINA_BASE}/$directory && \
-    chgrp -R 0 ${CATALINA_BASE}/$directory && \
-    chmod -R g=u ${CATALINA_BASE}/$directory; \
+    chmod 775 ${CATALINA_BASE}/$directory && \
+    chgrp -R 0 ${CATALINA_BASE}/$directory; \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
-  addgroup  --system --gid 1001 application && \
-  adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
-  adduser application root && \
   (echo -e "vpro/tomcat git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") > /DOCKER.BUILD && \
   (echo -n "vpro/tomcat build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
@@ -160,17 +161,19 @@ ONBUILD RUN (\
      fi && \
      cd ${CATALINA_BASE}/webapps && \
      mkdir -p ${CONTEXT} && \
+     chmod 775 ${CONTEXT} && \
      cd ${CONTEXT} && \
      jar xf /tmp/app.war && \
      rm /tmp/app.war &&\
      if [ "$CLUSTERING" == "true" ] ; then  \
-         (cd ${CATALINA_BASE} && rm -r work && mkdir /data/work && ln -s /data/work work) && \
+         (cd ${CATALINA_BASE} && rm -r work && mkdir /data/work && chmod 2775 /data/work && ln -s /data/work work) && \
          cp -f /tmp/clustering/context.xml ${CATALINA_BASE}/conf/context.xml && \
          sed -E -i -f /tmp/clustering/add-cluster.sed  ${CATALINA_BASE}/conf/server.xml && \
          if [ "$COPY_TESTS" == "true" ] ; then cp /tmp/clustering/test-clustering.jspx .; fi ; \
      fi && \
      rm -rf /tmp/* \
      )
+
 
 ONBUILD LABEL version="${PROJECT_VERSION}"
 ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
