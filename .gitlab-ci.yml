@@ -1,9 +1,9 @@
 ---
 variables:
    IMAGE_NAME: tomcat
-   NAMESPACE: vpro
+   NAMESPACE: poms
 
 include:
-  - project: 'shared/gitlab/gitlab-templates'
-    ref: 'tags/11.0'
+  - project: 'npo-identity/poms/gitlab-templates'
+    ref: 'tags/11.2'
     file: 'docker_build.yml'

@@ -4,5 +4,5 @@ ARG COPY_TESTS=true
 
 ARG DOCLINK=https://wiki.vpro.nl/display/foobar
 
-FROM vpro/tomcat:latest
+FROM poms/tomcat:latest
 
