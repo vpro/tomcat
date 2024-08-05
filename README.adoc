@@ -56,3 +56,10 @@ which then can be build this way:
 | 2.x | 9.x | 17 |
 | 1.x | 9.x | 8 |
 |===
+
+
+== TODO
+
+This docker image is forked from similar project in vpro's gitlab.
+
+It doesn't contain anything secret, we could publish it publicly somewhere?
