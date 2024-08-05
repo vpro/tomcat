@@ -7,7 +7,7 @@ Generic tomcat base image that:
 . Prepares for a proxy server that arranges https, and more customized tomcat configuration.
 . contains some custom scripts
     - 'aptime': command line utility to show what's running
-    - /usr/local/catalina-base/bin/start.sh custom start up script. Arranging gracefull shutdown. 
+    - /usr/local/catalina-base/bin/start.sh custom start up script. Arranging gracefull shutdown.
     - /usr/local/catalina-base/bin/setenv.sh  picked up by tomcat
     - /usr/local/catalina-base/bin/jmx.sh included by setenv.sh, but can also be used remotely for easy figuring out that relevant ports to forward are
 
@@ -47,10 +47,12 @@ which then can be build this way:
 
 |===
 |version | tomcat | java | remarks
-| 5.x | 10.x | 21 | javax -> jakarta migrations (TODO)
+| >= 10.7 | 10.x | 21 | versions for cph5
+| 10.6.* | 10.x | 21 | running for chp4
+| 10.x | 10.x | 21 |
+| 9.x | >= 9.0.81 | 21  |
 | 4.x | >= 9.0.81 | 21  |
 | 3.x | 9.x | 17 | first one named vpro/tomcat?
-| 2.x | 9.x | 17 | 
+| 2.x | 9.x | 17 |
 | 1.x | 9.x | 8 |
 |===
-
