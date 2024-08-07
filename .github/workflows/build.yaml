@@ -16,8 +16,6 @@ jobs:
       packages: write
       attestations: write
       id-token: write
-Sets the permissions granted to the GITHUB_TOKEN for the actions in this job.
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
