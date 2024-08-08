@@ -8,11 +8,8 @@ on:
   workflow_dispatch:
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-
 
 jobs:
   build:
@@ -22,17 +19,15 @@ jobs:
       contents: read
       packages: write
 
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: set-output
         id: vars
         run: |
-          commit_timestamp=$((git show -s --format="%ci" ${{github.sha}}))
+          commit_timestamp=$(git show -s --format="%ci" ${{github.sha}})
           echo commit $commit_timestamp
         shell: bash
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Log into registry ${{ env.REGISTRY }}
