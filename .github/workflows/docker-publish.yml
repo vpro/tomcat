@@ -52,8 +52,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64
-          build-args:
-            - CI_COMMIT_REF_NAME=${{ github.ref }}
-            - CI_COMMIT_SHA=${{ github.sha }}
-            - CI_COMMIT_TITLE=${{ }}
-            - CI_COMMIT_TIMESTAMP=${{ }}
+          build-args: |
+            CI_COMMIT_REF_NAME=${{ github.ref }}
+            CI_COMMIT_SHA=${{ github.sha }}
+            CI_COMMIT_TITLE=geen idee
+            CI_COMMIT_TIMESTAMP=todo
