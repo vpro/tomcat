@@ -40,7 +40,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=match,pattern=.*
+            type=ref,event=branch
+            type=ref,event=tag
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v6
