@@ -5,7 +5,7 @@ ENV CATALINA_BASE=/usr/local/catalina-base
 
 # used in add-cluster.sed
 # od  -vN "32" -An -tx1             /dev/urandom | tr -d " \n"
-ENV SECURE_ENCRYPTION_KEY="caec93ecb662c5b49c04723b3e8b0f33da64eaefeb3f426b22fe512687dc1a2a"
+ENV SECURE_ENCRYPTION_KEY=""
 
 # Jars containing web resources and TLD's, which we use here and there.
 ARG JARS_TO_SCAN="log4j-taglib*.jar,\
@@ -36,7 +36,7 @@ ARG CI_COMMIT_TIMESTAMP
 
 
 # This makes ${USER.HOME} /
-ENV HOME /
+ENV HOME=/
 # Handy, on a new shell you'll be in the directory of interest
 WORKDIR $CATALINA_BASE
 
