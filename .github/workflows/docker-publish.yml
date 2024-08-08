@@ -55,5 +55,5 @@ jobs:
           build-args: |
             CI_COMMIT_REF_NAME=${{ github.ref }}
             CI_COMMIT_SHA=${{ github.sha }}
-            CI_COMMIT_TITLE=geen idee
+            CI_COMMIT_TITLE=${{ github.event.head_commit.message }}
             CI_COMMIT_TIMESTAMP=todo
