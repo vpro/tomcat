@@ -39,7 +39,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_REF##*/}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=match,pattern=.*
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v6
