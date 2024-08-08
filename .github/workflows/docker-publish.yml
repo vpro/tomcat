@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: set-output
+      - name: Set variables
         id: vars
         run: |
           commit_timestamp=$(git show -s --format="%ci" ${{github.sha}})
