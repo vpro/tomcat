@@ -1,6 +1,8 @@
 FROM tomcat:10.1.26-jdk21-temurin-jammy
 LABEL maintainer=digitaal-techniek@vpro.nl
 
+LABEL org.opencontainers.image.description="This tomcat image used by poms and vpro deployments"
+
 ENV CATALINA_BASE=/usr/local/catalina-base
 
 # used in add-cluster.sed
@@ -28,12 +30,12 @@ meeuw*.jar,\
 extjs-*.jar"
 
 # Link to use in 404 page of tomcat
+
+
 ARG CI_COMMIT_SHA
 ARG CI_COMMIT_REF_NAME
 ARG CI_COMMIT_TITLE
 ARG CI_COMMIT_TIMESTAMP
-
-
 
 # This makes ${USER.HOME} /
 ENV HOME=/
