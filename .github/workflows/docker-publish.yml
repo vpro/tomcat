@@ -27,6 +27,7 @@ jobs:
         run: |
           commit_timestamp=$(git show -s --format="%ci" ${{github.sha}})
           echo commit $commit_timestamp
+          echo "commit_timestamp=${commit_timestamp}" >> "$GITHUB_OUTPUT"
         shell: bash
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
