@@ -29,9 +29,6 @@ poms-shared*.jar,\
 meeuw*.jar,\
 extjs-*.jar"
 
-# Link to use in 404 page of tomcat
-
-
 ARG CI_COMMIT_SHA
 ARG CI_COMMIT_REF_NAME
 ARG CI_COMMIT_TITLE
@@ -145,6 +142,8 @@ RUN echo Catalina base: ${CATALINA_BASE} && \
 ONBUILD ARG PROJECT_VERSION
 ONBUILD ARG NAME
 ONBUILD ARG CONTEXT
+
+# Link to use in 404 page of tomcat
 ONBUILD ARG DOCLINK
 
 ONBUILD ARG JARS_TO_SCAN=UNSET
