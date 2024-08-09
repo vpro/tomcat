@@ -6,6 +6,7 @@ LABEL org.opencontainers.image.description="This tomcat image used by poms and v
 ENV CATALINA_BASE=/usr/local/catalina-base
 
 # used in add-cluster.sed
+# generate one like this:
 # od  -vN "32" -An -tx1             /dev/urandom | tr -d " \n"
 ENV SECURE_ENCRYPTION_KEY=""
 
