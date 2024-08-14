@@ -7,6 +7,7 @@ LABEL org.opencontainers.image.licenses="Apache-2.0"
 ENV CATALINA_BASE=/usr/local/catalina-base
 
 # used in add-cluster.sed
+# generate one like this:
 # od  -vN "32" -An -tx1             /dev/urandom | tr -d " \n"
 ENV SECURE_ENCRYPTION_KEY=""
 
@@ -29,9 +30,6 @@ image-domain*.jar, \
 poms-shared*.jar,\
 meeuw*.jar,\
 extjs-*.jar"
-
-# Link to use in 404 page of tomcat
-
 
 ARG CI_COMMIT_SHA
 ARG CI_COMMIT_REF_NAME
@@ -138,14 +136,16 @@ RUN echo Catalina base: ${CATALINA_BASE} && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
-  (echo -e "poms/tomcat git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") > /DOCKER.BUILD && \
-  (echo -n "poms/tomcat build time=" ; date -Iseconds) >> /DOCKER.BUILD
+  (echo -e "vpro/tomcat git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") > /DOCKER.BUILD && \
+  (echo -n "vpro/tomcat build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
 # The onbuild commands to install the application when this image is overlaid
 
 ONBUILD ARG PROJECT_VERSION
 ONBUILD ARG NAME
 ONBUILD ARG CONTEXT
+
+# Link to use in 404 page of tomcat
 ONBUILD ARG DOCLINK
 
 ONBUILD ARG JARS_TO_SCAN=UNSET
