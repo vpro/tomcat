@@ -1,7 +1,8 @@
-FROM tomcat:10.1.26-jdk21-temurin-jammy
+FROM tomcat:10.1.28-jdk21-temurin-jammy
 LABEL maintainer=digitaal-techniek@vpro.nl
 
 LABEL org.opencontainers.image.description="This tomcat image used by poms and vpro deployments"
+LABEL org.opencontainers.image.licenses="Apache-2.0"
 
 ENV CATALINA_BASE=/usr/local/catalina-base
 
