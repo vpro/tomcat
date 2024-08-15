@@ -55,12 +55,13 @@ COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 # -   psmisc: just for debugging. 'pstree'
 # -   netcat: just for debugging. 'nc'.
 # -   apache2-utils: we use rotatelogs to rotate catalina.out
+# -   file: used by mediatools, generally useful
 
 
 # conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
-  apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk && \
+  apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
   mkdir -p /conf && \
   chmod 775 /conf
