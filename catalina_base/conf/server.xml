@@ -9,6 +9,7 @@
       protocol="HTTP/1.1"
       connectionTimeout="${TOMCAT_CONNECTION_TIMEOUT}"
       asyncTimeout="${TOMCAT_ASYNC_TIMEOUT}"
+      acceptCount="${TOMCAT_ACCEPT_COUNT}"
       maxThreads="${TOMCAT_MAX_THREADS}"
       xpoweredBy="false"
       server="Tomcat ${TOMCAT_MAJOR} ${HOSTNAME}"
