@@ -100,8 +100,6 @@ COPY psqlrc /.psqlrc
 # Clean up default /etc/bash.bashrc a bit (no call to groups)
 COPY bash.bashrc /etc/bash.bashrc
 
->>>>>>> fb04627 (Work around missing group name.)
-
 # some files which might be needed during build
 ADD clustering /tmp/clustering
 
