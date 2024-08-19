@@ -116,3 +116,7 @@ fi
 if [ -z ${TOMCAT_ASYNC_TIMEOUT+x} ]; then
   export TOMCAT_ASYNC_TIMEOUT=30000
 fi
+
+if [ -z ${TOMCAT_ACCEPT_COUNT+x} ]; then
+  export TOMCAT_ACCEPT_COUNT=100
+fi
