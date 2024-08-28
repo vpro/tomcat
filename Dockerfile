@@ -70,8 +70,6 @@ RUN set -eux && \
   chmod 775 /conf
 
 
-COPY rds-ca-2019-root.pem /conf
-
 # Have a workable shell
 SHELL ["/bin/bash", "-c"]
 
