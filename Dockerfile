@@ -41,7 +41,6 @@ ENV HOME=/
 # Handy, on a new shell you'll be in the directory of interest
 WORKDIR $CATALINA_BASE
 
-COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 
 # - Create the necessary dirs in catalina_base, with the needed permissions
 # - set the jars to scan in catalian.properties
@@ -57,12 +56,16 @@ COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 # -   apache2-utils: we use rotatelogs to rotate catalina.out
 # -   file: used by mediatools, generally useful
 
+COPY eu-central-1-bundle.pem /tmp
+
+RUN  keytool -list -cacerts > /tmp/cacerts.before && \
+     keytool -noprompt -trustcacerts -cacerts -importcert -alias "eu_central" -file /tmp/eu-central-1-bundle.pem && \
+     keytool -list -cacerts > /tmp/cacerts.after
 
 # conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
   apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file && \
-  keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
   mkdir -p /conf && \
   chmod 775 /conf
 
