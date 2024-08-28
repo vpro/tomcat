@@ -66,6 +66,7 @@ RUN  keytool -list -cacerts > /tmp/cacerts.before && \
 RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
   apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file && \
+  rm -rf /var/lib/apt/lists/* && \
   mkdir -p /conf && \
   chmod 775 /conf
 
@@ -185,6 +186,7 @@ ONBUILD LABEL version="${PROJECT_VERSION}"
 
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
+  rm -rf /var/lib/apt/lists/* && \
   ( if [ "$JARS_TO_SCAN" != 'UNSET' ] ; then sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"   ${CATALINA_BASE}/conf/catalina.properties ; fi ) && \
   for errorfile in ${CATALINA_BASE}/errorpages/*.html  ; do \
     sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK:-https://wiki.vpro.nl/}'|g" ${errorfile} && \
