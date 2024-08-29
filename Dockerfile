@@ -57,10 +57,11 @@ WORKDIR $CATALINA_BASE
 # -   file: used by mediatools, generally useful
 
 COPY eu-central-1-bundle.pem /tmp
+COPY importcerts.sh /tmp
 
 RUN  keytool -list -cacerts > /tmp/cacerts.before && \
-     keytool -noprompt -trustcacerts -cacerts -importcert -alias "eu_central" -file /tmp/eu-central-1-bundle.pem && \
-     keytool -list -cacerts > /tmp/cacerts.after
+     bash -e /tmp/importcerts.sh && \
+    keytool -list -cacerts > /tmp/cacerts.after
 
 # conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 RUN set -eux && \
