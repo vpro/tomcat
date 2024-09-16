@@ -12,7 +12,9 @@ Generic tomcat base image that:
     - /usr/local/catalina-base/bin/jmx.sh included by setenv.sh, but can also be used remotely for easy figuring out that relevant ports to forward are
     - has eu-central certificates in cacerts
 
+It is built and released using github actions, and available https://github.com/vpro/tomcat/pkgs/container/tomcat[via github packages]
 
+== Building locally
 
 You can build this locally like so:
 
@@ -49,7 +51,7 @@ which then can be build this way:
 
 |===
 |version | tomcat | java | remarks
-| >= 10.10 | 10.x | 21 | available as ghcr.io/vpro/tomcat:10.10
+| >= 10.10 | 10.x | 21 | available as ghcr.io/vpro/tomcat:10.x
 | >= 10.7 | 10.x | 21 | versions for cph5
 | 10.6.* | 10.x | 21 | running for chp4
 | 10.x | 10.x | 21 |
