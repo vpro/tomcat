@@ -55,6 +55,7 @@ WORKDIR $CATALINA_BASE
 # -   netcat: just for debugging. 'nc'.
 # -   apache2-utils: we use rotatelogs to rotate catalina.out
 # -   file: used by mediatools, generally useful
+# -   unzip: to unzip the ware in on build
 
 COPY eu-central-1-bundle.pem /tmp
 COPY importcerts.sh /tmp
@@ -66,7 +67,7 @@ RUN  keytool -list -cacerts > /tmp/cacerts.before && \
 # conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
-  apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file && \
+  apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
   rm -rf /var/lib/apt/lists/* && \
   mkdir -p /conf && \
   chmod 775 /conf
@@ -171,7 +172,7 @@ ONBUILD RUN (\
      mkdir -p ${CONTEXT} && \
      chmod 775 ${CONTEXT} && \
      cd ${CONTEXT} && \
-     jar xf /tmp/app.war && \
+     unzip /tmp/app.war && \
      rm /tmp/app.war &&\
      if [ "$CLUSTERING" == "true" ] ; then  \
          (cd ${CATALINA_BASE} && rm -r work && mkdir /data/work && chmod 2775 /data/work && ln -s /data/work work) && \
