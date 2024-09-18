@@ -35,7 +35,6 @@ export CATALINA_OPTS="$CATALINA_OPTS ${GarbageCollectionOption} -XX:MaxRAMPercen
 # Heap dumps may be quite large, if you need to create them on out of memory, start the pod with environment variable HeapDumpPath=/data (or so)
 if [[ ! -z "$HeapDumpPath" ]] ; then
   mkdir -p "${HeapDumpPath}"
-  chmod 775 "${HeapDumpPath}"
   export CATALINA_OPTS="$CATALINA_OPTS -XX:HeapDumpPath=${HeapDumpPath} -XX:+HeapDumpOnOutOfMemoryError"
 fi
 
@@ -51,7 +50,6 @@ export CATALINA_OPTS="$CATALINA_OPTS -Djava.util.prefs.userRoot=/data/prefs "
 CATALINA_LOGS=${CATALINA_BASE}/logs
 
 mkdir -p /data/logs
-chmod 2775 /data/logs
 
 # JMX
 JMX_PORT=$($dir/jmx.sh)
@@ -61,7 +59,6 @@ export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote=true -Dcom.s
 
 # gc logging
 mkdir -p ${CATALINA_LOGS}/gclogs/
-chmod 2775 ${CATALINA_LOGS}/gclogs/
 export CATALINA_OPTS="$CATALINA_OPTS -XX:NativeMemoryTracking=summary -Xlog:gc*=info:file=${CATALINA_LOGS}/gclogs/%t-gc.log:time,uptime,tags,level:filecount=10,filesize=10M"
 
 # crash logging

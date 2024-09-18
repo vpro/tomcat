@@ -9,7 +9,7 @@ ENV CATALINA_BASE=/usr/local/catalina-base
 # used in add-cluster.sed
 # generate one like this:
 # od  -vN "32" -An -tx1             /dev/urandom | tr -d " \n"
-ENV SECURE_ENCRYPTION_KEY=""
+ENV SECURE_ENCRYPTION_KEY="caec93ecb662c5b49c04723b3e8b0f33da64eaefeb3f426b22fe512687dc1a2a"
 
 # Jars containing web resources and TLD's, which we use here and there.
 ARG JARS_TO_SCAN="log4j-taglib*.jar,\
@@ -87,6 +87,7 @@ ENV ENV=/.binbash
 COPY binbash /.binbash
 
 # - Setting up timezone and stuff
+# - We run always with a user named 'application' with uid '1001'
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
   dpkg-reconfigure --frontend noninteractive tzdata
@@ -99,15 +100,8 @@ COPY bashrc /.bashrc
 # ' Failed to source defaults.vim' (even an empty vi config file like that avoid it)
 COPY exrc /.exrc
 
-# Clean up default /etc/bash.bashrc a bit (no call to groups)
-COPY bash.bashrc /etc/bash.bashrc
-
-
 # some files which might be needed during build
 ADD clustering /tmp/clustering
-
-RUN mkdir -p /data /data/logs && \
-  chmod 2775 /data /data/logs
 
 VOLUME "/data" "/conf"
 
@@ -118,7 +112,8 @@ CMD ["/usr/local/catalina-base/bin/start.sh"]
 # We want to split off catalina base, default it's catalina_home
 ADD catalina_base ${CATALINA_BASE}/
 
-RUN echo Catalina base: ${CATALINA_BASE} && \
+RUN  mkdir -p /data/logs  && \
+  echo Catalina base: ${CATALINA_BASE} && \
   for directory in 'webapps' 'work'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
       chmod 775 ${CATALINA_BASE}/$directory && \
@@ -126,22 +121,25 @@ RUN echo Catalina base: ${CATALINA_BASE} && \
   done && \
   rm -rf ${CATALINA_HOME}/webapps.dist && \
   chmod -R o-w ${CATALINA_HOME} && \
-  chmod -R g=u ${CATALINA_HOME} && \
+  chmod -R g=o ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
-  chmod -R g=u ${CATALINA_BASE} && \
+  chmod -R g=o ${CATALINA_BASE} && \
   mkdir -p  ${CATALINA_BASE}/conf/Catalina/localhost && \
   chmod 775 ${CATALINA_BASE}/conf/Catalina/localhost && \
   (cd ${CATALINA_BASE} && ln -s /data/logs logs) && \
   for directory in 'work'; do \
     mkdir -p ${CATALINA_BASE}/$directory && \
-    chmod 775 ${CATALINA_BASE}/$directory && \
-    chgrp -R 0 ${CATALINA_BASE}/$directory; \
+    chgrp -R 0 ${CATALINA_BASE}/$directory && \
+    chmod -R g=u ${CATALINA_BASE}/$directory; \
   done && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
-  (echo -e "vpro/tomcat git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") > /DOCKER.BUILD && \
-  (echo -n "vpro/tomcat build time=" ; date -Iseconds) >> /DOCKER.BUILD
+  addgroup  --system --gid 1001 application && \
+  adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
+  adduser application root && \
+  (echo -e "poms/tomcat git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") > /DOCKER.BUILD && \
+  (echo -n "poms/tomcat build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
 # The onbuild commands to install the application when this image is overlaid
 
@@ -169,7 +167,6 @@ ONBUILD RUN (\
      fi && \
      cd ${CATALINA_BASE}/webapps && \
      mkdir -p ${CONTEXT} && \
-     chmod 775 ${CONTEXT} && \
      cd ${CONTEXT} && \
      jar xf /tmp/app.war && \
      rm /tmp/app.war &&\
