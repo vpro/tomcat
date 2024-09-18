@@ -53,7 +53,8 @@ which then can be build this way:
 |version | tomcat | java | remarks
 | >= 10.10 | 10.x | 21 | available as ghcr.io/vpro/tomcat:10.x
 | >= 10.7 | 10.x | 21 | versions for cph5
-| 10.6.* | 10.x | 21 | running for chp4
+| >= 10.6.2 | 10.x | 21 | chp4 version available as ghcr.io/vpro/tomcat:10.6.x
+| 10.6.* | 10.x | 21 | running for chp4, mainly related to chown-settings for certain directories
 | 10.x | 10.x | 21 |
 | 9.x | >= 9.0.81 | 21  |
 | 4.x | 9.x | 21  |
