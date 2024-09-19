@@ -172,7 +172,7 @@ ONBUILD RUN (\
      mkdir -p ${CONTEXT} && \
      chmod 775 ${CONTEXT} && \
      cd ${CONTEXT} && \
-     unzip /tmp/app.war && \
+     unzip -q /tmp/app.war && \
      rm /tmp/app.war &&\
      if [ "$CLUSTERING" == "true" ] ; then  \
          (cd ${CATALINA_BASE} && rm -r work && mkdir /data/work && chmod 2775 /data/work && ln -s /data/work work) && \
