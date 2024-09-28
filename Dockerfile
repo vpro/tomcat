@@ -1,6 +1,5 @@
 FROM tomcat:10.1.30-jre21-temurin-jammy
 LABEL maintainer=digitaal-techniek@vpro.nl
-
 LABEL org.opencontainers.image.description="This tomcat image is used by poms and vpro statefull set deployments"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
@@ -152,6 +151,7 @@ ONBUILD ARG CONTEXT
 
 # Link to use in 404 page of tomcat
 ONBUILD ARG DOCLINK
+ONBUILD ENV DOCLINK=${DOCLINK}
 
 ONBUILD ARG JARS_TO_SCAN=UNSET
 ONBUILD ARG CLUSTERING
@@ -188,7 +188,7 @@ ONBUILD LABEL version="${PROJECT_VERSION}"
 
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
-  rm -rf /var/lib/apt/lists/* && \
+  apt-get clean && rm -rf /var/lib/apt/lists/* && \
   ( if [ "$JARS_TO_SCAN" != 'UNSET' ] ; then sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"   ${CATALINA_BASE}/conf/catalina.properties ; fi ) && \
   for errorfile in ${CATALINA_BASE}/errorpages/*.html  ; do \
     sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK:-https://wiki.vpro.nl/}'|g" ${errorfile} && \
