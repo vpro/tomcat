@@ -9,7 +9,7 @@ Generic tomcat base image that:
     - 'aptime': command line utility to show what's running
     - /usr/local/catalina-base/bin/start.sh custom start up script. Arranging gracefull shutdown.
     - /usr/local/catalina-base/bin/setenv.sh  picked up by tomcat
-    - /usr/local/catalina-base/bin/jmx.sh included by setenv.sh, but can also be used remotely for easy figuring out that relevant ports to forward are
+    - /usr/local/catalina-base/bin/jmx.sh included by setenv.sh, but can also be used remotely for easy figuring out what the relevant ports to forward are
     - has eu-central certificates in cacerts
 
 It is built and released using github actions, and available https://github.com/vpro/tomcat/pkgs/container/tomcat[via github packages]
@@ -22,7 +22,7 @@ You can build this locally like so:
 docker build -t vpro/tomcat:latest .
 ----
 
-Use e.g. with a Dockerfile like this"
+Use e.g. with a Dockerfile like this:
 
 ----
 ARG NAME=media-server
