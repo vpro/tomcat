@@ -30,7 +30,6 @@ ARG NAME=media-server
 FROM ghcr.io/vpro/tomcat:latest
 
 RUN apt-get -y install openssh-client sshpass
-
 ----
 
 which then can be build this way:
