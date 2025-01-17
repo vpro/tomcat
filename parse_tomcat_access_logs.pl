@@ -72,6 +72,6 @@ for my $file (@filelist)  {
 
 while(my($name, $counts) = each %result) {
   while(my($key, $count) = each %$counts) {
-    print ("$name\t$count\t$key\n");
+    print ("tomcat_access_$name\t$count\t$key\n");
   }
 }
