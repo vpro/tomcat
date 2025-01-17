@@ -102,6 +102,9 @@ COPY exrc /.exrc
 # Clean up default /etc/bash.bashrc a bit (no call to groups)
 COPY bash.bashrc /etc/bash.bashrc
 
+# A script that can parse our access logs
+COPY parse_tomcat_access_log.pl /
+
 
 # some files which might be needed during build
 ADD clustering /tmp/clustering
@@ -197,4 +200,3 @@ ONBUILD RUN apt-get update && apt-get -y upgrade && \
   (echo "${NAME} version=${PROJECT_VERSION}") >> /DOCKER.BUILD && \
   (echo -e "${NAME} git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") >> /DOCKER.BUILD && \
   (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
-
