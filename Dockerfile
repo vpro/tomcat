@@ -103,7 +103,7 @@ COPY exrc /.exrc
 COPY bash.bashrc /etc/bash.bashrc
 
 # A script that can parse our access logs
-COPY parse_tomcat_access_log.pl /
+COPY parse_tomcat_access_logs.pl /
 
 
 # some files which might be needed during build
