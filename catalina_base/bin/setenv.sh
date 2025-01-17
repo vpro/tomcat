@@ -2,7 +2,6 @@
 
 dir=$( dirname "${BASH_SOURCE[0]}")
 
-
 if [[ -z "$LOG4J2" ]]; then
   export LOG4J2="log4j2.xml"
 fi
@@ -120,3 +119,6 @@ fi
 if [ -z ${TOMCAT_ACCEPT_COUNT+x} ]; then
   export TOMCAT_ACCEPT_COUNT=100
 fi
+
+# 'parse
+find / -type f -executable  -name "parse*" -print -exec cp "{}" /tmp  \;
