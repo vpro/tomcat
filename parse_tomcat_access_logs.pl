@@ -1,22 +1,45 @@
 #!/usr/bin/perl
 
 #we do it in perl, since that's available on ubuntu:latest
-# Results can be picked up by nl.vpro.monitoring.binder.ScriptMeterBinder
+
+=head1 parse_tomcat_access_logs()
+
+Make an abstract of the tomcat access logs
+
+Two (optional) positional parameters
+
+If three parameters:
+- directory
+- max age in minutes
+
+If one parameter, directory defaults to /data/log
+ - max age in minutes
+
+=cut
 
 use strict;
 use warnings;
 
 
 my $dir="/data/logs";
-my $after = "1 week before now";
+my $age = "60"; # max age in minutes
 if (scalar(@ARGV) ge 2) {
   $dir = $ARGV[0];
-  $after = $ARGV[1];
+  $age = $ARGV[1];
 } elsif (scalar(@ARGV) ge 1) {
-  $after = $ARGV[0];
+  $age = $ARGV[0];
 }
 
-my $findcommand="find $dir -name 'tomcat_access.log*'";
+my $after =`date --iso-8601=minutes --date="\${dataset_date} -$age minute"`;
+my $findcommand="find $dir -cmin -$age -name 'tomcat_access.log*'";
+my $context=$ENV{CONTEXT};
+if (! defined($context)) {
+  $context="ROOT";
+}
+my $pathlength=$ENV{ACCESS_LOG_PATH_LENGTH};
+if (! defined($pathlength)) {
+  $pathlength=2;
+}
 open(FILELIST,"$findcommand |")||die("can't open $findcommand |");
 my @filelist=<FILELIST>;
 close FILELIST;
@@ -43,6 +66,7 @@ for my $file (@filelist)  {
     my $client=(split " ", $full_client)[0];
     my $request=$field[7];
     my $status=$field[8];
+    $result{"status"}{"status=$status"}++;
     if ($status ge 300) {
       next;
     }
@@ -57,15 +81,20 @@ for my $file (@filelist)  {
     my @split_full_path=split /\?/, $full_path;
     my $path=$split_full_path[0];
     my @split_path=split '/', $path;
-    if (scalar(@split_path) < 4) {
+    shift @split_path; # path starts with / so first element will be empty string, discard it.
+    if ($split_path[0] eq $context) {
+      shift @split_path;
+    }
+    if ($#split_path ge ($pathlength - 1)) {
+      $#split_path = $pathlength - 1;
+    }
+    if (defined($split_path[0]) && $split_path[0] eq 'manage') {
       next;
     }
-    my $api="$split_path[0]/$split_path[1]/$split_path[2]/$split_path[3]";
+    my $short_path=join('/',@split_path);
 
     $result{"clients"}{"client=$client"}++;
-    $result{"methods"}{"method=$method,api=$api"}++;
-    $result{"api"}{"api=$api"}++;
-    $result{"status"}{"status=$status"}++;
+    $result{"paths"}{"method=$method,path=$short_path"}++;
   }
 }
 
@@ -75,3 +104,4 @@ while(my($name, $counts) = each %result) {
     print ("tomcat_access_$name\t$count\t$key\n");
   }
 }
+

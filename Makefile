@@ -1,4 +1,6 @@
 .DEFAULT_GOAL := docker
+
+.PHONY: exec access_logs
 IMAGE := vpro/tomcat:dev
 
 help:     ## Show this help.
@@ -19,3 +21,6 @@ exec: ## Look around in the build image
 
 exectest:
 	docker run -it --entrypoint /bin/bash vpro/test:latest
+
+access_logs:
+	docker run -it --entrypoint /bin/bash -e CONTEXT=v1 -v $(PWD):/tmp -v /data:/data  $(IMAGE)
