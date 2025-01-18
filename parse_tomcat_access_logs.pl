@@ -6,14 +6,10 @@
 
 Make an abstract of the tomcat access logs
 
-Two (optional) positional parameters
+Parameters
 
-If three parameters:
-- directory
-- max age in minutes
+- max age in minutes (defaults to 1440, one day)
 
-If one parameter, directory defaults to /data/log
- - max age in minutes
 
 =cut
 
@@ -23,10 +19,7 @@ use warnings;
 
 my $dir="/data/logs";
 my $age = "60"; # max age in minutes
-if (scalar(@ARGV) ge 2) {
-  $dir = $ARGV[0];
-  $age = $ARGV[1];
-} elsif (scalar(@ARGV) ge 1) {
+if (scalar(@ARGV) ge 1) {
   $age = $ARGV[0];
 }
 
