@@ -1,14 +1,36 @@
 #!/usr/bin/perl
-
 #we do it in perl, since that's available on ubuntu:latest
+
+=encoding Big5
 
 =head1 parse_tomcat_access_logs()
 
-Make an abstract of the tomcat access logs
+Make an abstract of the tomcat access logs. This can be called manually,
+but it return format is also recognized by ScriptMeterBinder.java (in vpro-shared-monitoring) which will use it as gauges for micrometer.
 
 Parameters
 
-- max age in minutes (defaults to 1440, one day)
+=over 2
+
+=item - max age in minutes (defaults to 60, one hour)
+
+=back
+
+It will give of the number of requests per
+
+=over 2
+
+=item - method and (beginning of) the path
+
+=item - client
+
+=item - status code
+
+=item - what we might come up later
+
+=back
+
+January 2025 - Michiel Meeuwissen
 
 =cut
 
