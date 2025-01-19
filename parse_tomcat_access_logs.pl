@@ -10,7 +10,6 @@ Parameters
 
 - max age in minutes (defaults to 1440, one day)
 
-
 =cut
 
 use strict;
@@ -21,6 +20,10 @@ my $dir="/data/logs";
 my $age = "60"; # max age in minutes
 if (scalar(@ARGV) ge 1) {
   $age = $ARGV[0];
+}
+my $now="\${dateset_date}";
+if (scalar(@ARGV) ge 2) {
+  $now= $ARGV[1];
 }
 
 my $after =`date --iso-8601=minutes --date="\${dataset_date} -$age minute"`;

@@ -120,5 +120,3 @@ if [ -z ${TOMCAT_ACCEPT_COUNT+x} ]; then
   export TOMCAT_ACCEPT_COUNT=100
 fi
 
-# 'parse
-find / -type f -executable  -name "parse*" -print -exec cp "{}" /tmp  \;

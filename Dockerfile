@@ -89,7 +89,8 @@ COPY binbash /.binbash
 # - Setting up timezone and stuff
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-  dpkg-reconfigure --frontend noninteractive tzdata
+  dpkg-reconfigure --frontend noninteractive tzdata && \
+  mkdir -p /scripts
 
 
 # With bearable key bindings:
@@ -103,7 +104,7 @@ COPY exrc /.exrc
 COPY bash.bashrc /etc/bash.bashrc
 
 # A script that can parse our access logs
-COPY parse_tomcat_access_logs.pl /
+COPY parse_tomcat_access_logs.pl /scripts
 
 
 # some files which might be needed during build
