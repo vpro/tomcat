@@ -43,17 +43,22 @@ my $age = "60"; # max age in minutes
 if (scalar(@ARGV) ge 1) {
   $age = $ARGV[0];
 }
-my $now="\${dateset_date}";
-if (scalar(@ARGV) ge 2) {
-  $now= $ARGV[1];
-}
 
+# just determin current date minus age as a iso string
+# this can be used to compare agains date in access logs itself, and skip them if those are earlier
 my $after =`date --iso-8601=minutes --date="\${dataset_date} -$age minute"`;
+
+# no need to consider alder files
 my $findcommand="find $dir -cmin -$age -name 'tomcat_access.log*'";
+
+# in tomcat access logs the java application's 'context' may appear
+# which is for all entries the same (since we do only one application per tomcat)
+# so we remove it from the reports
 my $context=$ENV{CONTEXT};
 if (! defined($context)) {
   $context="ROOT";
 }
+# The path of the request is split, only this many entries are then used for reporting
 my $pathlength=$ENV{ACCESS_LOG_PATH_LENGTH};
 if (! defined($pathlength)) {
   $pathlength=2;
@@ -61,7 +66,6 @@ if (! defined($pathlength)) {
 open(FILELIST,"$findcommand |")||die("can't open $findcommand |");
 my @filelist=<FILELIST>;
 close FILELIST;
-
 
 my %result=();
 for my $file (@filelist)  {
@@ -74,7 +78,6 @@ for my $file (@filelist)  {
   }
 
   while(<$fh>){
-
     my @field=split /\t/;
     my $date=$field[0];
     if ($date lt $after) {
