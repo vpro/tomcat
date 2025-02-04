@@ -17,7 +17,7 @@ run:  ## Run the build image
 	docker run -i $(IMAGE)
 
 exec: ## Look around in the build image
-	docker run -it --entrypoint /bin/bash $(IMAGE)
+	docker run -it --entrypoint /bin/bash -v /data:/data $(IMAGE)
 
 exectest:
 	docker run -it --entrypoint /bin/bash vpro/test:latest
