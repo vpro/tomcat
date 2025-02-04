@@ -210,4 +210,4 @@ ONBUILD RUN apt-get update && apt-get -y upgrade && \
   (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
 
-USER tomcat
+ONBUILD USER tomcat
