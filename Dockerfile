@@ -63,6 +63,9 @@ RUN  keytool -list -cacerts > /tmp/cacerts.before && \
      bash -e /tmp/importcerts.sh && \
     keytool -list -cacerts > /tmp/cacerts.after
 
+# avoid warnings about that from debconf
+ARG DEBIAN_FRONTEND=noninteractive
+
 # conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
@@ -86,11 +89,11 @@ ENV LESSHISTFILE=/data/.lesshst
 ENV ENV=/.binbash
 COPY binbash /.binbash
 
-# avoid warnings about that from debconf
-ARG DEBIAN_FRONTEND=noninteractive
+
+
 
 # - Setting up timezone and stuff
-RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
+RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  dpkg-reconfigure --frontend noninteractiv dash && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
   dpkg-reconfigure --frontend noninteractive tzdata && \
   mkdir -p /scripts
