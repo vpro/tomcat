@@ -93,9 +93,9 @@ COPY binbash /.binbash
 
 
 # - Setting up timezone and stuff
-RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  dpkg-reconfigure --frontend noninteractiv dash && \
+RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  dpkg-reconfigure   dash && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-  dpkg-reconfigure --frontend noninteractive tzdata && \
+  dpkg-reconfigure  tzdata && \
   mkdir -p /scripts
 
 
