@@ -129,24 +129,20 @@ CMD ["/usr/local/catalina-base/bin/start.sh"]
 ADD catalina_base ${CATALINA_BASE}/
 
 RUN echo Catalina base: ${CATALINA_BASE} && \
-  for directory in 'webapps' 'work'; do \
-      mkdir -p ${CATALINA_BASE}/$directory && \
-      chmod 775 ${CATALINA_BASE}/$directory && \
-      rm -rf ${CATALINA_HOME}/$directory; \
-  done && \
   rm -rf ${CATALINA_HOME}/webapps.dist && \
   chmod -R o-w ${CATALINA_HOME} && \
-  chmod -R g=u ${CATALINA_HOME} && \
+  chmod -R g=o ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
-  chmod -R g=u ${CATALINA_BASE} && \
+  chmod -R g=o ${CATALINA_BASE} && \
   mkdir -p  ${CATALINA_BASE}/conf/Catalina/localhost && \
-  chmod 775 ${CATALINA_BASE}/conf/Catalina/localhost && \
-  (cd ${CATALINA_BASE} && ln -s /data/logs logs) && \
-  for directory in 'work'; do \
-    mkdir -p ${CATALINA_BASE}/$directory && \
-    chmod 775 ${CATALINA_BASE}/$directory && \
-    chgrp -R 0 ${CATALINA_BASE}/$directory; \
+  chmod 755 ${CATALINA_BASE}/conf/Catalina/localhost && \
+  for directory in 'webapps' 'work'; do \
+      mkdir -p ${CATALINA_BASE}/$directory && \
+      chmod 755 ${CATALINA_BASE}/$directory && \
+      rm -rf ${CATALINA_HOME}/$directory; \
   done && \
+  (cd ${CATALINA_HOME} && rm -rf temp && rm -rf logs) && \
+  (cd ${CATALINA_BASE} && ln -s /data/logs logs) && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
   mkdir ${CATALINA_BASE}/lib && \
   echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
@@ -154,7 +150,6 @@ RUN echo Catalina base: ${CATALINA_BASE} && \
   (echo -n "vpro/tomcat build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
 
-RUN useradd tomcat
 
 # The onbuild commands to install the application when this image is overlaid
 
@@ -187,7 +182,7 @@ ONBUILD RUN (\
      fi && \
      cd ${CATALINA_BASE}/webapps && \
      mkdir -p ${CONTEXT} && \
-     chmod 775 ${CONTEXT} && \
+     chmod 755 ${CONTEXT} && \
      cd ${CONTEXT} && \
      unzip -q /tmp/app.war && \
      rm /tmp/app.war &&\
@@ -216,4 +211,3 @@ ONBUILD RUN apt-get update && apt-get -y upgrade && \
   (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
 
 
-ONBUILD USER tomcat
