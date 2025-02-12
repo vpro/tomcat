@@ -86,6 +86,9 @@ ENV LESSHISTFILE=/data/.lesshst
 ENV ENV=/.binbash
 COPY binbash /.binbash
 
+# avoid warnings about that from debconf
+ARG DEBIAN_FRONTEND=noninteractive
+
 # - Setting up timezone and stuff
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
