@@ -138,9 +138,10 @@ RUN echo Catalina base: ${CATALINA_BASE} && \
   chmod 755 ${CATALINA_BASE}/conf/Catalina/localhost && \
   for directory in 'webapps' 'work'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
-      chmod 755 ${CATALINA_BASE}/$directory && \
       rm -rf ${CATALINA_HOME}/$directory; \
   done && \
+  chmod 755 ${CATALINA_BASE}/webapps && \
+  chmod 775 ${CATALINA_BASE}/work && \
   (cd ${CATALINA_HOME} && rm -rf temp && rm -rf logs) && \
   (cd ${CATALINA_BASE} && ln -s /data/logs logs) && \
   sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"  ${CATALINA_BASE}/conf/catalina.properties && \
