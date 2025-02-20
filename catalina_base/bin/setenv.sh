@@ -71,6 +71,9 @@ if [ "$ENVIRONMENT" == "test" ] ; then
   CATALINA_OPTS="$CATALINA_OPTS -ea"
 fi
 
+# mmbase sometimes
+export CATALINA_OPTS="$CATALINA_OPTS -Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true"
+
 
 # JPDA debugger  is arranged in catalina.sh
 export JPDA_ADDRESS=8000
