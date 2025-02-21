@@ -187,8 +187,8 @@ ONBUILD RUN (\
      cd ${CONTEXT} && \
      unzip -q /tmp/app.war && \
      rm /tmp/app.war &&\
+     (cd ${CATALINA_BASE} && rm -r work && mkdir /data/work && chmod 2775 /data/work && ln -s /data/work work) && \
      if [ "$CLUSTERING" == "true" ] ; then  \
-         (cd ${CATALINA_BASE} && rm -r work && mkdir /data/work && chmod 2775 /data/work && ln -s /data/work work) && \
          cp -f /tmp/clustering/context.xml ${CATALINA_BASE}/conf/context.xml && \
          sed -E -i -f /tmp/clustering/add-cluster.sed  ${CATALINA_BASE}/conf/server.xml && \
          if [ "$COPY_TESTS" == "true" ] ; then cp /tmp/clustering/test-clustering.jspx .; fi ; \
