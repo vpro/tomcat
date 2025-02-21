@@ -72,7 +72,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN set -eux && \
   apt-get update && \
-  apt-get --reinstall install qemu libc-bin && \
   apt-get -y upgrade && \
   apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
   rm -rf /var/lib/apt/lists/* && \

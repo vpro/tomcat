@@ -57,8 +57,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          #platforms: linux/amd64
-          platforms: linux/amd64,linux/arm64 #segmentation fault?
+          platforms: linux/amd64
+          #platforms: linux/amd64,linux/arm64 #segmentation fault? Try later again, it must be some kernel bug, I think
           build-args: |
             CI_COMMIT_REF_NAME=${{ github.ref_name }}
             CI_COMMIT_SHA=${{ github.sha }}
