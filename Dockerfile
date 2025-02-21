@@ -67,10 +67,12 @@ RUN  keytool -list -cacerts > /tmp/cacerts.before && \
 ARG DEBIAN_FRONTEND=noninteractive
 
 # conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
+
 # reinstall libc-bin  to avoid segmentation fault on arm?
+RUN rm /var/cache/ldconfig/aux-cache && /sbin/ldconfig
+
 RUN set -eux && \
   apt-get update && \
-  apt-get --reinstall install libc-bin && \
   apt-get -y upgrade && \
   apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
   rm -rf /var/lib/apt/lists/* && \
