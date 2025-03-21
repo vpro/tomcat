@@ -17,6 +17,7 @@ log4javascript*.jar,\
 slf4j-taglib*.jar,\
 log4j-taglib*.jar,\
 vpro-shared-swagger*.jar,\
+vpro-shared-monitoring*.jar,\
 swagger-ui*,\
 jstl*.jar,\
 jakarta.servlet.jsp.jstl*.jar,\
