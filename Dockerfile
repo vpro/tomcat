@@ -10,7 +10,7 @@ ENV CATALINA_BASE=/usr/local/catalina-base
 # od  -vN "32" -An -tx1             /dev/urandom | tr -d " \n"
 ENV SECURE_ENCRYPTION_KEY=""
 
-# Jars containing web resources and TLD's, which we use here and there.
+# Jars containing web resources (like web-fragments) and TLD's, which we use here and there.
 ARG JARS_TO_SCAN="log4j-taglib*.jar,\
 log4j-web*.jar,\
 log4javascript*.jar,\
@@ -18,6 +18,7 @@ slf4j-taglib*.jar,\
 log4j-taglib*.jar,\
 vpro-shared-swagger*.jar,\
 vpro-shared-monitoring*.jar,\
+spring-web*.jar,\
 swagger-ui*,\
 jstl*.jar,\
 jakarta.servlet.jsp.jstl*.jar,\
