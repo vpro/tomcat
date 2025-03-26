@@ -103,7 +103,7 @@ for my $file (@filelist)  {
     my $path=$split_full_path[0];
     my @split_path=split '/', $path;
     shift @split_path; # path starts with / so first element will be empty string, discard it.
-    if ($split_path[0] eq $context) {
+    if ( @split_path != 0 && $split_path[0] eq "$context" ) {
       shift @split_path;
     }
     if ($#split_path ge ($pathlength - 1)) {
