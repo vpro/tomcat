@@ -41,9 +41,26 @@ start() {
   cat $version_file
 
   # TODO this is only tested with 'run', not with 'start'. If that would be a use case?
-  ARGS=$([ "$CATALINA_ARGS" == "" ] && echo "jpda run" || echo "$CATALINA_ARGS")
-  echo "$(gdate) Effective catalina arguments: '${ARGS}'" >> ${APPLICATION_OUT}
-  catalina.sh ${ARGS} | (echo $! > ${CATALINA_PID}; /usr/bin/rotatelogs -L ${APPLICATION_OUT} -f  ${APPLICATION_OUT}.%Y-%m-%d 86400) &
+
+
+  # e.g. enable debugging only on first pod: CATALINA_DEBUG_EVAL='[[ $POD_NAME == *-0 ]] && echo true || echo false'
+  if [[ "${CATALINA_DEBUG_EVAL}" ]] ; then
+    echo "Found catalina debug ${CATALINA_DEBUG_EVAL}"
+    # shellcheck disable=SC2155
+    export CATALINA_DEBUG=$(eval $CATALINA_DEBUG_EVAL)
+  fi
+
+  if [ -z ${CATALINA_ARGS+x} ] ; then
+    echo "CATALINA_DEBUG ${CATALINA_DEBUG}"
+    if [ "$CATALINA_DEBUG" == "false" ] ; then
+      export CATALINA_ARGS="run"
+    else
+      export CATALINA_ARGS="jpda run"
+    fi
+  fi
+
+  echo "$(gdate) Effective catalina arguments: '${CATALINA_ARGS}'" >> ${APPLICATION_OUT}
+  catalina.sh ${CATALINA_ARGS} | (echo $! > ${CATALINA_PID}; /usr/bin/rotatelogs -L ${APPLICATION_OUT} -f  ${APPLICATION_OUT}.%Y-%m-%d 86400) &
 
    # Tail everything to stdout, so it will be picked up by kibana
    tail -F "${APPLICATION_OUT}" --pid $$  2>/dev/null & tailPid=$!
