@@ -75,9 +75,15 @@ fi
 export CATALINA_OPTS="$CATALINA_OPTS -Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true"
 
 
-# JPDA debugger  is arranged in catalina.sh
-export JPDA_ADDRESS=8000
-export JPDA_TRANSPORT=dt_socket
+if [ -z ${CATALINA_ARGS+x} ] ; then
+  CATALINA_ARGS="jpda run"
+fi
+
+if [[ $CATALINA_ARGS == *"jpda"* ]]; then
+  # JPDA debugger  is arranged in catalina.sh
+  export JPDA_ADDRESS=8000
+  export JPDA_TRANSPORT=dt_socket
+fi
 
 
 # The complete container is dedicated to tomcat, so lets also use its tmp dir
