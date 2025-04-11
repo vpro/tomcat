@@ -14,7 +14,7 @@ dockertest: ## Builds test image locally
 	(cd test ; docker build --build-arg CI_COMMIT_REF_NAME=`git branch --show-current` --build-arg CI_COMMIT_SHA=`git rev-parse HEAD`  --build-arg CLUSTERING=true -t vpro/test:latest . )
 
 run:  ## Run the build image
-	docker run -i $(IMAGE)
+	docker run -e CATALINA_DEBUG_EVAL='[[ $$POD_NAME == *-0 ]] && echo true || echo false' -e POD_NAME=test-1  -i $(IMAGE)
 
 exec: ## Look around in the build image
 	docker run -it --entrypoint /bin/bash -v /data:/data $(IMAGE)

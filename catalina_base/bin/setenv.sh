@@ -71,13 +71,24 @@ if [ "$ENVIRONMENT" == "test" ] ; then
   CATALINA_OPTS="$CATALINA_OPTS -ea"
 fi
 
-# mmbase sometimes
-export CATALINA_OPTS="$CATALINA_OPTS -Dorg.apache.el.parser.SKIP_IDENTIFIER_CHECK=true"
+# e.g. enable debugging only on first pod: CATALINA_DEBUG_EVAL='[[ $POD_NAME == *-0 ]] && echo true || echo false'
+if [[ "${CATALINA_DEBUG_EVAL}" ]] ; then
+  echo "Found catalina debug ${CATALINA_DEBUG_EVAL}"
+  # shellcheck disable=SC2155
+  export CATALINA_DEBUG=$(eval $CATALINA_DEBUG_EVAL)
+fi
+
 
 
 if [ -z ${CATALINA_ARGS+x} ] ; then
-  CATALINA_ARGS="jpda run"
+  echo "CATALINA_DEBUG ${CATALINA_DEBUG}"
+  if [ "$CATALINA_DEBUG" == "false" ] ; then
+     export CATALINA_ARGS="run"
+  else
+     export CATALINA_ARGS="jpda run"
+  fi
 fi
+echo "CATALINA ARGS: ${CATALINA_ARGS}"
 
 if [[ $CATALINA_ARGS == *"jpda"* ]]; then
   # JPDA debugger  is arranged in catalina.sh
