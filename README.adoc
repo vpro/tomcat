@@ -11,6 +11,10 @@ Generic tomcat base image that:
     - /usr/local/catalina-base/bin/setenv.sh  picked up by tomcat
     - /usr/local/catalina-base/bin/jmx.sh included by setenv.sh, but can also be used remotely for easy figuring out what the relevant ports to forward are
     - has eu-central certificates in cacerts
+. Recognizes some more other environment variables
+  - `CATALINA_DEBUG`: <true|false> If true jpda debugging is enabled. Only accessible from localhost so it would require tunneling to access it.
+  - `CATALINA_DEBUG_EVAL`: e.g. '`[[ $POD_NAME == *-0 ]] && echo true || echo false'` to have debug enable only on first pod.
+ -
 
 It is built and released using github actions, and available https://github.com/vpro/tomcat/pkgs/container/tomcat[via github packages]
 
