@@ -10,6 +10,7 @@ ENV CATALINA_BASE=/usr/local/catalina-base
 # od  -vN "32" -An -tx1             /dev/urandom | tr -d " \n"
 ENV SECURE_ENCRYPTION_KEY=""
 
+
 # Jars containing web resources (like web-fragments) and TLD's, which we use here and there.
 ARG JARS_TO_SCAN="log4j-taglib*.jar,\
 log4j-web*.jar,\
@@ -116,6 +117,7 @@ COPY exrc /.exrc
 COPY bash.bashrc /etc/bash.bashrc
 
 # A script that can parse our access logs
+ENV MONITORING_HAS_SCRIPTS=true
 COPY parse_tomcat_access_logs.pl /scripts
 
 
