@@ -58,7 +58,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           #platforms: linux/amd64
-          platforms: linux/amd64,linux/arm64 #segmentation fault? Try later again, it must be some kernel bug, I think
+          platforms: linux/amd64,linux/arm64
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=This tomcat image is used by poms and vpro stateful set deployments
           build-args: |
             CI_COMMIT_REF_NAME=${{ github.ref_name }}
             CI_COMMIT_SHA=${{ github.sha }}
