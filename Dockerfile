@@ -1,5 +1,5 @@
 FROM tomcat:10.1.43-jre21-temurin-jammy
-LABEL maintainer=digitaal-techniek@vpro.nl
+LABEL maintainer=digitaal-techniek@vpro.nl,michiel@mmprogrami.nl
 LABEL org.opencontainers.image.description="This tomcat image is used by poms and vpro statefull set deployments"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
