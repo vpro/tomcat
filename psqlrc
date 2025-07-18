@@ -1,1 +1,3 @@
 set time zone 'europe/amsterdam'
+\pset null '<null>'
+\set HISTSIZE 2000

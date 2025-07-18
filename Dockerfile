@@ -114,6 +114,8 @@ COPY bashrc /.bashrc
 # ' Failed to source defaults.vim' (even an empty vi config file like that avoid it)
 COPY exrc /.exrc
 
+COPY psqlrc /.psqlrc
+
 # Clean up default /etc/bash.bashrc a bit (no call to groups)
 COPY bash.bashrc /etc/bash.bashrc
 
