@@ -15,6 +15,7 @@
       server="Tomcat ${TOMCAT_MAJOR} ${HOSTNAME}"
       scheme="https"
       disableUploadTimeout="true"
+      URIEncoding="UTF-8"
       relaxedQueryChars="${TOMCAT_RELAXED_QUERY_CHARS}"
       relaxedPathChars="${TOMCAT_RELAXED_PATH_CHARS}"
       encodedSolidusHandling="${TOMCAT_ENCODED_SOLIDUS_HANDLING}"

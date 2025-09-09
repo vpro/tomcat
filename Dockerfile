@@ -1,4 +1,4 @@
-FROM tomcat:10.1.44-jre21-temurin-jammy
+FROM tomcat:10.1.45-jre21-temurin-jammy
 LABEL maintainer="digitaal-techniek@vpro.nl,michiel@mmprogrami.nl"
 LABEL org.opencontainers.image.source=https://github.com/vpro/tomcat
 LABEL org.opencontainers.image.description="This tomcat image is used by poms and vpro stateful set deployments"
