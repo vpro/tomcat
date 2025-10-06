@@ -79,7 +79,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN set -eux && \
   apt-get update && \
   apt-get -y upgrade && \
-  apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
+  apt-get -qq -y install --no-install-recommend less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
   rm -rf /var/lib/apt/lists/* && \
   mkdir -p /conf && \
   chmod 755 /conf
