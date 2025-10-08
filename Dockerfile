@@ -62,8 +62,9 @@ WORKDIR $CATALINA_BASE
 # -   file: used by mediatools, generally useful
 # -   unzip: to unzip the war  on build
 
-COPY eu-central-1-bundle.pem /tmp
-COPY importcerts.sh /tmp
+
+# some files which might be needed during build
+COPY clustering  eu-central-1-bundle.pem   importcerts.sh /tmp/
 
 RUN  keytool -list -cacerts > /tmp/cacerts.before && \
      bash -e /tmp/importcerts.sh && \
@@ -79,7 +80,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN set -eux && \
   apt-get update && \
   apt-get -y upgrade && \
-  apt-get -qq -y install --no-install-recommend less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
+  apt-get -qq -y install --no-install-recommends less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
   rm -rf /var/lib/apt/lists/* && \
   mkdir -p /conf && \
   chmod 755 /conf
@@ -97,10 +98,16 @@ ENV LESSHISTFILE=/data/.lesshst
 
 # 'When invoked as an interactive shell with the name sh, Bash looks for the variable ENV, expands its value if it is defined, and uses the expanded value as the name of a file to read and execute'
 ENV ENV=/.binbash
-COPY binbash /.binbash
 
 
+#.bashrc: And a nicer bash prompt
+#.exrc:  Failed to source defaults.vim' (even an empty vi config file like that avoid it)
 
+COPY .binbash .bashrc .exrc .psqlrc /
+
+# bash.bashrc: Clean up a bit (no call to groups)
+# inputrc: With bearable key bindings:
+COPY inputrc bash.bashrc /etc/
 
 # - Setting up timezone and stuff
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  dpkg-reconfigure   dash && \
@@ -109,25 +116,11 @@ RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  dpkg-reconfig
   mkdir -p /scripts
 
 
-# With bearable key bindings:
-COPY inputrc /etc
-# And a nicer bash prompt
-COPY bashrc /.bashrc
-# ' Failed to source defaults.vim' (even an empty vi config file like that avoid it)
-COPY exrc /.exrc
-
-COPY psqlrc /.psqlrc
-
-# Clean up default /etc/bash.bashrc a bit (no call to groups)
-COPY bash.bashrc /etc/bash.bashrc
 
 # A script that can parse our access logs
 ENV MONITORING_HAS_SCRIPTS=true
 COPY parse_tomcat_access_logs.pl /scripts
 
-
-# some files which might be needed during build
-ADD clustering /tmp/clustering
 
 RUN mkdir -p /data /data/logs && \
   chmod 2775 /data /data/logs
