@@ -66,67 +66,57 @@ WORKDIR $CATALINA_BASE
 # some files which might be needed during build
 COPY clustering  eu-central-1-bundle.pem   importcerts.sh /tmp/
 
-RUN  keytool -list -cacerts > /tmp/cacerts.before && \
-     bash -e /tmp/importcerts.sh && \
-    keytool -list -cacerts > /tmp/cacerts.after
 
 # avoid warnings about that from debconf
 ARG DEBIAN_FRONTEND=noninteractive
-
-# conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
-
-# reinstall libc-bin  to avoid segmentation fault on arm?
-
-RUN set -eux && \
-  apt-get update && \
-  apt-get -y upgrade && \
-  apt-get -qq -y install --no-install-recommends less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
-  rm -rf /var/lib/apt/lists/* && \
-  mkdir -p /conf && \
-  chmod 755 /conf
-
-
-# Have a workable shell
-SHELL ["/bin/bash", "-c"]
-
 ENV TZ=Europe/Amsterdam
 ENV PGTZ=Europe/Amsterdam
 ENV HISTFILE=/data/.bash_history
 ENV PSQL_HISTORY=/data/.pg_history
 ENV PSQL_EDITOR=/usr/bin/vi
 ENV LESSHISTFILE=/data/.lesshst
-
 # 'When invoked as an interactive shell with the name sh, Bash looks for the variable ENV, expands its value if it is defined, and uses the expanded value as the name of a file to read and execute'
 ENV ENV=/.binbash
 
-
 #.bashrc: And a nicer bash prompt
 #.exrc:  Failed to source defaults.vim' (even an empty vi config file like that avoid it)
-
 COPY .binbash .bashrc .exrc .psqlrc /
 
 # bash.bashrc: Clean up a bit (no call to groups)
 # inputrc: With bearable key bindings:
 COPY inputrc bash.bashrc /etc/
 
-# - Setting up timezone and stuff
-RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  dpkg-reconfigure   dash && \
-  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-  dpkg-reconfigure  tzdata && \
-  mkdir -p /scripts
+
+RUN  keytool -list -cacerts > /tmp/cacerts.before && \
+     bash -e /tmp/importcerts.sh && \
+     keytool -list -cacerts > /tmp/cacerts.after && \
+     set -eux && \
+     apt-get update && \
+     apt-get -y upgrade && \
+     apt-get -qq -y install --no-install-recommends less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
+     rm -rf /var/lib/apt/lists/* && \
+     mkdir -p /conf && \
+     chmod 755 /conf && \
+     echo  Setting up timezone and stuff && \
+     echo "dash dash/sh boolean false" | debconf-set-selections &&  dpkg-reconfigure   dash && \
+     ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+     dpkg-reconfigure  tzdata && \
+     mkdir -p /scripts && \
+     mkdir -p /data /data/logs && \
+     chmod 2775 /data /data/logs
+
+# conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
+# reinstall libc-bin  to avoid segmentation fault on arm?
 
 
+# Have a workable shell
+SHELL ["/bin/bash", "-c"]
 
 # A script that can parse our access logs
 ENV MONITORING_HAS_SCRIPTS=true
 COPY parse_tomcat_access_logs.pl /scripts
 
-
-RUN mkdir -p /data /data/logs && \
-  chmod 2775 /data /data/logs
-
 VOLUME "/data" "/conf"
-
 # note that this is unused in helm, it then uses container.command
 CMD ["/usr/local/catalina-base/bin/start.sh"]
 #CMD ["catalina.sh", "run"]
