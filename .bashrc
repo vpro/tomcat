@@ -17,7 +17,7 @@ export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 # convert millis since epoch or seconds since epoch (for small numbers) to iso date time
 # shows current time in millis since epoch if no input
 # handy since our json contains millis since epoch
-function ts() {
+function timestamp() {
     input=$1
     re='^[0-9]+L?$' # optionally postfixed with L (as a java constant)
     if [[ $input == "" ]] ; then
