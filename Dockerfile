@@ -1,6 +1,6 @@
 #FROM tomcat:10.1.46-jre21-temurin-noble
 # this jammy image is actually smaller, so why not..
-FROM tomcat:10.1.47-jre25-temurin-jammy
+FROM tomcat:10.1.48-jre25-temurin-jammy
 LABEL maintainer="digitaal-techniek@vpro.nl,michiel@mmprogrami.nl"
 LABEL org.opencontainers.image.source=https://github.com/vpro/tomcat
 LABEL org.opencontainers.image.description="This tomcat image is used by poms and vpro stateful set deployments"
