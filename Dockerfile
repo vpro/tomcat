@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1-labs
+
 #FROM tomcat:10.1.46-jre21-temurin-noble
 # this jammy image is actually smaller, so why not..
 FROM tomcat:10.1.48-jre25-temurin-jammy
@@ -64,7 +66,7 @@ WORKDIR $CATALINA_BASE
 
 
 # some files which might be needed during build
-COPY clustering  eu-central-1-bundle.pem   importcerts.sh /tmp/
+COPY --parents clustering eu-central-1-bundle.pem   importcerts.sh /tmp/
 
 
 # avoid warnings about that from debconf
