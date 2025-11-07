@@ -1,6 +1,9 @@
 = vpro-tomcat
 :toc:
 
+image:https://github.com/vpro/tomcat/actions/workflows/docker-publish.yml/badge.svg[Build Status,link=https://github.com/vpro/tomcat/actions/workflows/docker-publish.yml]
+
+
 Generic tomcat base image that:
 
 . Separates CATALINA_BASE
