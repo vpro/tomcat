@@ -86,7 +86,7 @@ close FILELIST;
 
 my %result=();
 for my $file (@filelist)  {
-  print $file;
+  #print $file;
   my $fh;
   if ($file =~ /.gz$/) {
     open($fh, "gunzip -c $file |") or die $!;
@@ -146,9 +146,12 @@ for my $file (@filelist)  {
 }
 
 
-while(my($name, $counts) = each %result) {
-  while(my($key, $count) = each %$counts) {
-    print ("tomcat_access_$name\t$count\t$key\n");
+for my $name (sort keys %result) {
+  my $counts = $result{$name};
+  for my $key (sort { $counts->{$b} <=> $counts->{$a} } keys %$counts) {
+    my $count = $counts->{$key} + 0;
+    print "tomcat_access_$name\t$count\t$key\n";
   }
+  #print "\n";
 }
 
