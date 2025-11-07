@@ -1,8 +1,5 @@
 #!/usr/bin/perl
 #we do it in perl, since that's available on ubuntu:latest
-
-=encoding Big5
-
 =head1 parse_tomcat_access_logs()
 
 Make an abstract of the tomcat access logs. This can be called manually,
@@ -63,13 +60,17 @@ my $pathlength=$ENV{ACCESS_LOG_PATH_LENGTH};
 if (! defined($pathlength)) {
   $pathlength=2;
 }
+
+my $aggregations = $ENV{ACCESS_LOG_AGGREGATIONS};
+
+
 open(FILELIST,"$findcommand |")||die("can't open $findcommand |");
 my @filelist=<FILELIST>;
 close FILELIST;
 
 my %result=();
 for my $file (@filelist)  {
-  #print $file;
+  print $file;
   my $fh;
   if ($file =~ /.gz$/) {
     open($fh, "gunzip -c $file |") or die $!;
@@ -98,6 +99,12 @@ for my $file (@filelist)  {
       next;
     }
     my $full_path=$split_request[1];
+
+    if (defined($aggregations)) {
+      $_ = $full_path;
+      eval($aggregations);
+      $full_path = $_;
+    }
 
     my @split_full_path=split /\?/, $full_path;
     my $path=$split_full_path[0];
