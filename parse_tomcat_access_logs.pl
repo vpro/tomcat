@@ -13,6 +13,17 @@ Parameters
 
 =back
 
+Configurations
+
+=over 2
+
+=item  ACCESS_LOG_AGGREGATIONS=perl script working on the 'full path' (in $_)
+ e.g. 's|^(.*)/api/media/[^/]+|"$1/api/media/<mid>"|e;s|^(.*) /api/subtitles/[^/]+|"$1/api/subtitles/<mid>"|e;s|^(.*)/api/schedule/ancestor/[^/]+|"$1/api/schedule/ancestor/<mid>"|e'
+
+=item ACCESS_LOG_PATH_LENGTH=2
+
+=back
+
 It will give of the number of requests per
 
 =over 2
