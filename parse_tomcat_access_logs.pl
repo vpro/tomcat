@@ -72,8 +72,13 @@ if (! defined($pathlength)) {
   $pathlength=2;
 }
 
-my $aggregations = $ENV{ACCESS_LOG_AGGREGATIONS};
-
+my @aggregations = ();
+if (defined $ENV{ACCESS_LOG_AGGREGATIONS}) {
+    for my $aggregation (split /\s*;\s*/, $ENV{ACCESS_LOG_AGGREGATIONS}) {
+      next unless length $aggregation;
+      push @aggregations, ($aggregation . ";");
+    }
+}
 
 open(FILELIST,"$findcommand |")||die("can't open $findcommand |");
 my @filelist=<FILELIST>;
@@ -111,10 +116,13 @@ for my $file (@filelist)  {
     }
     my $full_path=$split_request[1];
 
-    if (defined($aggregations)) {
+    for my $aggregation (@aggregations) {
       $_ = $full_path;
-      eval($aggregations);
-      $full_path = $_;
+      eval($aggregation);
+      if ($full_path ne $_) {
+        $full_path = $_;
+        last;
+      }
     }
 
     my @split_full_path=split /\?/, $full_path;
