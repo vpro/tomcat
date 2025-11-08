@@ -1,0 +1,31 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="parse tomcat" type="#PerlConfigurationType" factoryName="Perl" show_console_on_std_err="false" show_console_on_std_out="false">
+    <option name="allowRunningInParallel" value="false" />
+    <option name="alternativeSdkName" />
+    <option name="compileTimeBreakpointsEnabled" value="false" />
+    <option name="consoleCharset" value="UTF-8" />
+    <option name="envs">
+      <map>
+        <entry key="ACCESS_LOG_AGGREGATIONS" value="s|^(.*)/api/media/\b(^changes\|multiple\|redirects\|iterate)\b?.*|&quot;$1/api/media/&lt;mid&gt;&quot;|e; \  s|^(.*)/api/media/\b(^changes\|multiple\|redirects\|iterate)\b?.*|&quot;$1/api/media/&lt;mid&gt;&quot;|e; s|^(.*)/api/subtitles/[^/]+|&quot;$1/api/subtitles/&lt;mid&gt;&quot;|e; s|^(.*)/api/schedule/ancestor/[^/]+|&quot;$1/api/schedule/ancestor/&lt;mid&gt;&quot;|e; s|^(.*)/api/schedule/ancestor/[^/]+|&quot;$1/api/schedule/ancestor/&lt;mid&gt;&quot;|e; ;ACCESS_LOG_PATH_LENGTH=4" />
+        <entry key="ACCESS_LOG_PATH_LENGTH" value="4" />
+        <entry key="CONTEXT" value="v1" />
+      </map>
+    </option>
+    <option name="initCode" value="" />
+    <option name="nonInteractiveModeEnabled" value="false" />
+    <option name="passParentEnvs" value="true" />
+    <option name="perlArguments" value="" />
+    <option name="programParameters" value="100000" />
+    <option name="projectPathOnTarget" />
+    <option name="requiredModules" value="" />
+    <option name="scriptCharset" value="utf8" />
+    <option name="scriptPath" value="$PROJECT_DIR$/parse_tomcat_access_logs.pl" />
+    <option name="selectedOptions">
+      <list />
+    </option>
+    <option name="startMode" value="RUN" />
+    <option name="useAlternativeSdk" value="false" />
+    <option name="workingDirectory" value="" />
+    <method v="2" />
+  </configuration>
+</component>
