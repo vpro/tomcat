@@ -116,6 +116,8 @@ SHELL ["/bin/bash", "-c"]
 
 # A script that can parse our access logs
 ENV MONITORING_HAS_SCRIPTS=true
+ENV PATH=/scripts:$PATH
+
 COPY parse_tomcat_access_logs.pl /scripts
 
 VOLUME "/data" "/conf"
