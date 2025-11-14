@@ -1,4 +1,6 @@
+\set QUIET on
 set time zone 'europe/amsterdam';
 set intervalstyle=iso_8601;
 \set HISTSIZE 1000000
 \setenv PAGER 'less -SFi'
+\set QUIET off
