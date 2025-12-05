@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #we do it in perl, since that's available on ubuntu:latest
 =head1 parse_tomcat_access_logs()
 
@@ -44,6 +44,7 @@ January 2025 - Michiel Meeuwissen
 
 use strict;
 use warnings;
+use POSIX qw(strftime);
 
 
 my $dir="/data/logs";
@@ -142,6 +143,8 @@ for my $file (@filelist)  {
 
     $result{"clients"}{"client=$client"}++;
     $result{"paths"}{"method=$method,path=$short_path"}++;
+
+    #print  "$short_path : ". $result{"paths"}{"method=$method,path=$short_path"} . "\n";
   }
 }
 
@@ -154,4 +157,5 @@ for my $name (sort keys %result) {
   }
   #print "\n";
 }
+#print "done";
 
