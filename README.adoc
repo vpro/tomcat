@@ -57,6 +57,7 @@ which then can be build this way:
 
 |===
 |version | tomcat | java | remarks
+| >= 11.0 | 11.x | 25 | 
 | >= 10.36 | 10.x | 25 | 
 | >= 10.18 | 10.x | 21 | using jre rather than jdk, which makes the image smaller.
 | >= 10.10 | 10.x | 21 | available as ghcr.io/vpro/tomcat:10.x
