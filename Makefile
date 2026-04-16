@@ -16,6 +16,9 @@ dockertest: ## Builds test image locally
 run:  ## Run the build image
 	docker run -e CATALINA_DEBUG_EVAL='[[ $$POD_NAME == *-0 ]] && echo true || echo false' -e POD_NAME=test-0  -i $(IMAGE)
 
+compose:
+	docker compose -f docker-compose.yaml up --build
+
 exec: ## Look around in the build image
 	docker run -it --entrypoint /bin/bash -v /data:/data $(IMAGE)
 

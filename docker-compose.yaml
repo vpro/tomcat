@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+
+    environment:
+      CATALINA_ARGS: run
+      POD_NAME: test-compose-0
+      JMX_PORT: 3600
+    ports:
+      - "8080:8080"
+      - "3600:3600"
+      - "8000:8000"
+    container_name: tomcat
+    restart: always
