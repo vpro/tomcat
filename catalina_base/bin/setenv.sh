@@ -121,3 +121,7 @@ if [ -z ${TOMCAT_ACCEPT_COUNT+x} ]; then
   export TOMCAT_ACCEPT_COUNT=100
 fi
 
+if [ -z ${TOMCAT_EXECUTOR+x} ]; then
+  export TOMCAT_EXECUTOR=tomcat-virtual-thread-executor
+fi
+

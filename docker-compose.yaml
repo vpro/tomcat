@@ -9,6 +9,8 @@ services:
       CATALINA_ARGS: run
       POD_NAME: test-compose-0
       JMX_PORT: 3600
+      # set this to empty string to disable to unuse the virtual threads executor
+      #TOMCAT_EXECUTOR: ""
     ports:
       - "8080:8080"
       - "3600:3600"

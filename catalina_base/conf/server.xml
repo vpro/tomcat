@@ -23,6 +23,7 @@
       relaxedPathChars="${TOMCAT_RELAXED_PATH_CHARS}"
       encodedSolidusHandling="${TOMCAT_ENCODED_SOLIDUS_HANDLING}"
       allowBackslash="false"
+      executor="${TOMCAT_EXECUTOR:-tomcat-virtual-thread-executor}"
     />
 
     <Engine name="Catalina" defaultHost="localhost">
