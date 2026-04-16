@@ -4,6 +4,8 @@
   <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
 
   <Service name="Catalina">
+    <Executor className="org.apache.catalina.core.StandardVirtualThreadExecutor" />
+
     <Connector
       port="8080"
       protocol="HTTP/1.1"
