@@ -34,7 +34,9 @@
         name="localhost"
         appBase="webapps"
         unpackWARs="false"
-        autoDeploy="false">
+        autoDeploy="false"
+        createDirs="false"
+      >
 
         <Valve className="org.apache.catalina.valves.ErrorReportValve"
                errorCode.404="errorpages/404.html"

@@ -2,7 +2,7 @@
 
 #FROM tomcat:10.1.46-jre21-temurin-noble
 # this jammy image is actually smaller, so why not..
-FROM tomcat:11.0.22-jre25-temurin-jammy
+FROM tomcat:11.0.23-jre25-temurin-jammy
 LABEL maintainer="digitaal-techniek@vpro.nl,michiel@mmprogrami.nl"
 LABEL org.opencontainers.image.source=https://github.com/vpro/tomcat
 LABEL org.opencontainers.image.description="This tomcat image is used by poms and vpro stateful set deployments"
@@ -107,7 +107,6 @@ RUN  keytool -list -cacerts > /tmp/cacerts.before && \
      mkdir -p /data /data/logs && \
      chmod 2775 /data /data/logs
 
-# conf/Catalina/localhost Otherwise 'Unable to create directory for deployment: [/usr/local/catalina-base/conf/Catalina/localhost]'
 # reinstall libc-bin  to avoid segmentation fault on arm?
 
 
@@ -134,8 +133,6 @@ RUN echo Catalina base: ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_HOME} && \
   chmod -R o-w ${CATALINA_BASE} && \
   chmod -R g=o ${CATALINA_BASE} && \
-  mkdir -p  ${CATALINA_BASE}/conf/Catalina/localhost && \
-  chmod 755 ${CATALINA_BASE}/conf/Catalina/localhost && \
   for directory in 'webapps' 'work'; do \
       mkdir -p ${CATALINA_BASE}/$directory && \
       rm -rf ${CATALINA_HOME}/$directory; \
