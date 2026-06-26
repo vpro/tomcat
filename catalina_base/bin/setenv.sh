@@ -77,6 +77,10 @@ if [[ $CATALINA_ARGS == *"jpda"* ]]; then
   export JPDA_TRANSPORT=dt_socket
 fi
 
+# liliput to reduce cpu/memory load unless explicitly disabled
+if [[ "${DISABLE_COMPACT_HEADERS}" != "true" ]]; then
+  export CATALINA_OPTS="$CATALINA_OPTS -XX:+UnlockExperimentalVMOptions -XX:+UseCompactObjectHeaders"
+fi
 
 # The complete container is dedicated to tomcat, so lets also use its tmp dir
 export CATALINA_TMPDIR=/tmp
@@ -124,4 +128,3 @@ fi
 if [ -z ${TOMCAT_EXECUTOR+x} ]; then
   export TOMCAT_EXECUTOR=tomcat-virtual-thread-executor
 fi
-
