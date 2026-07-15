@@ -13,7 +13,7 @@ ENV CATALINA_BASE=/usr/local/catalina-base
 # used in add-cluster.sed
 # generate one like this:
 # od  -vN "32" -An -tx1             /dev/urandom | tr -d " \n"
-ENV SECURE_ENCRYPTION_KEY=""
+# Set SECURE_ENCRYPTION_KEY at runtime when clustering is enabled.
 
 
 # Jars containing web resources (like web-fragments) and TLD's, which we use here and there.
@@ -59,7 +59,7 @@ WORKDIR $CATALINA_BASE
 # -   less, ncal: just for debugging, inspecting log files
 # -   procps: just for debugging. 'ps'.
 # -   psmisc: just for debugging. 'pstree'
-# -   netcat: just for debugging. 'nc'.
+# -   netcat-openbsd: just for debugging. 'nc'.
 # -   apache2-utils: we use rotatelogs to rotate catalina.out
 # -   file: used by mediatools, generally useful
 # -   unzip: to unzip the war  on build
@@ -95,7 +95,7 @@ RUN  keytool -list -cacerts > /tmp/cacerts.before && \
      set -eux && \
      apt-get update && \
      apt-get -y upgrade && \
-     apt-get -qq -y install --no-install-recommends less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk file unzip && \
+     apt-get -qq -y install --no-install-recommends less ncal procps curl rsync dnsutils netcat-openbsd apache2-utils vim-tiny psmisc inotify-tools gawk file unzip && \
      rm -rf /var/lib/apt/lists/* && \
      mkdir -p /conf && \
      chmod 755 /conf && \
@@ -204,5 +204,4 @@ ONBUILD RUN apt-get update && apt-get -y upgrade && \
   (echo "${NAME} version=${PROJECT_VERSION}") >> /DOCKER.BUILD && \
   (echo -e "${NAME} git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") >> /DOCKER.BUILD && \
   (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
-
 
