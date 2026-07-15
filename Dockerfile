@@ -36,7 +36,9 @@ media-server*.jar,\
 image-domain*.jar, \
 poms-shared*.jar,\
 meeuw*.jar,\
-extjs-*.jar"
+extjs-*.jar,\
+commons-resources*.jar"
+
 
 ARG CI_COMMIT_SHA
 ARG CI_COMMIT_REF_NAME
