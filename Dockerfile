@@ -161,6 +161,7 @@ ONBUILD ARG DOCLINK
 ONBUILD ENV DOCLINK=${DOCLINK}
 
 ONBUILD ARG JARS_TO_SCAN=UNSET
+ONBUILD ARG RUN_APT_GET_UPDATE=true
 ONBUILD ARG CLUSTERING
 ONBUILD ARG COPY_TESTS
 ONBUILD ARG CI_COMMIT_REF_NAME
@@ -194,7 +195,7 @@ ONBUILD RUN (\
 ONBUILD LABEL version="${PROJECT_VERSION}"
 
 # We need regular security patches. E.g. on every build of the application
-ONBUILD RUN apt-get update && apt-get -y upgrade && \
+ONBUILD RUN ( if [ "$RUN_APT_GET_UPDATE" = "true" ] ; then apt-get update ; fi ) && apt-get -y upgrade && \
   apt-get clean && rm -rf /var/lib/apt/lists/* && \
   ( if [ "$JARS_TO_SCAN" != 'UNSET' ] ; then sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"   ${CATALINA_BASE}/conf/catalina.properties ; fi ) && \
   for errorfile in ${CATALINA_BASE}/errorpages/*.html  ; do \
@@ -204,4 +205,3 @@ ONBUILD RUN apt-get update && apt-get -y upgrade && \
   (echo "${NAME} version=${PROJECT_VERSION}") >> /DOCKER.BUILD && \
   (echo -e "${NAME} git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") >> /DOCKER.BUILD && \
   (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
-
