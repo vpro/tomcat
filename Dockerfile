@@ -195,7 +195,7 @@ ONBUILD RUN (\
 ONBUILD LABEL version="${PROJECT_VERSION}"
 
 # We need regular security patches. E.g. on every build of the application
-ONBUILD RUN ( if [ "$RUN_APT_GET_UPDATE" = "true" ] ; then apt-get update  && apt-get -y upgrade && \
+ONBUILD RUN ( if [ "$RUN_APT_GET_UPDATE" = "true" ] ; then echo "apt-get update/upgrae" && apt-get update  && apt-get -y upgrade && \
   apt-get clean && rm -rf /var/lib/apt/lists/* ; else echo "Skipping apt-get update/upgrade because RUN_APT_GET_UPDATE=${RUN_APT_GET_UPDATE}" ; fi) && \
   ( if [ "$JARS_TO_SCAN" != 'UNSET' ] ; then sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"   ${CATALINA_BASE}/conf/catalina.properties ; fi ) && \
   for errorfile in ${CATALINA_BASE}/errorpages/*.html  ; do \
