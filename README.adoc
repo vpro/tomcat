@@ -17,7 +17,7 @@ Generic tomcat base image that:
 . Recognizes some more other environment variables
   - `CATALINA_DEBUG`: <true|false> If true jpda debugging is enabled. Only accessible from localhost so it would require tunneling to access it.
   - `CATALINA_DEBUG_EVAL`: e.g. '`[[ $POD_NAME == *-0 ]] && echo true || echo false'` to have debug enable only on first pod.
- -
+. Has ON BUILD scripts to pick up the war from ./target and install that.
 
 It is built and released using github actions, and available https://github.com/vpro/tomcat/pkgs/container/tomcat[via github packages]
 
@@ -58,8 +58,8 @@ which then can be build this way:
 |===
 |version | tomcat | java | remarks
 | >= 11.8 | 11.x | 25 | first version with ubuntu noble
-| >= 11.0 | 11.x | 25 | 
-| >= 10.36 | 10.x | 25 | 
+| >= 11.0 | 11.x | 25 |
+| >= 10.36 | 10.x | 25 |
 | >= 10.18 | 10.x | 21 | using jre rather than jdk, which makes the image smaller.
 | >= 10.10 | 10.x | 21 | available as ghcr.io/vpro/tomcat:10.x
 | >= 10.7 | 10.x | 21 | versions for cph5
