@@ -3,7 +3,7 @@
 FROM tomcat:11.0.24-jre25-temurin-noble
 LABEL maintainer="digitaal-techniek@vpro.nl,michiel@mmprogrami.nl"
 LABEL org.opencontainers.image.source=https://github.com/vpro/tomcat
-LABEL org.opencontainers.image.description="This tomcat image is used by poms and vpro stateful set deployments"
+LABEL org.opencontainers.image.description="An extension of the official Tomcat 11 image with some extra configuration, tools and ON BUILD commands for single war deployments"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
 ENV CATALINA_BASE=/usr/local/catalina-base
@@ -66,7 +66,7 @@ WORKDIR $CATALINA_BASE
 
 
 # some files which might be needed during build
-COPY --parents clustering eu-central-1-bundle.pem   importcerts.sh /tmp/
+COPY --parents clustering eu-central-1-bundle.pem  global-bundle.pem  importcerts.sh /tmp/
 
 
 # avoid warnings about that from debconf
