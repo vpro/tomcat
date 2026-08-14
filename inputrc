@@ -6,5 +6,8 @@
 "\e[5D": backward-word
 "\e\e[C": forward-word
 "\e\e[D": backward-word
+set editing-mode emacs
+
+"\C-k": kill-line
 
 set completion-ignore-case On

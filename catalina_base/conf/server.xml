@@ -16,7 +16,7 @@
       maxThreads="${TOMCAT_MAX_THREADS}"
       xpoweredBy="false"
       server="Tomcat ${TOMCAT_MAJOR} ${HOSTNAME}"
-      scheme="https"
+      scheme="${TOMCAT_SCHEME}"
       disableUploadTimeout="true"
       URIEncoding="UTF-8"
       relaxedQueryChars="${TOMCAT_RELAXED_QUERY_CHARS}"
