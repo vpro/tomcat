@@ -13,7 +13,7 @@ Generic tomcat base image that:
     - /usr/local/catalina-base/bin/start.sh custom start up script. Arranging gracefull shutdown.
     - /usr/local/catalina-base/bin/setenv.sh  picked up by tomcat
     - /usr/local/catalina-base/bin/jmx.sh included by setenv.sh, but can also be used remotely for easy figuring out what the relevant ports to forward are
-    - has eu-central certificates in cacerts
+    - has Amazon RDS certificates in cacerts
 . Recognizes some more other environment variables
   - `CATALINA_DEBUG`: <true|false> If true jpda debugging is enabled. Only accessible from localhost so it would require tunneling to access it.
   - `CATALINA_DEBUG_EVAL`: e.g. '`[[ $POD_NAME == *-0 ]] && echo true || echo false'` to have debug enable only on first pod.
@@ -72,5 +72,4 @@ which then can be build this way:
 | 2.x | 9.x | 17 |
 | 1.x | 9.x | 8 |
 |===
-
 

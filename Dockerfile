@@ -66,7 +66,8 @@ WORKDIR $CATALINA_BASE
 
 
 # some files which might be needed during build
-COPY --parents clustering eu-central-1-bundle.pem  global-bundle.pem  importcerts.sh /tmp/
+# https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem.
+COPY --parents clustering global-bundle.pem importcerts.sh /tmp/
 
 
 # avoid warnings about that from debconf

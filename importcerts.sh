@@ -1,7 +1,6 @@
 #!/bin/sh
 set -eu
 
-REGIONAL_BUNDLE="${REGIONAL_BUNDLE:-/tmp/eu-central-1-bundle.pem}"
 GLOBAL_BUNDLE="${GLOBAL_BUNDLE:-/tmp/global-bundle.pem}"
 JAVA_CACERTS_PASSWORD="${JAVA_CACERTS_PASSWORD:-changeit}"
 
@@ -47,5 +46,4 @@ import_bundle() {
   rm -rf "$tmpdir"
 }
 
-import_bundle "$REGIONAL_BUNDLE" "eu-central"
 import_bundle "$GLOBAL_BUNDLE" "rds"
