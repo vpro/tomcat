@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1-labs
 
-FROM tomcat:11.0.24-jre25-temurin-noble
+FROM tomcat:11.0.25-jre25-temurin-noble
 LABEL maintainer="digitaal-techniek@vpro.nl,michiel@mmprogrami.nl"
 LABEL org.opencontainers.image.source=https://github.com/vpro/tomcat
 LABEL org.opencontainers.image.description="An extension of the official Tomcat 11 image with some extra configuration, tools and ON BUILD commands for single war deployments"
