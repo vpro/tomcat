@@ -161,7 +161,6 @@ ONBUILD ENV CONTEXT=${CONTEXT}
 ONBUILD ARG DOCLINK
 ONBUILD ENV DOCLINK=${DOCLINK}
 
-ONBUILD ARG JARS_TO_SCAN
 ONBUILD ARG RUN_APT_GET_UPDATE
 ONBUILD ARG CLUSTERING
 ONBUILD ARG COPY_TESTS
@@ -169,8 +168,21 @@ ONBUILD ARG CI_COMMIT_REF_NAME
 ONBUILD ARG CI_COMMIT_SHA
 ONBUILD ARG CI_COMMIT_TITLE
 ONBUILD ARG CI_COMMIT_TIMESTAMP
-ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
 
+# Define scan-list arguments in the derived-image build scope. JARS_TO_SCAN
+# replaces Tomcat's default only when explicitly set; EXTRA_JARS_TO_SCAN extends it.
+ONBUILD ARG JARS_TO_SCAN
+ONBUILD ARG EXTRA_JARS_TO_SCAN
+
+ONBUILD RUN if [ -n "${JARS_TO_SCAN:-}" ]; then \
+    sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g" ${CATALINA_BASE}/conf/catalina.properties; \
+  fi && \
+  if [ -n "${EXTRA_JARS_TO_SCAN:-}" ]; then \
+    sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1\2,${EXTRA_JARS_TO_SCAN}|g" ${CATALINA_BASE}/conf/catalina.properties; \
+  fi
+
+
+ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
 
 # if clustering, it also makes some sense to have a peristent work dir (to write sessions in)
 ONBUILD RUN (\
@@ -198,7 +210,6 @@ ONBUILD LABEL version="${PROJECT_VERSION}"
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN ( if [ "$RUN_APT_GET_UPDATE" != "false" ] ; then echo "apt-get update/upgrade" && apt-get update  && apt-get -y upgrade && \
   apt-get clean && rm -rf /var/lib/apt/lists/* ; else echo "Skipping apt-get update/upgrade because RUN_APT_GET_UPDATE=${RUN_APT_GET_UPDATE}" ; fi) && \
-  ( if [ -n "$JARS_TO_SCAN" ] && [ "$JARS_TO_SCAN" != 'UNSET' ] ; then sed -E -i "s|^(tomcat.util.scan.StandardJarScanFilter.jarsToScan[ \t]*=)(.*)$|\1${JARS_TO_SCAN}|g"   ${CATALINA_BASE}/conf/catalina.properties ; fi ) && \
   for errorfile in ${CATALINA_BASE}/errorpages/*.html  ; do \
     sed -E -i "s|class='doclink' href='(.*?)'|class='doclink' href='${DOCLINK:-https://wiki.vpro.nl/}'|g" ${errorfile} && \
     ( if [ "$CONTEXT" != 'ROOT' ] ; then sed -E -i "s|class='home' href='(.*?)'|class='home' href='/${CONTEXT}'|g" ${errorfile} ; fi ) ; \
