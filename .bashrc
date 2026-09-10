@@ -1,3 +1,8 @@
+if [ -r /var/run/secrets/kubernetes.io/serviceaccount/namespace ]; then
+  export POD_NAMESPACE=$(< /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+else
+  export POD_NAMESPACE="no kubernetes"
+fi
 
 # \[..\]: instruct bash that this does not take up any space (they are ANSI control characters)
 PS1="\[\033[4;1;36m\]\h|${POD_NAMESPACE##*-}:\[\033[0;1;34m\]\w\[\033[00m\]\$ "
