@@ -127,8 +127,16 @@ fi
 if [ -z ${TOMCAT_EXECUTOR+x} ]; then
   export TOMCAT_EXECUTOR=tomcat-virtual-thread-executor
 fi
-export KUBERNETES_NAMESPACE KUBERNETES_LABELS
+
+# These variables may be used by tomcat clustering
 if [ -r /var/run/secrets/kubernetes.io/serviceaccount/namespace ]; then
-  KUBERNETES_NAMESPACE=$(< /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-  KUBERNETES_LABELS=application=$(hostname)
+  if [ -z "${KUBERNETES_NAMESPACE+x}" ]; then
+    KUBERNETES_NAMESPACE=$(< /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+    export KUBERNETES_NAMESPACE
+  fi
+  #When set, it appends a labelSelector to the pod-list request.
+  if [ -z "${KUBERNETES_LABELS+x}" ]; then
+    KUBERNETES_LABELS=application=$(hostname)
+    export KUBERNETES_LABELS
+  fi
 fi
