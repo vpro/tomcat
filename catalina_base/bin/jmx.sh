@@ -6,6 +6,11 @@
 if [[ -z "$JMX_PORT" ]]; then
    JMX_PORT=3000
 fi
+if [ -r /var/run/secrets/kubernetes.io/serviceaccount/namespace ]; then
+  POD_NAMESPACE=$(< /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+else
+  POD_NAMESPACE="no kubernetes"
+fi
 # Since it is hard, if not impossible, to tunnel jmx to different ports on localhost, it is handier if different environment have different port numbers
 if [[ "$POD_NAMESPACE" == *acc ]]; then
   JMX_PORT=$((JMX_PORT + 100))
