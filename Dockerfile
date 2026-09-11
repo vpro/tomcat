@@ -207,6 +207,8 @@ ONBUILD RUN (\
 
 ONBUILD LABEL version="${PROJECT_VERSION}"
 
+ONBUILD ENV APP_NAME=${NAME}
+
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN ( if [ "$RUN_APT_GET_UPDATE" != "false" ] ; then echo "apt-get update/upgrade" && apt-get update  && apt-get -y upgrade && \
   apt-get clean && rm -rf /var/lib/apt/lists/* ; else echo "Skipping apt-get update/upgrade because RUN_APT_GET_UPDATE=${RUN_APT_GET_UPDATE}" ; fi) && \
