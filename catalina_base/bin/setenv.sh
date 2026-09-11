@@ -136,7 +136,7 @@ if [ -r /var/run/secrets/kubernetes.io/serviceaccount/namespace ]; then
   fi
   #When set, it appends a labelSelector to the pod-list request.
   if [ -z "${KUBERNETES_LABELS+x}" ]; then
-    KUBERNETES_LABELS=application=$(hostname)
+    KUBERNETES_LABELS=application=$(hostname | sed 's/-[[:digit:]]*$//')
     export KUBERNETES_LABELS
   fi
 fi
