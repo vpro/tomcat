@@ -127,3 +127,8 @@ fi
 if [ -z ${TOMCAT_EXECUTOR+x} ]; then
   export TOMCAT_EXECUTOR=tomcat-virtual-thread-executor
 fi
+export KUBERNETES_NAMESPACE KUBERNETES_LABELS
+if [ -r /var/run/secrets/kubernetes.io/serviceaccount/namespace ]; then
+  KUBERNETES_NAMESPACE=$(< /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+  KUBERNETES_LABELS=application=$(hostname)
+fi
