@@ -62,7 +62,8 @@
           protocolHeader="X-Forwarded-Proto" />
 
         <Valve className="org.apache.catalina.valves.StuckThreadDetectionValve"
-               threshold="600" />
+               interruptThreadThreshold="${TOMCAT_STUCK_THREAD_DETECTION_INTERRUPT_THREAD_THRESHOLD}"
+               threshold="${TOMCAT_STUCK_THREAD_DETECTION_THRESHOLD}" />
 
 
       </Host>

@@ -127,6 +127,13 @@ fi
 if [ -z ${TOMCAT_EXECUTOR+x} ]; then
   export TOMCAT_EXECUTOR=tomcat-virtual-thread-executor
 fi
+if [ -z ${TOMCAT_STUCK_THREAD_DETECTION_INTERRUPT_THREAD_THRESHOLD+x} ] ; then
+  export TOMCAT_STUCK_THREAD_DETECTION_INTERRUPT_THREAD_THRESHOLD=-1
+fi
+if [ -z ${TOMCAT_STUCK_THREAD_DETECTION_THRESHOLD+x} ] ; then
+  export TOMCAT_STUCK_THREAD_DETECTION_THRESHOLD=600
+fi
+
 
 # These variables may be used by tomcat clustering
 if [ -r /var/run/secrets/kubernetes.io/serviceaccount/namespace ]; then
