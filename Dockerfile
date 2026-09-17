@@ -1,10 +1,5 @@
 # syntax=docker/dockerfile:1-labs
 
-FROM eclipse-temurin:25-jdk-noble AS certificate-importer
-WORKDIR /build
-COPY ImportCertificates.java .
-RUN javac ImportCertificates.java
-
 FROM tomcat:11.0.26-jre25-temurin-noble
 LABEL maintainer="digitaal-techniek@vpro.nl,michiel@mmprogrami.nl"
 LABEL org.opencontainers.image.source=https://github.com/vpro/tomcat
@@ -72,8 +67,7 @@ WORKDIR $CATALINA_BASE
 
 # some files which might be needed during build
 # https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem.
-COPY --from=certificate-importer /build/ImportCertificates.class /tmp/
-COPY --parents clustering global-bundle.pem importcerts.sh /tmp/
+COPY --parents clustering global-bundle.pem importcerts.sh ImportCertificates.class /tmp/
 
 
 # avoid warnings about that from debconf
