@@ -20,6 +20,7 @@ import_bundle() {
     /-----END CERTIFICATE-----/ { file="" }
   ' "$bundle"
 
+  aliases="$tmpdir/aliases"
   for f in "$tmpdir"/cert-*.pem; do
     [ -e "$f" ] || break
 
@@ -35,14 +36,10 @@ import_bundle() {
     fi
 
     alias_key="${prefix}-${alias_name}"
-    echo "Importing $f as $alias_key"
-    keytool -delete -cacerts -storepass "$JAVA_CACERTS_PASSWORD" -alias "$alias_key" >/dev/null 2>&1 || true
-    keytool -importcert -noprompt -trustcacerts -cacerts \
-      -storepass "$JAVA_CACERTS_PASSWORD" \
-      -alias "$alias_key" \
-      -file "$f"
+    printf '%s\t%s\n' "$f" "$alias_key" >> "$aliases"
   done
 
+  java -cp /tmp ImportCertificates "$aliases" "$JAVA_CACERTS_PASSWORD"
   rm -rf "$tmpdir"
 }
 
