@@ -2,27 +2,61 @@
 
 dir=$( dirname "${BASH_SOURCE[0]}")
 
+JAVA_MAJOR_VERSION=$(java -version 2>&1 | head -1 | cut -d'"' -f2 | cut -d'.' -f1)
+
 
 # find out limit of current pod:
 #limit=`cat /sys/fs/cgroup/memory/memory.limit_in_bytes`
 # Substract 1.5G some for non heap useage
 #heapsize=$((limit - 1500000000))
 
+# memory options
+# These can be set via environment variables (MaxRAMPercentage, GarbageCollectionOption, NativeMemoryTracking),
+# but options already present in CATALINA_OPTS take precedence. A warning is printed if both are set explicitly.
+# -XX:+UseContainerSupport is default, but lets be explicit, we target running in a container.
+
+MaxRAMPercentage_explicit=${MaxRAMPercentage:+1}
 if [[ -z "$MaxRAMPercentage" ]] ; then
   MaxRAMPercentage=75.0
 fi
-
-# memory options
-# -XX:MaxRAMPercentage=${MaxRAMPercentage}
-# -XX:+UseContainerSupport                      Default, but lets be explicit, we target running in a container.
-# -XX:+UseZGC
-
+GarbageCollectionOption_explicit=${GarbageCollectionOption:+1}
 if [[ -z "$GarbageCollectionOption" ]] ; then
   GarbageCollectionOption=-XX:+UseG1GC
   # GarbageCollectionOption=-XX:+UseZGC
 fi
+NativeMemoryTracking_explicit=${NativeMemoryTracking:+1}
+if [[ -z "$NativeMemoryTracking" ]] ; then
+  NativeMemoryTracking=summary
+fi
 
-export CATALINA_OPTS="$CATALINA_OPTS ${GarbageCollectionOption} -XX:MaxRAMPercentage=${MaxRAMPercentage} -XshowSettings:vm -XX:+UseContainerSupport"
+if [[ ! "$CATALINA_OPTS" =~ -XX:\+Use[A-Za-z]*GC ]] ; then
+  export CATALINA_OPTS="$CATALINA_OPTS ${GarbageCollectionOption}"
+elif [[ -n "$GarbageCollectionOption_explicit" ]] ; then
+  echo "WARNING: GarbageCollectionOption is set, but CATALINA_OPTS already contains a GC option; GarbageCollectionOption will be ignored." >&2
+fi
+if [[ "$CATALINA_OPTS" =~ (^|[[:space:]])-Xmx[0-9] ]] ; then
+  if [[ -n "$MaxRAMPercentage_explicit" ]] ; then
+    echo "WARNING: MaxRAMPercentage is set, but CATALINA_OPTS already sets -Xmx explicitly, which takes precedence; MaxRAMPercentage will be ignored." >&2
+  fi
+elif [[ "$CATALINA_OPTS" != *"-XX:MaxRAMPercentage="* ]] ; then
+  export CATALINA_OPTS="$CATALINA_OPTS -XX:MaxRAMPercentage=${MaxRAMPercentage}"
+  if [[ -n "$MaxRAMPercentage_explicit" ]] && [[ "$CATALINA_OPTS" =~ (^|[[:space:]])-Xms[0-9] ]] ; then
+    echo "WARNING: MaxRAMPercentage is set, and CATALINA_OPTS also sets -Xms explicitly; if -Xms is larger than the resulting percentage-based max heap, it will override MaxRAMPercentage." >&2
+  fi
+elif [[ -n "$MaxRAMPercentage_explicit" ]] ; then
+  echo "WARNING: MaxRAMPercentage is set, but CATALINA_OPTS already contains -XX:MaxRAMPercentage=; MaxRAMPercentage will be ignored." >&2
+fi
+if [[ "$CATALINA_OPTS" != *"-XX:NativeMemoryTracking="* ]] ; then
+  export CATALINA_OPTS="$CATALINA_OPTS -XX:NativeMemoryTracking=${NativeMemoryTracking}"
+elif [[ -n "$NativeMemoryTracking_explicit" ]] ; then
+  echo "WARNING: NativeMemoryTracking is set, but CATALINA_OPTS already contains -XX:NativeMemoryTracking=; NativeMemoryTracking will be ignored." >&2
+fi
+if [[ "$CATALINA_OPTS" != *"-XshowSettings:vm"* ]] ; then
+  export CATALINA_OPTS="$CATALINA_OPTS -XshowSettings:vm"
+fi
+if [[ "$CATALINA_OPTS" != *"UseContainerSupport"* ]] ; then
+  export CATALINA_OPTS="$CATALINA_OPTS -XX:+UseContainerSupport"
+fi
 
 
 
@@ -56,7 +90,7 @@ export CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote=true -Dcom.s
 # gc logging
 mkdir -p ${CATALINA_LOGS}/gclogs/
 chmod 2775 ${CATALINA_LOGS}/gclogs/
-export CATALINA_OPTS="$CATALINA_OPTS -XX:NativeMemoryTracking=summary -Xlog:gc*=info:file=${CATALINA_LOGS}/gclogs/%t-gc.log:time,uptime,tags,level:filecount=10,filesize=10M"
+export CATALINA_OPTS="$CATALINA_OPTS -Xlog:gc*=info:file=${CATALINA_LOGS}/gclogs/%t-gc.log:time,uptime,tags,level:filecount=10,filesize=10M"
 
 # crash logging
 export CATALINA_OPTS="$CATALINA_OPTS -XX:ErrorFile=${CATALINA_LOGS}/hs_err_pid%p.log"
@@ -72,9 +106,9 @@ if [[ $CATALINA_ARGS == *"jpda"* ]]; then
   export JPDA_TRANSPORT=dt_socket
 fi
 
-# liliput to reduce cpu/memory load unless explicitly disabled
-if [[ "${DISABLE_COMPACT_HEADERS}" != "true" ]]; then
-  export CATALINA_OPTS="$CATALINA_OPTS -XX:+UnlockExperimentalVMOptions -XX:+UseCompactObjectHeaders"
+# liliput to reduce cpu/memory load unless explicitly disabled (requires Java 25+, where it is no longer experimental)
+if [[ "${DISABLE_COMPACT_HEADERS}" != "true" ]] && [ "$JAVA_MAJOR_VERSION" -ge 25 ] 2>/dev/null; then
+  export CATALINA_OPTS="$CATALINA_OPTS -XX:+UseCompactObjectHeaders"
 fi
 
 # The complete container is dedicated to tomcat, so lets also use its tmp dir
